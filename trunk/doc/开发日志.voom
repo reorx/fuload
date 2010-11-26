@@ -14,3 +14,12 @@
     
     -h -p -i -s -l
     host port input stat limit
+
+实现{{{1
+    1.还是使用配置文件比较好
+    2.master,slave的结构
+    
+    对于每一个slave,包含三个进程:ctrl,proxy,worker
+    ctrl <- proxy
+    ctrl <- worker
+    通过消息队列交互
