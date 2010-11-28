@@ -26,6 +26,7 @@ class CFLWeightRoute
 
         inline int add(T node,unsigned weight);
         inline int alloc(T& node);
+        inline int clear();
 
     private:
         vector<int> m_vecWeightRoute;
@@ -52,6 +53,14 @@ int CFLWeightRoute<T>::alloc(T& node)
         return -2;
     }
     node = m_vecNodes[index];
+    return 0;
+}
+
+template <typename T>
+int CFLWeightRoute<T>::clear()
+{
+    m_vecWeightRoute.clear();
+    m_vecNodes.clear();
     return 0;
 }
 
