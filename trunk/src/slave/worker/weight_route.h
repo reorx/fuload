@@ -22,7 +22,7 @@ class CWeightRoute
         virtual ~CWeightRoute () {}
 
         inline int add(T node,unsigned weight);
-        inline int get(T& node);
+        inline int alloc(T& node);
 
     private:
         vector<int> m_vecWeightRoute;
@@ -36,7 +36,7 @@ int CWeightRoute<T>::add(T node,unsigned weight)
     return 0;
 }
 template <typename T>
-int CWeightRoute<T>::get(T& node)
+int CWeightRoute<T>::alloc(T& node)
 {
     if (m_vecWeightRoute.size()<=0)
     {

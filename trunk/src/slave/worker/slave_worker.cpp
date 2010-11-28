@@ -21,6 +21,27 @@ int CSlaveWorker::SetInputData(const string& strInputData)
     m_InputData = strInputData;
     return parseInputData(m_InputData);
 }
+int CSlaveWorker::Run()
+{
+    int ret;
+    while(1)
+    {
+        StSWInput swi;
+        ret = m_SWInputRoute.alloc(swi);
+        if (ret)
+        {
+            printf("error alloc:%d\n",ret);
+            break;
+        }
+        ret = process(swi);
+        if (ret)
+        {
+            printf("process error:%d\n",ret);
+            continue;
+        }
+    }
+    return 0;
+}
 int CSlaveWorker::parseInputData(const string& strInputData)
 {
     string tempInputData = strInputData;
@@ -68,8 +89,19 @@ int CSlaveWorker::parseInputData(const string& strInputData)
         SplitString(tempLine," ",vecParams);
 
         swi.vecParams = vecParams;
-        swi.strArgLine = tempLine;
-        m_vecSWInputs.add(swi,loopNum);
+        swi.strInputLine = tempLine;
+        m_SWInputRoute.add(swi,loopNum);
     }
+    return 0;
+}
+int CSlaveWorker::process(const StSWInput& swi)
+{
+    const vector<string> &vecParams = swi.vecParams;
+    const string& strInputLine = swi.strInputLine;
+    foreach(vecParams,it)
+    {
+        printf("%s,",(*it).c_str());
+    }
+    printf("\nline:%s\n",strInputLine.c_str());
     return 0;
 }
