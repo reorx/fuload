@@ -18,6 +18,10 @@
 #include "fl_slave_input.h"
 using namespace std;
 
+typedef int (*FunPtrInit)();
+typedef int (*FunPtrProcess)(const map<string,string>& mapParams,const string& strInputLine);
+typedef int (*FunPtrFini)();
+
 class CFLSlaveWorker 
 {
     public:
@@ -32,7 +36,7 @@ class CFLSlaveWorker
          * @return  0               succ
          *          else            fail
          */
-        int AddInputData(const string& strInputData);
+        int SetInputData(const string& strInputData);
 
         /**
          * @brief   运行

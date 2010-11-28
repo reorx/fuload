@@ -22,7 +22,7 @@ int main(int argc, const char *argv[])
         inputData.append("\n");
     }
     CFLSlaveWorker sworker;
-    sworker.AddInputData(inputData);
+    sworker.SetInputData(inputData);
     sworker.Run();
 
     return 0;
