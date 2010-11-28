@@ -21,7 +21,7 @@ using namespace std;
 typedef struct _stSWInput
 {
     vector<string> vecParams;
-    string strArgLine;
+    string strInputLine;
 }StSWInput;
 class CSlaveWorker 
 {
@@ -41,8 +41,11 @@ class CSlaveWorker
 
         /**
          * @brief   运行
+         * 
+         * @return  0               succ
+         *          else            fail
          */
-        void Run();
+        int Run();
 
     private:
         /**
@@ -60,11 +63,11 @@ class CSlaveWorker
          * @return  0               succ
          *          else            fail
          */
-        int process();
+        int process(const StSWInput& swi);
 
     private:
         string m_InputData;
-        CWeightRoute<StSWInput> m_vecSWInputs;
+        CWeightRoute<StSWInput> m_SWInputRoute;
 };
 
 #endif
