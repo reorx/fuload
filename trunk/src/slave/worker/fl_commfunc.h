@@ -77,5 +77,13 @@ class CFLCommFunc
             } 
             return str; 
         } 
+
+        static string StripString(const string& src)
+        {
+            string str = src;
+            str.erase(str.find_last_not_of(" ")+1); 
+            str.erase(0,str.find_first_not_of(" ")); 
+            return str;
+        }
 };
 #endif

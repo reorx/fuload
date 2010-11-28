@@ -43,11 +43,11 @@ int CFLSlaveWorker::Run()
 }
 int CFLSlaveWorker::process(const StSWInput& swi)
 {
-    const vector<string> &vecParams = swi.vecParams;
+    const map<string,string> &mapParams = swi.mapParams;
     const string& strInputLine = swi.strInputLine;
-    foreach(vecParams,it)
+    foreach(mapParams,it)
     {
-        printf("%s,",(*it).c_str());
+        printf("%s=%s&",it->first.c_str(),it->second.c_str());
     }
     printf("\n");
     //printf("line:%s\n",strInputLine.c_str());
