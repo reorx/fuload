@@ -9,7 +9,7 @@
 =============================================================================*/
 #include "fl_slave_input.h"
 
-int CFLSlaveInput::AddInputData(const string& strInputData)
+int CFLSlaveInput::SetInputData(const string& strInputData)
 {
     m_LastInputData = strInputData;
     return parseInputData(m_LastInputData);

@@ -16,9 +16,9 @@ CFLSlaveWorker::CFLSlaveWorker()
 CFLSlaveWorker::~CFLSlaveWorker()
 {
 }
-int CFLSlaveWorker::AddInputData(const string& strInputData)
+int CFLSlaveWorker::SetInputData(const string& strInputData)
 {
-    return m_SlaveInput.AddInputData(strInputData);
+    return m_SlaveInput.SetInputData(strInputData);
 }
 int CFLSlaveWorker::Run()
 {
@@ -36,7 +36,6 @@ int CFLSlaveWorker::Run()
         if (ret)
         {
             printf("process error:%d\n",ret);
-            continue;
         }
     }
     return 0;

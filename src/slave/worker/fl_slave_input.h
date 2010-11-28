@@ -37,7 +37,7 @@ class CFLSlaveInput
          * @return  0               succ
          *          else            fail
          */
-        int AddInputData(const string& strInputData);
+        int SetInputData(const string& strInputData);
         /**
          * @brief   分配一个node
          *
