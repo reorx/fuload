@@ -37,6 +37,7 @@ using namespace std;
  */
 extern "C" int fuload_handle_init()
 {
+    printf("%s\n",__FUNCTION__);
     return 0;
 }
 
@@ -67,5 +68,6 @@ extern "C" int fuload_handle_process(const map<string,string>& mapParams,const s
  */
 extern "C" int fuload_handle_fini()
 {
+    printf("%s\n",__FUNCTION__);
     return 0;
 }
