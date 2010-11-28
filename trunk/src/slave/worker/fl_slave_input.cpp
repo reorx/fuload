@@ -16,6 +16,8 @@ int CFLSlaveInput::SetInputData(const string& strInputData)
 }
 int CFLSlaveInput::parseInputData(const string& strInputData)
 {
+    m_SWInputRoute.clear();
+
     string tempInputData = strInputData;
     tempInputData = CFLCommFunc::replace_all(tempInputData,"\r\n","\n");
 
