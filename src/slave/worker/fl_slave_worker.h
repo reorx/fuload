@@ -14,6 +14,8 @@
 #include <string>
 #include <vector>
 
+#include <dlfcn.h>
+
 #include "fl_commfunc.h"
 #include "fl_slave_input.h"
 using namespace std;
@@ -24,6 +26,8 @@ typedef int (*FunPtrFini)();
 
 class CFLSlaveWorker 
 {
+    public:
+        static void *SoObj;
     public:
         CFLSlaveWorker ();
         virtual ~CFLSlaveWorker ();
@@ -37,6 +41,16 @@ class CFLSlaveWorker
          *          else            fail
          */
         int SetInputData(const string& strInputData);
+
+        /**
+         * @brief   设置要加载的so的文件
+         *
+         * @param   moduleFile      文件
+         *
+         * @return  0               succ
+         *          else            fail
+         */
+        int SetModuleFile(const string& moduleFile);
 
         /**
          * @brief   运行
@@ -57,6 +71,10 @@ class CFLSlaveWorker
 
     private:
         CFLSlaveInput m_SlaveInput;
+
+        FunPtrInit m_funPtrInit;
+        FunPtrProcess m_funPtrProcess;
+        FunPtrFini m_funPtrFini;
 };
 
 #endif

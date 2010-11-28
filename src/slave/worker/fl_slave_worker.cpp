@@ -8,9 +8,13 @@
 #  History:         
 =============================================================================*/
 #include "fl_slave_worker.h"
+void* CFLSlaveWorker::SoObj=NULL;
 
 CFLSlaveWorker::CFLSlaveWorker()
 {
+    m_funPtrInit = NULL;
+    m_funPtrProcess = NULL;
+    m_funPtrFini = NULL;
 }
 
 CFLSlaveWorker::~CFLSlaveWorker()
@@ -20,9 +24,32 @@ int CFLSlaveWorker::SetInputData(const string& strInputData)
 {
     return m_SlaveInput.SetInputData(strInputData);
 }
+int CFLSlaveWorker::SetModuleFile(const string& moduleFile)
+{
+    if(CFLSlaveWorker::SoObj == NULL)
+    {
+        SoObj=dlopen((char*)moduleFile.c_str(),RTLD_LAZY);
+        if(SoObj==NULL)
+        {
+            return -1;
+        }
+    }
+    m_funPtrInit = (FunPtrInit)dlsym(SoObj, "fuload_handle_init");
+    m_funPtrProcess= (FunPtrProcess)dlsym(SoObj, "fuload_handle_process");
+    m_funPtrFini= (FunPtrFini)dlsym(SoObj, "fuload_handle_fini");
+    return 0;
+}
 int CFLSlaveWorker::Run()
 {
     int ret;
+    if (m_funPtrInit)
+    {
+        ret = (*m_funPtrInit)();
+        if (ret)
+        {
+            return -1;
+        }
+    }
     while(1)
     {
         StSWInput swi;
@@ -38,17 +65,23 @@ int CFLSlaveWorker::Run()
             printf("process error:%d\n",ret);
         }
     }
+    if (m_funPtrFini)
+    {
+        ret = (*m_funPtrFini)();
+        if (ret)
+        {
+            return -2;
+        }
+    }
     return 0;
 }
 int CFLSlaveWorker::process(const StSWInput& swi)
 {
     const map<string,string> &mapParams = swi.mapParams;
     const string& strInputLine = swi.strInputLine;
-    foreach(mapParams,it)
+    if (m_funPtrProcess == NULL)
     {
-        printf("%s=%s&",it->first.c_str(),it->second.c_str());
+        return -1;
     }
-    printf("\n");
-    //printf("line:%s\n",strInputLine.c_str());
-    return 0;
+    return (*m_funPtrProcess)(mapParams,strInputLine);
 }
