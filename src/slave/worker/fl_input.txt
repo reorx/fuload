@@ -1,4 +1,4 @@
 test[10]
-    wo ai ni
+    name=dantezhu&string=woaininiuniu&laopo = niuniu
 test[2]
-    test jiushi     zheyang
+    name=niuniu&string=woainidandan&laogong = dandan

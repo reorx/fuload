@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "fl_commfunc.h"
 #include "fl_weight_route.h"
@@ -19,7 +20,7 @@ using namespace std;
 
 typedef struct _stSWInput
 {
-    vector<string> vecParams;
+    map<string,string> mapParams;
     string strInputLine;
 }StSWInput;
 class CFLSlaveInput 

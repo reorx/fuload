@@ -34,6 +34,11 @@ int CFLSlaveInput::parseInputData(const string& strInputData)
 
         if(tempLine[0] != ' ' && tempLine[0] != '\t')//证明是suite说明
         {
+            if (tempLine[0] == '#')//这是注释
+            {
+                continue;
+            }
+
             size_t begin_index = tempLine.find("[");
             if (begin_index == string::npos)
             {
@@ -54,8 +59,7 @@ int CFLSlaveInput::parseInputData(const string& strInputData)
             continue;
         }
 
-        tempLine.erase(tempLine.find_last_not_of(" ")+1); 
-        tempLine.erase(0,tempLine.find_first_not_of(" ")); 
+        tempLine = CFLCommFunc::StripString(tempLine);
 
         if (tempLine.size()<=0)
         {
@@ -64,9 +68,23 @@ int CFLSlaveInput::parseInputData(const string& strInputData)
 
         StSWInput swi;
         vector<string> vecParams;
-        CFLCommFunc::SplitString(tempLine," ",vecParams);
+        CFLCommFunc::SplitString(tempLine,"&",vecParams);
 
-        swi.vecParams = vecParams;
+        map<string,string> mapParams;
+        string tempStr;
+        foreach(vecParams,vecIt)
+        {
+            tempStr = *vecIt;
+            vector<string> t_vec;
+            CFLCommFunc::SplitString(tempStr,"=",t_vec);
+            if (t_vec.size()!=2)
+            {
+                return -4;
+            }
+            mapParams[CFLCommFunc::StripString(t_vec[0])] = CFLCommFunc::StripString(t_vec[1]);
+        }
+
+        swi.mapParams = mapParams;
         swi.strInputLine = tempLine;
         m_SWInputRoute.add(swi,loopNum);
     }
