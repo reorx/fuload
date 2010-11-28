@@ -21,8 +21,12 @@ int main(int argc, const char *argv[])
         inputData.append(strLine);
         inputData.append("\n");
     }
+    int ret;
     CFLSlaveWorker sworker;
-    sworker.SetInputData(inputData);
+    ret = sworker.SetInputData(inputData);
+    printf("set input:%d\n",ret);
+    ret = sworker.SetModuleFile("../../module/libmodule.so");
+    printf("set modulefile:%d\n",ret);
     sworker.Run();
 
     return 0;

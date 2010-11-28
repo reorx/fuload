@@ -10,6 +10,23 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include <error.h>
+#include <errno.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <poll.h>
+#include <sys/epoll.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <strings.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 using namespace std;
 
 /**
@@ -26,14 +43,19 @@ extern "C" int fuload_handle_init()
 /**
  * @brief   业务逻辑，每次进入
  *
- * @param   vecParams       将输入数据按照空格拆分之后的vector
- * @param   strArgs         输入数据原样数据
+ * @param   mapParams       将输入数据按照空格拆分之后的vector
+ * @param   strInputLine    输入数据原样数据
  *
  * @return  0               succ
  *          else            返回值,会用来做统计
  */
-extern "C" int fuload_handle_process(const vector<string>& vecParams,const string& strArgs)
+extern "C" int fuload_handle_process(const map<string,string>& mapParams,const string& strInputLine)
 {
+    for(typeof(mapParams.begin()) it = mapParams.begin(); it != mapParams.end(); ++it)
+    {
+        printf("%s=%s&",it->first.c_str(),it->second.c_str());
+    }
+    printf("\n");
     return 0;
 }
 
