@@ -6,7 +6,7 @@ C_FLAGS += -g -Wall -pthread
 
 all: $(TARGET)
 
-slave_worker:  main.o
+slave_worker:  main.o slave_worker.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
 
 .cpp.o:
