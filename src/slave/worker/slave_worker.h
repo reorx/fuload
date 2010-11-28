@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "fuload_commfunc.h"
+#include "weight_route.h"
 using namespace std;
 
 typedef struct _stSWInput
@@ -63,7 +64,7 @@ class CSlaveWorker
 
     private:
         string m_InputData;
-        vector<StSWInput> m_vecSWInputs;
+        CWeightRoute<StSWInput> m_vecSWInputs;
 };
 
 #endif
