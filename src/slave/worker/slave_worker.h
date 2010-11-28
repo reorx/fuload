@@ -4,7 +4,7 @@
 #  FileName:        slave_worker.h
 #  Description:     用来处理slave_worker的主逻辑
 #  Version:         1.0
-#  LastChange:      2010-11-28 17:56:00
+#  LastChange:      2010-11-28 18:41:51
 #  History:         
 =============================================================================*/
 #ifndef _SLAVE_WORKER_H_
@@ -28,10 +28,38 @@ class CSlaveWorker
         CSlaveWorker ();
         virtual ~CSlaveWorker ();
 
+        /**
+         * @brief   设置输入数据
+         *
+         * @param   strInputData    数据
+         *
+         * @return  0               succ
+         *          else            fail
+         */
         int SetInputData(const string& strInputData);
 
+        /**
+         * @brief   运行
+         */
+        void Run();
+
     private:
+        /**
+         * @brief   解析输入数据
+         *
+         * @param   strInputData    数据
+         *
+         * @return  0               succ
+         *          else            fail
+         */
         int parseInputData(const string& strInputData);
+        /**
+         * @brief   调用so，并统计时间
+         *
+         * @return  0               succ
+         *          else            fail
+         */
+        int process();
 
     private:
         string m_InputData;
