@@ -49,6 +49,7 @@ int CFLSlaveWorker::process(const StSWInput& swi)
     {
         printf("%s,",(*it).c_str());
     }
-    printf("\nline:%s\n",strInputLine.c_str());
+    printf("\n");
+    //printf("line:%s\n",strInputLine.c_str());
     return 0;
 }
