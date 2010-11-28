@@ -69,7 +69,7 @@ int CSlaveWorker::parseInputData(const string& strInputData)
 
         swi.vecParams = vecParams;
         swi.strArgLine = tempLine;
-        m_vecSWInputs.push_back(swi);
+        m_vecSWInputs.add(swi,loopNum);
     }
     return 0;
 }
