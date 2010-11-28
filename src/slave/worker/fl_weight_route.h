@@ -18,7 +18,10 @@ template <typename T>
 class CFLWeightRoute 
 {
     public:
-        CFLWeightRoute () {}
+        CFLWeightRoute () {
+            unsigned seed = time(NULL) + getpid();
+            srand(seed);
+        }
         virtual ~CFLWeightRoute () {}
 
         inline int add(T node,unsigned weight);
@@ -42,8 +45,6 @@ int CFLWeightRoute<T>::alloc(T& node)
     {
         return -1;
     }
-    unsigned seed = time(NULL) + getpid();
-    srand(seed);
 
     unsigned index = m_vecWeightRoute[rand() % m_vecWeightRoute.size()];
     if (m_vecNodes.size()<=index)

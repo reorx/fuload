@@ -1,12 +1,12 @@
 CXX = g++
 
-TARGET = slave_worker
+TARGET = fl_slave_worker
 
 C_FLAGS += -g -Wall -pthread
 
 all: $(TARGET)
 
-slave_worker:  main.o fl_slave_worker.o fl_slave_input.o
+fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
 
 .cpp.o:
