@@ -21,7 +21,7 @@
 using namespace std;
 
 typedef int (*FunPtrInit)();
-typedef int (*FunPtrProcess)(const map<string,string>& mapParams,const string& strInputLine);
+typedef int (*FunPtrProcess)(const map<string,string>& mapParams);
 typedef int (*FunPtrFini)();
 
 class CFLSlaveWorker 

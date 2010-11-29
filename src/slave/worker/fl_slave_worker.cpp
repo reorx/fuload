@@ -78,10 +78,9 @@ int CFLSlaveWorker::Run()
 int CFLSlaveWorker::process(const StSWInput& swi)
 {
     const map<string,string> &mapParams = swi.mapParams;
-    const string& strInputLine = swi.strInputLine;
     if (m_funPtrProcess == NULL)
     {
         return -1;
     }
-    return (*m_funPtrProcess)(mapParams,strInputLine);
+    return (*m_funPtrProcess)(mapParams);
 }
