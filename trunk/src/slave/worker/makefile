@@ -2,7 +2,9 @@ CXX = g++
 
 TARGET = fl_slave_worker
 
-C_FLAGS += -ldl -g -Wall -pthread
+C_FLAGS += -g -Wall -pthread
+
+LIB += -ldl
 
 all: $(TARGET)
 

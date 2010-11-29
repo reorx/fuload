@@ -45,12 +45,11 @@ extern "C" int fuload_handle_init()
  * @brief   业务逻辑，每次进入
  *
  * @param   mapParams       将输入数据按照空格拆分之后的vector
- * @param   strInputLine    输入数据原样数据
  *
  * @return  0               succ
  *          else            返回值,会用来做统计
  */
-extern "C" int fuload_handle_process(const map<string,string>& mapParams,const string& strInputLine)
+extern "C" int fuload_handle_process(const map<string,string>& mapParams)
 {
     for(typeof(mapParams.begin()) it = mapParams.begin(); it != mapParams.end(); ++it)
     {
