@@ -68,3 +68,5 @@ suite2[3]
 
 2.分布模式{{{2
 当使用分布模式时，fuload_s_ctrl会接收来自于master的控制。在分布模式中，所有的命令，数据都是统一由master下发的，即在slave上需要配置master的ip和port（但是在master上不需要配置slave的ip和port，因为slave在启动时会向master attch自己的ip和端口）。
+
+" vim: set nofoldenable:
