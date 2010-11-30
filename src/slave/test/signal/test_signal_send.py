@@ -9,7 +9,10 @@ childs = []
 def handler(signo, frame):
     global childs
     for child in childs:
-        child.send_signal(signal.SIGINT)
+        try:
+            child.send_signal(signal.SIGINT)
+        except:
+            pass
 
 def main():
     global childs
