@@ -1,10 +1,30 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import os
+import subprocess
+from subprocess import Popen
 import signal
 
-ps_output = os.popen("ps x | grep test_signal_recv").readline()
-fd = ps_output.strip().split(' ')[0]
+childs = []
 
-print fd
-os.kill(int(fd),signal.SIGUSR1)
+def handler(signo, frame):
+    global childs
+    for child in childs:
+        child.send_signal(signal.SIGINT)
+
+def main():
+    global childs
+
+    for i in range(0,10):
+        p = Popen(["./test_signal_recv"])
+        childs.append(p)
+
+    signal.signal(signal.SIGINT, handler)
+
+    for child in childs:
+        child.send_signal(signal.SIGUSR1)
+
+    for child in childs:
+        child.wait()
+
+if __name__ == "__main__":
+    main()
