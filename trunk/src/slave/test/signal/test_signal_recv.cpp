@@ -1,8 +1,3 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
 #include <error.h>
 #include <errno.h>
 #include <sys/time.h>
@@ -20,11 +15,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <signal.h>
-using namespace std;
 
+int getsig = 0;
 void ouch(int sig)
 {
-    printf("good-%d\n",sig);
+    getsig = 1;
 }
 int main(int argc, const char *argv[])
 {
@@ -32,6 +27,11 @@ int main(int argc, const char *argv[])
     while(1)
     {
         printf("hello world\n");
+        if (getsig == 1)
+        {
+            printf("get signal\n");
+            getsig = 0;
+        }
         sleep(1);
     }
     return 0;
