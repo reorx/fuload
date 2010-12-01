@@ -6,32 +6,44 @@ import subprocess
 from subprocess import Popen
 import signal
 from os.path import abspath, dirname, join
+import thread,threading
+import time
+import logging
+import SocketServer
 
-from daemon import Daemon
 from fl_slave_wkmng import WorkerManager
+from fl_slave_srv import MyRequestHandler
+from fl_slave_conf import ADDR,INPUT_FILE
+from fl_slave_mmap import MMapWrapper
 
-mpath = abspath(dirname(__file__))
+def thread_sendsignal():
+    return
+    time.sleep(2)
+    WorkerManager.send_signal(signal.SIGUSR1)
 
-class SlaveDaemon(Daemon):
-    def _run(self):
-        os.chdir(mpath)
+class SlaveCtrl(object):
+    def start(self):
         WorkerManager.fork(["./fl_slave_worker"],10)
-        WorkerManager.wait()
+
+        self.write_mmap()
+        self.async_sendsignal()
+
+        tcpServ = SocketServer.ThreadingTCPServer(ADDR, MyRequestHandler)
+        print 'waiting for connection...'
+        tcpServ.serve_forever()
+
+    def write_mmap(self):
+        m = MMapWrapper()
+        m.set_run(False)
+        m.set_host(*ADDR)
+        m.set_input(file(INPUT_FILE,'r').read())
+        m.write()
+
+    def async_sendsignal(self):
+        t = threading.Thread(target=thread_sendsignal,
+                        args=[])
+        t.start()
 
 if __name__ == "__main__":
-    daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid')
-    #daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid',stdin='/tmp/fl_in',stdout='/tmp/fl_out',stderr='/tmp/fl_err')
-    if len(sys.argv) == 2:
-        if 'start' == sys.argv[1]:
-            daemon.start()
-        elif 'stop' == sys.argv[1]:
-            daemon.stop()
-        elif 'restart' == sys.argv[1]:
-            daemon.restart()
-        else:
-            print "Unknown command"
-            sys.exit(2)
-        sys.exit(0)
-    else:
-        print "usage: %s start|stop|restart" % sys.argv[0]
-        sys.exit(2)
+    srv = SlaveCtrl()
+    srv.start()

@@ -5,16 +5,12 @@ import SocketServer
 from time import ctime
 import logging
 import socket
-import mmandeal
+#import mmandeal
 
 HOST = ''
 PORT = 21567
 ADDR = (HOST, PORT)
 MAXBUFSIZE = 1024
-logging.basicConfig(level=logging.DEBUG,
-        format='%(asctime)s %(levelname)s %(message)s',
-        filename='../log/log.txt',
-        filemode='a+')
 
 class MyRequestHandler(SocketServer.BaseRequestHandler):
     def handle(self):
@@ -43,7 +39,7 @@ class MyRequestHandler(SocketServer.BaseRequestHandler):
             except socket.timeout:
                 self.LogErr("caught socket.timeout exception")
 
-            self.request.sendall(mmandeal.DealRequest(alldata))
+            #self.request.sendall(mmandeal.DealRequest(alldata))
     def LogTemplate(self, s):
         return '[id.' + str(id(self.request)) + ']:  ' + str(s)
     def Log(self, s):
