@@ -54,7 +54,7 @@ extern "C" int fuload_handle_process(const map<string,string>& mapParams)
     for(typeof(mapParams.begin()) it = mapParams.begin(); it != mapParams.end(); ++it)
     {
         printf("%s=%s&",it->first.c_str(),it->second.c_str());
-        sleep(1);
+        usleep(100);
     }
     printf("\n");
     return 0;
