@@ -15,6 +15,8 @@
 #include <vector>
 
 #include <dlfcn.h>
+#include <sys/mman.h>
+#include <signal.h>
 
 #include "fl_commfunc.h"
 #include "fl_slave_input.h"
@@ -28,10 +30,20 @@ class CFLSlaveWorker
 {
     public:
         static void *SoObj;
+        static int iRun;
     public:
         CFLSlaveWorker ();
         virtual ~CFLSlaveWorker ();
 
+        /**
+         * @brief   设置mmapfile
+         *
+         * @param   mmapFile
+         *
+         * @return  0           succ
+         *          else        fail
+         */
+        int SetMMapFile(const string& mmapFile);
         /**
          * @brief   设置输入数据
          *
@@ -69,12 +81,34 @@ class CFLSlaveWorker
          */
         int process(const StSWInput& swi);
 
+        /**
+         * @brief   获取文件大小
+         *
+         * @param   filename        文件名
+         *
+         * @return  文件大小
+         */
+        unsigned long get_file_size(const char *filename);
+
+        /**
+         * @brief   读取mmap文件中的信息
+         *
+         * @param   filename        文件名
+         *
+         * @return  0               succ
+         *          else            fail
+         */
+        int load_mmapdata(const string& filename);
+
     private:
         CFLSlaveInput m_SlaveInput;
 
         FunPtrInit m_funPtrInit;
         FunPtrProcess m_funPtrProcess;
         FunPtrFini m_funPtrFini;
+
+        bool m_bReadInput;
+        string m_mmapFile;
 };
 
 #endif
