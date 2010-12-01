@@ -4,12 +4,12 @@ TARGET = fl_slave_worker
 
 C_FLAGS += -g -Wall -pthread
 
-INC += -I./comm/
-LIB += -ldl
+INC += -I./comm/ -I./jsoncpp/include
+LIB += -L./jsoncpp/lib -ljsoncpp -ldl
 
 all: $(TARGET) fl_toolstat
 
-fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o
+fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o stat.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
 	cp $@ ../ctrl
 
