@@ -5,9 +5,8 @@
 #include <map>
 #include "json/json.h"
 using namespace std;
-int main(int argc, const char *argv[])
+int read_json()
 {
-
     string httpcontent = "{\"userid\":\"woaini\"}";
 
     Json::Reader reader;
@@ -21,5 +20,21 @@ int main(int argc, const char *argv[])
     }
     string userid = value["userid"].asString();
     cout<<userid<<endl;
+    return 0;
+}
+int write_json()
+{
+    Json::FastWriter writer;
+    Json::Value t;
+    t["x"] = "x";
+    Json::Value value;
+    value["run"] = t;
+    string output = writer.write(value);
+    cout << output<<endl;
+}
+int main(int argc, const char *argv[])
+{
+    //read_json();
+    write_json();
     return 0;
 }
