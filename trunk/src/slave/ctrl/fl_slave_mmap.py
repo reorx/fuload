@@ -10,7 +10,7 @@ class MMapWrapper:
     _towriteobj = {}
     _filename = ''
 
-    def __init__(self, filename='hello.txt'):
+    def __init__(self, filename):
         self._filename = filename
 
     def set_run(self, run):

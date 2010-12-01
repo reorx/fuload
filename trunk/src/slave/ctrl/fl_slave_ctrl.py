@@ -13,17 +13,16 @@ import SocketServer
 
 from fl_slave_wkmng import WorkerManager
 from fl_slave_srv import MyRequestHandler
-from fl_slave_conf import ADDR,INPUT_FILE
+from fl_slave_conf import ADDR,INPUT_FILE,MMAP_FILE
 from fl_slave_mmap import MMapWrapper
 
 def thread_sendsignal():
-    return
     time.sleep(2)
     WorkerManager.send_signal(signal.SIGUSR1)
 
 class SlaveCtrl(object):
     def start(self):
-        WorkerManager.fork(["./fl_slave_worker"],10)
+        WorkerManager.fork(["./fl_slave_worker",MMAP_FILE],10)
 
         self.write_mmap()
         self.async_sendsignal()
@@ -33,8 +32,8 @@ class SlaveCtrl(object):
         tcpServ.serve_forever()
 
     def write_mmap(self):
-        m = MMapWrapper()
-        m.set_run(False)
+        m = MMapWrapper(MMAP_FILE)
+        m.set_run(1)
         m.set_host(*ADDR)
         m.set_input(file(INPUT_FILE,'r').read())
         m.write()

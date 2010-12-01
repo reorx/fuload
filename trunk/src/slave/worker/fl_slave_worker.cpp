@@ -56,6 +56,9 @@ int CFLSlaveWorker::Run()
 {
     signal(SIGUSR1,handle_signal_user1);
     int ret;
+    struct timeval stBegin;
+    struct timeval stEnd;
+    long usec;
     if (m_funPtrInit)
     {
         ret = (*m_funPtrInit)();
@@ -64,6 +67,7 @@ int CFLSlaveWorker::Run()
             return -1;
         }
     }
+
     while(1)
     {
         if (CFLSlaveWorker::iSignal == 1)
@@ -104,12 +108,17 @@ int CFLSlaveWorker::Run()
             break;
         }
         m_stat_info.AddCount(STAT_REQ);
+        gettimeofday(&stBegin, NULL);
         ret = process(swi);
+        gettimeofday(&stEnd, NULL);
+        usec = (stEnd.tv_sec-stBegin.tv_sec)*1000000+stEnd.tv_usec-stBegin.tv_usec;
+
         if (ret)
         {
             m_stat_info.AddCount(STAT_ERR);
             printf("process error:%d\n",ret);
         }
+        dealTimeStat(usec);
     }
     if (m_funPtrFini)
     {
@@ -167,4 +176,23 @@ int CFLSlaveWorker::handle_stoptest()
 {
     m_bReadInput = false;
     return 0;
+}
+void CFLSlaveWorker::dealTimeStat(long usec)
+{
+    if(usec<5000)
+        m_stat_info.AddCount(STAT_5000_REQ);
+    else if(usec<10000)
+        m_stat_info.AddCount(STAT_10000_REQ);
+    else if(usec<50000)
+        m_stat_info.AddCount(STAT_50000_REQ);
+    else if(usec<100000)
+        m_stat_info.AddCount(STAT_100000_REQ);
+    else if(usec<200000)
+        m_stat_info.AddCount(STAT_200000_REQ);
+    else if(usec<500000)
+        m_stat_info.AddCount(STAT_500000_REQ);
+    else if(usec<1000000)
+        m_stat_info.AddCount(STAT_1000000_REQ);
+    else
+        m_stat_info.AddCount(STAT_MORE_REQ);
 }
