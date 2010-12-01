@@ -15,7 +15,7 @@ mpath = abspath(dirname(__file__))
 class SlaveDaemon(Daemon):
     def _run(self):
         os.chdir(mpath)
-        WorkerManager.fork(["./fl_slave_worker"],2)
+        WorkerManager.fork(["./fl_slave_worker"],10)
         WorkerManager.wait()
 
 if __name__ == "__main__":
