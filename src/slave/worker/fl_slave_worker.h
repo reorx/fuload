@@ -155,6 +155,13 @@ class CFLSlaveWorker
          */
         int handle_stoptest();
 
+        /**
+         * @brief   统计时间
+         *
+         * @param   usec            消耗时间
+         */
+        void dealTimeStat(long usec);
+
     private:
         CFLSlaveInput m_SlaveInput;
         StMMapWrapper m_MMapWrapper;
