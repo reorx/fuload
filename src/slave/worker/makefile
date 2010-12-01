@@ -7,6 +7,7 @@ C_FLAGS += -g -Wall -pthread
 LIB += -ldl
 
 all: $(TARGET)
+	cp $(TARGET) ../ctrl
 
 fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
