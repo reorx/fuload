@@ -19,7 +19,8 @@ def handler(signo, frame):
 class WorkerManager:
     _childs = []
 
-    def fork(self,exe_args,num):
+    @classmethod
+    def fork(cls,exe_args,num):
         for i in range(0,num):
             p = Popen(exe_args)
             WorkerManager._childs.append(p)
@@ -27,14 +28,16 @@ class WorkerManager:
         signal.signal(signal.SIGINT, handler)
         signal.signal(signal.SIGTERM, handler)
 
-        #for child in WorkerManager._childs:
-            #child.send_signal(signal.SIGUSR1)
-
-    def wait():
+    @classmethod
+    def wait(cls):
         for child in WorkerManager._childs:
             child.wait()
 
+    @classmethod
+    def send_signal(cls,signo):
+        for child in WorkerManager._childs:
+            child.send_signal(signal.SIGUSR1)
+
 if __name__ == "__main__":
-    mng = WorkerManager()
-    mng.fork("./fl_slave_worker",2)
-    mng.wait()
+    WorkerManager.fork(["./fl_slave_worker"],2)
+    WorkerManager.wait()
