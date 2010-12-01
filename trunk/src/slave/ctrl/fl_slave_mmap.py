@@ -13,6 +13,9 @@ class MMapWrapper:
     def __init__(self, filename='hello.txt'):
         self._filename = filename
 
+    def set_run(self, run):
+        self._towriteobj['run'] = run
+
     def set_host(self, ip, port):
         self._towriteobj['ip'] = ip
         self._towriteobj['port'] = port
@@ -33,6 +36,7 @@ class MMapWrapper:
 
 if __name__ == "__main__":
     m = MMapWrapper()
+    m.set_run(True)
     m.set_host('localhost','12233')
     m.set_input('just soso')
     m.write()
