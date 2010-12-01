@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <stdio.h>
 #include "json/json.h"
 using namespace std;
 int read_json()
@@ -31,6 +32,7 @@ int write_json()
     value["run"] = t;
     string output = writer.write(value);
     cout << output<<endl;
+    return 0;
 }
 int main(int argc, const char *argv[])
 {
