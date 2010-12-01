@@ -36,7 +36,10 @@ class WorkerManager:
     @classmethod
     def send_signal(cls,signo):
         for child in WorkerManager._childs:
-            child.send_signal(signal.SIGUSR1)
+            try:
+                child.send_signal(signal.SIGUSR1)
+            except:
+                pass
 
 if __name__ == "__main__":
     WorkerManager.fork(["./fl_slave_worker"],2)
