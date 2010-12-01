@@ -13,6 +13,8 @@ int main(int argc, const char *argv[])
 
     int ret;
     CFLSlaveWorker sworker;
+    ret = sworker.SetMMapFile("./hello.txt");
+    printf("set mmapfile:%d\n",ret);
     ret = sworker.SetModuleFile("../../module/libmodule.so");
     printf("set modulefile:%d\n",ret);
     sworker.Run();

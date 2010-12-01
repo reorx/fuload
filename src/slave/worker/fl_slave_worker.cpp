@@ -32,6 +32,11 @@ int CFLSlaveWorker::SetInputData(const string& strInputData)
 {
     return m_SlaveInput.SetInputData(strInputData);
 }
+int CFLSlaveWorker::SetMMapFile(const string& mmapFile)
+{
+    m_mmapFile = mmapFile;
+    return 0;
+}
 int CFLSlaveWorker::SetModuleFile(const string& moduleFile)
 {
     if(CFLSlaveWorker::SoObj == NULL)
@@ -98,9 +103,11 @@ int CFLSlaveWorker::Run()
             printf("error alloc:%d\n",ret);
             break;
         }
+        m_stat_info.AddCount(STAT_REQ);
         ret = process(swi);
         if (ret)
         {
+            m_stat_info.AddCount(STAT_ERR);
             printf("process error:%d\n",ret);
         }
     }
