@@ -27,7 +27,7 @@ class SlaveCtrl(object):
                     "./fl_slave_worker",
                     "-m"+MMAP_FILE,
                     "-s"+SO_FILE,
-                    "-t"+str(UPLOAD_TIMESEC)
+                    "-r"+str(UPLOAD_TIMESEC)
                     ],
                 WORKER_NUM
                 )
