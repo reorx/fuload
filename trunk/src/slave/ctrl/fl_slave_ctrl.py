@@ -13,7 +13,7 @@ import SocketServer
 
 from fl_slave_wkmng import WorkerManager
 from fl_slave_srv import MyRequestHandler
-from fl_slave_conf import HOST_ADDR,WORKER_NUM,INPUT_FILE,MMAP_FILE,SO_FILE,UPLOAD_TIMESEC
+from fl_slave_conf import HOST_ADDR,WORKER_NUM,INPUT_FILE,MMAP_FILE,SO_FILE,REPORT_TIMESEC,REPORT_TIMEOUT_MS
 from fl_slave_mmap import MMapWrapper
 
 def thread_sendsignal():
@@ -25,9 +25,12 @@ class SlaveCtrl(object):
         WorkerManager.fork(
                 [ 
                     "./fl_slave_worker",
+                    "-h"+HOST_ADDR[0],
+                    "-p"+str(HOST_ADDR[1]),
+                    "-t"+str(REPORT_TIMEOUT_MS),
                     "-m"+MMAP_FILE,
+                    "-r"+str(REPORT_TIMESEC),
                     "-s"+SO_FILE,
-                    "-r"+str(UPLOAD_TIMESEC)
                     ],
                 WORKER_NUM
                 )
@@ -42,7 +45,6 @@ class SlaveCtrl(object):
     def write_mmap(self):
         m = MMapWrapper(MMAP_FILE)
         m.set_run(1)
-        m.set_host(*HOST_ADDR)
         m.set_input(file(INPUT_FILE,'r').read())
         m.write()
 

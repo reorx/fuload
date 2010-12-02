@@ -29,6 +29,18 @@
 
 using namespace std;
 
+typedef struct _st_swparam
+{
+    //上报相关
+    string ip;
+    int port;
+    int timeout_ms;
+    int reportTime_sec;
+
+    string mmapFile;
+    string moduleFile;
+}StSWParam;
+
 typedef int (*FunPtrInit)();
 typedef int (*FunPtrProcess)(const map<string,string>& mapParams);
 typedef int (*FunPtrFini)();
@@ -36,14 +48,11 @@ typedef int (*FunPtrFini)();
 typedef struct _st_mmapwrapper
 {
     int run;
-    string ip;
-    int port;
     string inputdata;
 
     _st_mmapwrapper()
     {
         run = 0;
-        port = 0;
     }
 
     int Input(const string& data)
@@ -59,8 +68,6 @@ typedef struct _st_mmapwrapper
         run = value["run"].asInt();
         if (run == 1)
         {
-            ip = value["ip"].asString();
-            port = value["port"].asInt();
             inputdata = value["input"].asString();
         }
         return 0;
@@ -77,14 +84,15 @@ class CFLSlaveWorker
         virtual ~CFLSlaveWorker ();
 
         /**
-         * @brief   设置mmapfile
+         * @brief   初始话函数
          *
-         * @param   mmapFile
+         * @param   param       参数
          *
          * @return  0           succ
          *          else        fail
          */
-        int SetMMapFile(const string& mmapFile);
+        int Init(const StSWParam& param);
+
         /**
          * @brief   设置输入数据
          *
@@ -95,25 +103,6 @@ class CFLSlaveWorker
          */
         int SetInputData(const string& strInputData);
 
-        /**
-         * @brief   设置要加载的so的文件
-         *
-         * @param   moduleFile      文件
-         *
-         * @return  0               succ
-         *          else            fail
-         */
-        int SetModuleFile(const string& moduleFile);
-
-        /**
-         * @brief   设置上报间隔
-         *
-         * @param   time_sec        秒
-         *
-         * @return  0               succ
-         *          else            fail
-         */
-        int SetReportTime(unsigned time_sec);
 
         /**
          * @brief   运行
@@ -169,9 +158,20 @@ class CFLSlaveWorker
         /**
          * @brief   统计时间
          *
+         * @param   retcode         返回码
          * @param   usec            消耗时间
          */
-        void dealTimeStat(long usec);
+        void dealTimeStat(int retcode, long usec);
+
+        /**
+         * @brief   设置要加载的so的文件
+         *
+         * @param   moduleFile      文件
+         *
+         * @return  0               succ
+         *          else            fail
+         */
+        int setModuleFile(const string& moduleFile);
 
     private:
         CFLSlaveInput m_SlaveInput;
@@ -187,6 +187,7 @@ class CFLSlaveWorker
         string m_mmapFile;
 
         CStatInfo m_stat_info;
+        StSWParam m_SWParam;
 };
 
 #endif
