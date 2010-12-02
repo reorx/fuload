@@ -1,13 +1,13 @@
 CXX = g++
 
-TARGET = fl_slave_worker
+TARGET = fl_slave_worker fl_toolstat
 
 C_FLAGS += -g -Wall -pthread
 
 INC += -I./comm/ -I./jsoncpp/include
 LIB += -L./jsoncpp/lib -ljsoncpp -ldl
 
-all: $(TARGET) fl_toolstat
+all: $(TARGET)
 
 fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o stat.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
@@ -24,4 +24,4 @@ fl_toolstat:  stat.o fl_toolstat.o
 
 
 clean:
-	-rm -f *.o $(TARGET) fl_toolstat
+	-rm -f *.o $(TARGET)
