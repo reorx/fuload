@@ -21,14 +21,16 @@ class CTimeCheck
          * @brief   初始化
          * 
          * @param   maxFreshTime_ms     多少毫秒执行一次
-         * @param   maxCheckFreq        每多少个请求检查一次(包括这个值),0则每次都查
+         * @param   firstTimeShouldRun  第一次check的时候，是否必须返回true
+         * @param   maxCheckFreq        每多少个请求检查一次(包括这个值),0则每次都查(默认为否)
          * 
          * @return  true                可以执行
          *          false               不可以执行
          */
-        int Init(unsigned int maxFreshTime_ms,int maxCheckFreq = 0)
+        int Init(unsigned int maxFreshTime_ms,bool firstTimeShouldRun=false, int maxCheckFreq = 0)
         {
             m_MaxFreshTime_ms = maxFreshTime_ms;
+            m_FirstTimeShouldRun = firstTimeShouldRun;
             m_MaxCheckFreq = maxCheckFreq;
             return 0;
         }
@@ -43,7 +45,10 @@ class CTimeCheck
             {
                 gettimeofday(&m_Start_TV, NULL);
                 m_Run = true;
-                return true;
+                if (m_FirstTimeShouldRun)
+                {
+                    return true;
+                }
             }
 
             if (m_CurCheckTimes >= m_MaxCheckFreq)
@@ -68,6 +73,11 @@ class CTimeCheck
             return false;
         }
 
+        bool Stat()
+        {
+            return m_Run;
+        }
+
         void Clear()
         {
             m_MaxFreshTime_ms = 0;//微秒,没有限制
@@ -84,5 +94,7 @@ class CTimeCheck
         struct timeval m_Start_TV;
 
         bool m_Run;
+
+        bool m_FirstTimeShouldRun;
 };
 #endif

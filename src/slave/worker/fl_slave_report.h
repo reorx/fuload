@@ -13,6 +13,9 @@
 #include <string>
 #include <map>
 
+#include <json/json.h>
+
+#include "fl_commdef.h"
 #include "stat.h"
 #include "stat_def.h"
 using namespace std;
@@ -164,8 +167,42 @@ class CSWReport
         {
             m_NetStat = netStat;
         }
+        virtual ~CSWReport()
+        {
+            m_NetStat.ResetStat();
+        }
         string Output()
         {
+            Json::FastWriter writer;
+            Json::Value root;
+            root["allTimeMsStat"] = m_NetStat.allTimeMsStat;
+            root["sucTimeMsStat"] = m_NetStat.sucTimeMsStat;
+            root["errTimeMsStat"] = m_NetStat.errTimeMsStat;
+
+            root["allReqNum"] = m_NetStat.allReqNum;
+            root["sucReqNum"] = m_NetStat.sucReqNum;
+            root["errReqNum"] = m_NetStat.errReqNum;
+
+            char tmp[256];
+            Json::Value valueTimeMap;
+            foreach(m_NetStat.mapTimeMsStat,it_time)
+            {
+                snprintf(tmp,sizeof(tmp),"%d",it_time->first);
+                valueTimeMap[tmp] = it_time->second;
+            }
+            root["timemap"] = valueTimeMap;
+
+            Json::Value valueRetMap;
+            foreach(m_NetStat.mapRetcodeStat,it_ret)
+            {
+                snprintf(tmp,sizeof(tmp),"%d",it_ret->first);
+                valueRetMap[tmp] = it_ret->second;
+            }
+            root["retmap"] = valueRetMap;
+
+            string output = writer.write(root);
+
+            return output;
         }
     private:
         StSWNetStat m_NetStat;

@@ -36,6 +36,11 @@ int CFLSlaveWorker::Init(const StSWParam& param)
     {
         return -1;
     }
+    ret = m_reporter.Init(param.reportTime_sec);
+    if (ret)
+    {
+        return -2;
+    }
     return 0;
 }
 int CFLSlaveWorker::SetInputData(const string& strInputData)

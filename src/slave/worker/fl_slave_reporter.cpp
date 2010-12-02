@@ -14,14 +14,30 @@ CSlaveReporter::CSlaveReporter()
 CSlaveReporter::~CSlaveReporter ()
 {
 }
+int CSlaveReporter::Init(int reportTime_sec)
+{
+    m_Timer.Init(reportTime_sec*1000,false);
+    return 0;
+}
 void CSlaveReporter::AddCount(int retcode, long usec)
 {
     int time_ms = usec / 1000;
     m_LocStat.AddCount(retcode,time_ms);
     m_NetStat.AddCount(retcode,time_ms);
+
+    if (m_Timer.Check())
+    {
+        ReportToCtrl();
+    }
 }
 void CSlaveReporter::ResetStat()
 {
     m_LocStat.ResetStat();
     m_NetStat.ResetStat();
+}
+int CSlaveReporter::ReportToCtrl()
+{
+    CSWReport report(m_NetStat);
+    string ouput = report.Output();
+    return 0;
 }
