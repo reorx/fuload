@@ -14,7 +14,7 @@ void useage()
 {
     printf("USEAGE:\n");
     printf("\t -m     mmapfile\n");
-    printf("\t -u     uploadtime(sec)\n");
+    printf("\t -r     reporttime(sec)\n");
     printf("\t -s     sofile\n");
     printf("\n");
 }
@@ -31,14 +31,14 @@ int main(int argc, char *argv[])
     string sofile;
     int uploadtime_sec=60*5;
 
-    while ((input = getopt (argc, argv, "m:u:s:")) != -1) 
+    while ((input = getopt (argc, argv, "m:r:s:")) != -1) 
     {
         if ( input == 'm' )
         {
             mmapfile = optarg;
             continue;
         }
-        if ( input == 'u' )
+        if ( input == 'r' )
         {
             uploadtime_sec = atoi(optarg);
             continue;
