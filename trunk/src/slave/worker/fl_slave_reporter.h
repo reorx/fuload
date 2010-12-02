@@ -13,6 +13,7 @@
 #include <string>
 #include <map>
 
+#include "timecheck.h"
 #include "fl_slave_report.h"
 
 using namespace std;
@@ -23,11 +24,16 @@ class CSlaveReporter
         CSlaveReporter ();
         virtual ~CSlaveReporter ();
 
+        int Init(int reportTime_sec);
         void AddCount(int retcode, long usec);
         void ResetStat();
+        
+    private:
+        int ReportToCtrl();
 
     private:
         StSWLocStat m_LocStat;
         StSWNetStat m_NetStat;
+        CTimeCheck  m_Timer;
 };
 #endif

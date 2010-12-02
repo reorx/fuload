@@ -8,5 +8,5 @@ MMAP_FILE="./mmapshare.txt"
 
 SO_FILE = "../../module/libmodule.so"
 
-REPORT_TIMESEC = 60*5
+REPORT_TIMESEC = 300
 REPORT_TIMEOUT_MS = 100
