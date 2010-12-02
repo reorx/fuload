@@ -2,7 +2,7 @@ CXX = g++
 
 TARGET = fl_slave_worker fl_toolstat
 
-C_FLAGS += -g -Wall -pthread
+C_FLAGS += -march=i586 -g -Wall -pthread
 
 INC += -I./comm/ -I./jsoncpp/include
 LIB += -L./jsoncpp/lib -ljsoncpp -ldl
