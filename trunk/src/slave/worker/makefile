@@ -7,7 +7,15 @@ C_FLAGS += -march=i486 -g -Wall -pthread
 INC += -I./comm/ -I./jsoncpp/include
 LIB += -L./jsoncpp/lib -ljsoncpp -ldl
 
-all: $(TARGET)
+dirs = jsoncpp \
+	   tcp_client 
+
+.PHONY: all clean $(dirs)
+
+all: $(dirs) $(TARGET)
+
+$(dirs):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
 
 fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o stat.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
@@ -23,5 +31,5 @@ fl_toolstat:  stat.o fl_toolstat.o
 	$(CXX) -c -o $*.o $(INC) $(C_FLAGS) $*.cc
 
 
-clean:
+clean: $(dirs)
 	-rm -f *.o $(TARGET)
