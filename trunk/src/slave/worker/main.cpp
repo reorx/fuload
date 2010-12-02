@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     string mmapfile;
     string sofile;
-    int uploadtime_sec=60*5;
+    int reporttime_sec=60*5;
 
     while ((input = getopt (argc, argv, "m:r:s:")) != -1) 
     {
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         }
         if ( input == 'r' )
         {
-            uploadtime_sec = atoi(optarg);
+            reporttime_sec = atoi(optarg);
             continue;
         }
         if ( input == 's' )
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             continue;
         }
     }
-    if (mmapfile.empty() || sofile.empty() || uploadtime_sec == 0)
+    if (mmapfile.empty() || sofile.empty() || reporttime_sec == 0)
     {
         useage();
         return 2;
