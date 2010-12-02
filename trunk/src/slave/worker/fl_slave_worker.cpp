@@ -22,7 +22,7 @@ CFLSlaveWorker::CFLSlaveWorker()
     m_funPtrFini = NULL;
 
     m_bReadInput = false;
-    m_stat_info.Init("stat_file",stat_desc,STAT_OVER);
+    m_stat_info.Init("fl_statfile",stat_desc,STAT_OVER);
 }
 
 CFLSlaveWorker::~CFLSlaveWorker()
