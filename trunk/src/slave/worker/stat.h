@@ -14,7 +14,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <atomic.h>
+#include <asm/atomic.h>
 #include <iostream>
 #include <string>
 using namespace std;
