@@ -187,7 +187,6 @@ class CFLSlaveWorker
         string m_mmapFile;
 
         CStatInfo m_stat_info;
-        CTimeCheck m_timer;
 };
 
 #endif

@@ -54,7 +54,7 @@ int CFLSlaveWorker::SetModuleFile(const string& moduleFile)
 }
 int CFLSlaveWorker::SetReportTime(unsigned time_sec)
 {
-    return m_timer.Init(time_sec);
+    return 0;
 }
 int CFLSlaveWorker::Run()
 {
