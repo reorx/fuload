@@ -52,6 +52,10 @@ int CFLSlaveWorker::SetModuleFile(const string& moduleFile)
     m_funPtrFini= (FunPtrFini)dlsym(SoObj, "fuload_handle_fini");
     return 0;
 }
+int CFLSlaveWorker::SetReportTime(unsigned time_sec)
+{
+    return m_timer.Init(time_sec);
+}
 int CFLSlaveWorker::Run()
 {
     signal(SIGUSR1,handle_signal_user1);

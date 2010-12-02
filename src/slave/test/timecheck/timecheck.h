@@ -21,27 +21,41 @@ class CTimeCheck
          * @brief   初始化
          * 
          * @param   maxFreshTime_ms     多少毫秒执行一次
+         * @param   maxCheckFreq        每多少个请求检查一次(包括这个值),0则每次都查
          * 
          * @return  true                可以执行
          *          false               不可以执行
          */
-        int Init(unsigned int maxFreshTime_ms)
+        int Init(unsigned int maxFreshTime_ms,int maxCheckFreq = 0)
         {
             m_MaxFreshTime_ms = maxFreshTime_ms;
+            m_MaxCheckFreq = maxCheckFreq;
             return 0;
         }
         bool Check()
         {
+            if(m_MaxFreshTime_ms == 0)
+            {
+                return true;
+            }
+
             if(!m_Run)
             {
                 gettimeofday(&m_Start_TV, NULL);
                 m_Run = true;
                 return true;
             }
-            if(m_MaxFreshTime_ms == 0)
+
+            if (m_CurCheckTimes >= m_MaxCheckFreq)
             {
-                return true;
+                m_CurCheckTimes = 0;
             }
+            else
+            {
+                ++m_CurCheckTimes;
+                return false;
+            }
+
             unsigned int lefttime  = 0;
             static struct timeval now_tv;
             gettimeofday(&now_tv, NULL);
@@ -57,10 +71,15 @@ class CTimeCheck
         void Clear()
         {
             m_MaxFreshTime_ms = 0;//微秒,没有限制
+            m_MaxCheckFreq = 0;//每次都检查
+            m_CurCheckTimes = 0;
             m_Run = false;
         }
     private:
         unsigned int m_MaxFreshTime_ms;
+        int m_MaxCheckFreq;
+
+        int m_CurCheckTimes;//当前未检查的次数
 
         struct timeval m_Start_TV;
 
