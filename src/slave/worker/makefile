@@ -17,7 +17,7 @@ all: $(dirs) $(TARGET)
 $(dirs):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o stat.o
+fl_slave_worker:  main.o fl_slave_worker.o fl_slave_input.o stat.o fl_slave_reporter.o
 	$(CXX) -o $@ $^  $(LIB) $(C_FLAGS)
 	cp $@ ../ctrl
 

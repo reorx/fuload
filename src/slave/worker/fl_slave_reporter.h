@@ -1,0 +1,175 @@
+/*=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        fl_slave_reporter.h
+#  Description:     统一上报组件
+#  Version:         1.0
+#  LastChange:      2010-12-02 22:56:14
+#  History:         
+=============================================================================*/
+#ifndef _FL_SLAVE_REPORTER_H_
+#define _FL_SLAVE_REPORTER_H_
+#include <iostream>
+#include <string>
+#include <map>
+
+#include "stat.h"
+#include "stat_def.h"
+using namespace std;
+
+typedef struct _StSWReport
+{
+
+} StSWReport;
+
+typedef struct _StSWNetStat
+{
+    public:
+        //统计了不同时间状态的调用数量
+        map<int, unsigned> mapTimeMsStat;
+
+        //所有请求的累计调用时间
+        unsigned allTimeMsStat;
+        //成功请求的累计调用时间
+        unsigned sucTimeMsStat;
+        //失败请求的累计调用时间
+        unsigned errTimeMsStat;
+
+        //所有请求的数量
+        unsigned allReqNum;
+        //成功请求的数量
+        unsigned sucReqNum;
+        //失败请求的数量
+        unsigned errReqNum;
+
+        //统计返回码的调用数量
+        map<int,unsigned> mapRetcodeStat;
+
+        void AddCount(int retcode,int time_ms)
+        {
+            ++allReqNum;
+            allTimeMsStat += time_ms;
+
+            if (retcode == 0)
+            {
+                ++sucReqNum;
+                sucTimeMsStat += time_ms;
+            }
+            else
+            {
+                ++errReqNum;
+                errTimeMsStat += time_ms;
+            }
+            mapRetcodeStat[retcode] += 1;
+            int mTime = get_maptime(time_ms);
+            mapTimeMsStat[mTime] += 1;
+        }
+        void ResetStat()
+        {
+            mapTimeMsStat.clear();
+            mapRetcodeStat.clear();
+            allTimeMsStat = 0;
+            sucTimeMsStat = 0;
+            errTimeMsStat = 0;
+
+            allReqNum = 0;
+            sucReqNum = 0;
+            errReqNum = 0;
+        }
+
+    private:
+        int get_maptime(int time_ms)
+        {
+            int arr_times[] = {
+                5,10,50,100,200,500,1000
+            };
+            int count = sizeof(arr_times)/4;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (time_ms <= arr_times[i])
+                {
+                    return arr_times[i];
+                }
+            }
+            return -1;
+        }
+
+} StSWNetStat;
+typedef struct _StSWLocStat
+{
+    public:
+        _StSWLocStat()
+        {
+            m_stat_info.Init("fl_statfile",stat_desc,STAT_OVER);
+        }
+        void AddCount(int retcode, int time_ms)
+        {
+            m_stat_info.AddCount(STAT_REQ);
+            dealTimeStat(retcode,time_ms);
+        }
+        void dealTimeStat(int retcode, int time_ms)
+        {
+            if (retcode == 0)
+            {
+                m_stat_info.AddCount(STAT_SUC);
+                if(time_ms<5)
+                    m_stat_info.AddCount(STAT_5_SUC);
+                else if(time_ms<10)
+                    m_stat_info.AddCount(STAT_10_SUC);
+                else if(time_ms<50)
+                    m_stat_info.AddCount(STAT_50_SUC);
+                else if(time_ms<100)
+                    m_stat_info.AddCount(STAT_100_SUC);
+                else if(time_ms<200)
+                    m_stat_info.AddCount(STAT_200_SUC);
+                else if(time_ms<500)
+                    m_stat_info.AddCount(STAT_500_SUC);
+                else if(time_ms<1000)
+                    m_stat_info.AddCount(STAT_1000_SUC);
+                else
+                    m_stat_info.AddCount(STAT_MORE_SUC);
+            }
+            else
+            {
+                m_stat_info.AddCount(STAT_ERR);
+                if(time_ms<5)
+                    m_stat_info.AddCount(STAT_5_ERR);
+                else if(time_ms<10)
+                    m_stat_info.AddCount(STAT_10_ERR);
+                else if(time_ms<50)
+                    m_stat_info.AddCount(STAT_50_ERR);
+                else if(time_ms<100)
+                    m_stat_info.AddCount(STAT_100_ERR);
+                else if(time_ms<200)
+                    m_stat_info.AddCount(STAT_200_ERR);
+                else if(time_ms<500)
+                    m_stat_info.AddCount(STAT_500_ERR);
+                else if(time_ms<1000)
+                    m_stat_info.AddCount(STAT_1000_ERR);
+                else
+                    m_stat_info.AddCount(STAT_MORE_ERR);
+            }
+        }
+        void ResetStat()
+        {
+            m_stat_info.ResetStat();
+        }
+    private:
+        CStatInfo m_stat_info;
+} StSWLocStat;
+
+class CSlaveReporter 
+{
+    public:
+        CSlaveReporter ();
+        virtual ~CSlaveReporter ();
+
+        void AddCount(int retcode, long usec);
+        void ResetStat();
+
+    private:
+        StSWLocStat m_LocStat;
+        StSWNetStat m_NetStat;
+};
+#endif
