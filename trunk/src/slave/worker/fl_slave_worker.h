@@ -23,9 +23,7 @@
 
 #include "fl_commfunc.h"
 #include "fl_slave_input.h"
-#include "stat.h"
-#include "stat_def.h"
-#include "timecheck.h"
+#include "fl_slave_reporter.h"
 
 using namespace std;
 
@@ -156,14 +154,6 @@ class CFLSlaveWorker
         int handle_stoptest();
 
         /**
-         * @brief   统计时间
-         *
-         * @param   retcode         返回码
-         * @param   usec            消耗时间
-         */
-        void dealTimeStat(int retcode, long usec);
-
-        /**
          * @brief   设置要加载的so的文件
          *
          * @param   moduleFile      文件
@@ -186,8 +176,9 @@ class CFLSlaveWorker
 
         string m_mmapFile;
 
-        CStatInfo m_stat_info;
         StSWParam m_SWParam;
+
+        CSlaveReporter m_reporter;
 };
 
 #endif

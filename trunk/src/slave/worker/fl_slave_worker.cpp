@@ -22,7 +22,6 @@ CFLSlaveWorker::CFLSlaveWorker()
     m_funPtrFini = NULL;
 
     m_bReadInput = false;
-    m_stat_info.Init("fl_statfile",stat_desc,STAT_OVER);
 }
 
 CFLSlaveWorker::~CFLSlaveWorker()
@@ -114,16 +113,15 @@ int CFLSlaveWorker::Run()
             printf("error alloc:%d\n",ret);
             break;
         }
-        m_stat_info.AddCount(STAT_REQ);
         gettimeofday(&stBegin, NULL);
         ret = process(swi);
         gettimeofday(&stEnd, NULL);
         usec = (stEnd.tv_sec-stBegin.tv_sec)*1000000+stEnd.tv_usec-stBegin.tv_usec;
+        m_reporter.AddCount(ret, usec);
         if (ret)
         {
             printf("process error:%d\n",ret);
         }
-        dealTimeStat(ret,usec);
     }
     if (m_funPtrFini)
     {
@@ -175,54 +173,11 @@ int CFLSlaveWorker::load_mmapdata(const string& filename)
 }
 int CFLSlaveWorker::handle_starttest()
 {
-    m_stat_info.ResetStat();
+    m_reporter.ResetStat();
     return 0;
 }
 int CFLSlaveWorker::handle_stoptest()
 {
     m_bReadInput = false;
     return 0;
-}
-void CFLSlaveWorker::dealTimeStat(int retcode, long usec)
-{
-    if (retcode == 0)
-    {
-        m_stat_info.AddCount(STAT_SUC);
-        if(usec<5000)
-            m_stat_info.AddCount(STAT_5000_SUC);
-        else if(usec<10000)
-            m_stat_info.AddCount(STAT_10000_SUC);
-        else if(usec<50000)
-            m_stat_info.AddCount(STAT_50000_SUC);
-        else if(usec<100000)
-            m_stat_info.AddCount(STAT_100000_SUC);
-        else if(usec<200000)
-            m_stat_info.AddCount(STAT_200000_SUC);
-        else if(usec<500000)
-            m_stat_info.AddCount(STAT_500000_SUC);
-        else if(usec<1000000)
-            m_stat_info.AddCount(STAT_1000000_SUC);
-        else
-            m_stat_info.AddCount(STAT_MORE_SUC);
-    }
-    else
-    {
-        m_stat_info.AddCount(STAT_ERR);
-        if(usec<5000)
-            m_stat_info.AddCount(STAT_5000_ERR);
-        else if(usec<10000)
-            m_stat_info.AddCount(STAT_10000_ERR);
-        else if(usec<50000)
-            m_stat_info.AddCount(STAT_50000_ERR);
-        else if(usec<100000)
-            m_stat_info.AddCount(STAT_100000_ERR);
-        else if(usec<200000)
-            m_stat_info.AddCount(STAT_200000_ERR);
-        else if(usec<500000)
-            m_stat_info.AddCount(STAT_500000_ERR);
-        else if(usec<1000000)
-            m_stat_info.AddCount(STAT_1000000_ERR);
-        else
-            m_stat_info.AddCount(STAT_MORE_ERR);
-    }
 }
