@@ -28,16 +28,22 @@ CFLSlaveWorker::CFLSlaveWorker()
 CFLSlaveWorker::~CFLSlaveWorker()
 {
 }
+int CFLSlaveWorker::Init(const StSWParam& param)
+{
+    m_SWParam = param;   
+    int ret;
+    ret = setModuleFile(m_SWParam.moduleFile);
+    if (ret)
+    {
+        return -1;
+    }
+    return 0;
+}
 int CFLSlaveWorker::SetInputData(const string& strInputData)
 {
     return m_SlaveInput.SetInputData(strInputData);
 }
-int CFLSlaveWorker::SetMMapFile(const string& mmapFile)
-{
-    m_mmapFile = mmapFile;
-    return 0;
-}
-int CFLSlaveWorker::SetModuleFile(const string& moduleFile)
+int CFLSlaveWorker::setModuleFile(const string& moduleFile)
 {
     if(CFLSlaveWorker::SoObj == NULL)
     {
@@ -50,10 +56,6 @@ int CFLSlaveWorker::SetModuleFile(const string& moduleFile)
     m_funPtrInit = (FunPtrInit)dlsym(SoObj, "fuload_handle_init");
     m_funPtrProcess= (FunPtrProcess)dlsym(SoObj, "fuload_handle_process");
     m_funPtrFini= (FunPtrFini)dlsym(SoObj, "fuload_handle_fini");
-    return 0;
-}
-int CFLSlaveWorker::SetReportTime(unsigned time_sec)
-{
     return 0;
 }
 int CFLSlaveWorker::Run()
@@ -76,7 +78,8 @@ int CFLSlaveWorker::Run()
     {
         if (CFLSlaveWorker::iSignal == 1)
         {
-            ret = load_mmapdata(m_mmapFile);
+            CFLSlaveWorker::iSignal = 0;
+            ret = load_mmapdata(m_SWParam.mmapFile);
             if (ret)
             {
                 break;
@@ -116,13 +119,11 @@ int CFLSlaveWorker::Run()
         ret = process(swi);
         gettimeofday(&stEnd, NULL);
         usec = (stEnd.tv_sec-stBegin.tv_sec)*1000000+stEnd.tv_usec-stBegin.tv_usec;
-
         if (ret)
         {
-            m_stat_info.AddCount(STAT_ERR);
             printf("process error:%d\n",ret);
         }
-        dealTimeStat(usec);
+        dealTimeStat(ret,usec);
     }
     if (m_funPtrFini)
     {
@@ -174,6 +175,7 @@ int CFLSlaveWorker::load_mmapdata(const string& filename)
 }
 int CFLSlaveWorker::handle_starttest()
 {
+    m_stat_info.ResetStat();
     return 0;
 }
 int CFLSlaveWorker::handle_stoptest()
@@ -181,22 +183,46 @@ int CFLSlaveWorker::handle_stoptest()
     m_bReadInput = false;
     return 0;
 }
-void CFLSlaveWorker::dealTimeStat(long usec)
+void CFLSlaveWorker::dealTimeStat(int retcode, long usec)
 {
-    if(usec<5000)
-        m_stat_info.AddCount(STAT_5000_REQ);
-    else if(usec<10000)
-        m_stat_info.AddCount(STAT_10000_REQ);
-    else if(usec<50000)
-        m_stat_info.AddCount(STAT_50000_REQ);
-    else if(usec<100000)
-        m_stat_info.AddCount(STAT_100000_REQ);
-    else if(usec<200000)
-        m_stat_info.AddCount(STAT_200000_REQ);
-    else if(usec<500000)
-        m_stat_info.AddCount(STAT_500000_REQ);
-    else if(usec<1000000)
-        m_stat_info.AddCount(STAT_1000000_REQ);
+    if (retcode == 0)
+    {
+        m_stat_info.AddCount(STAT_SUC);
+        if(usec<5000)
+            m_stat_info.AddCount(STAT_5000_SUC);
+        else if(usec<10000)
+            m_stat_info.AddCount(STAT_10000_SUC);
+        else if(usec<50000)
+            m_stat_info.AddCount(STAT_50000_SUC);
+        else if(usec<100000)
+            m_stat_info.AddCount(STAT_100000_SUC);
+        else if(usec<200000)
+            m_stat_info.AddCount(STAT_200000_SUC);
+        else if(usec<500000)
+            m_stat_info.AddCount(STAT_500000_SUC);
+        else if(usec<1000000)
+            m_stat_info.AddCount(STAT_1000000_SUC);
+        else
+            m_stat_info.AddCount(STAT_MORE_SUC);
+    }
     else
-        m_stat_info.AddCount(STAT_MORE_REQ);
+    {
+        m_stat_info.AddCount(STAT_ERR);
+        if(usec<5000)
+            m_stat_info.AddCount(STAT_5000_ERR);
+        else if(usec<10000)
+            m_stat_info.AddCount(STAT_10000_ERR);
+        else if(usec<50000)
+            m_stat_info.AddCount(STAT_50000_ERR);
+        else if(usec<100000)
+            m_stat_info.AddCount(STAT_100000_ERR);
+        else if(usec<200000)
+            m_stat_info.AddCount(STAT_200000_ERR);
+        else if(usec<500000)
+            m_stat_info.AddCount(STAT_500000_ERR);
+        else if(usec<1000000)
+            m_stat_info.AddCount(STAT_1000000_ERR);
+        else
+            m_stat_info.AddCount(STAT_MORE_ERR);
+    }
 }

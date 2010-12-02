@@ -13,6 +13,9 @@ using namespace std;
 void useage()
 {
     printf("USEAGE:\n");
+    printf("\t -h     host\n");
+    printf("\t -p     port\n");
+    printf("\t -t     timeout_ms\n");
     printf("\t -m     mmapfile\n");
     printf("\t -r     reporttime(sec)\n");
     printf("\t -s     sofile\n");
@@ -27,40 +30,50 @@ int main(int argc, char *argv[])
     }
     int input;
 
-    string mmapfile;
-    string sofile;
-    int reporttime_sec=60*5;
+    StSWParam param;
 
-    while ((input = getopt (argc, argv, "m:r:s:")) != -1) 
+    while ((input = getopt (argc, argv, "m:r:s:h:p:t:")) != -1) 
     {
+        if ( input == 'h' )
+        {
+            param.ip = optarg;
+            continue;
+        }
+        if ( input == 'p' )
+        {
+            param.port = atoi(optarg);
+            continue;
+        }
+        if ( input == 't' )
+        {
+            param.timeout_ms = atoi(optarg);
+            continue;
+        }
         if ( input == 'm' )
         {
-            mmapfile = optarg;
+            param.mmapFile = optarg;
             continue;
         }
         if ( input == 'r' )
         {
-            reporttime_sec = atoi(optarg);
+            param.reportTime_sec = atoi(optarg);
             continue;
         }
         if ( input == 's' )
         {
-            sofile = optarg;
+            param.moduleFile = optarg;
             continue;
         }
-    }
-    if (mmapfile.empty() || sofile.empty() || reporttime_sec == 0)
-    {
-        useage();
-        return 2;
     }
 
     int ret;
     CFLSlaveWorker sworker;
-    ret = sworker.SetMMapFile(mmapfile);
-    printf("set mmapfile:%d\n",ret);
-    ret = sworker.SetModuleFile(sofile);
-    printf("set modulefile:%d\n",ret);
+    ret = sworker.Init(param);
+    if (ret)
+    {
+        printf("slave worker init error:%d\n",ret);
+        return 0;
+    }
     sworker.Run();
 
     return 0;

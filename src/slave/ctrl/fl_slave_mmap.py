@@ -16,10 +16,6 @@ class MMapWrapper:
     def set_run(self, run):
         self._towriteobj['run'] = run
 
-    def set_host(self, ip, port):
-        self._towriteobj['ip'] = ip
-        self._towriteobj['port'] = port
-
     def set_input(self, strinput):
         self._towriteobj['input'] = strinput
 
@@ -36,7 +32,6 @@ class MMapWrapper:
 
 if __name__ == "__main__":
     m = MMapWrapper()
-    m.set_run(True)
-    m.set_host('localhost','12233')
+    m.set_run(1)
     m.set_input('just soso')
     m.write()
