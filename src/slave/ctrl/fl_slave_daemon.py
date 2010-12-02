@@ -22,8 +22,8 @@ class SlaveDaemon(Daemon):
         srv.start()
 
 if __name__ == "__main__":
-    #daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid')
-    daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid',stdin='/tmp/fl_in',stdout='/tmp/fl_out',stderr='/tmp/fl_err')
+    daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid')
+    #daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid',stdin='/tmp/fl_in',stdout='/tmp/fl_out',stderr='/tmp/fl_err')
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
