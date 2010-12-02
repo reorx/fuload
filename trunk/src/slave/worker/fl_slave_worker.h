@@ -25,6 +25,7 @@
 #include "fl_slave_input.h"
 #include "stat.h"
 #include "stat_def.h"
+#include "timecheck.h"
 
 using namespace std;
 
@@ -105,6 +106,16 @@ class CFLSlaveWorker
         int SetModuleFile(const string& moduleFile);
 
         /**
+         * @brief   设置上报间隔
+         *
+         * @param   time_sec        秒
+         *
+         * @return  0               succ
+         *          else            fail
+         */
+        int SetReportTime(unsigned time_sec);
+
+        /**
          * @brief   运行
          * 
          * @return  0               succ
@@ -176,6 +187,7 @@ class CFLSlaveWorker
         string m_mmapFile;
 
         CStatInfo m_stat_info;
+        CTimeCheck m_timer;
 };
 
 #endif
