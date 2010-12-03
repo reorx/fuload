@@ -22,6 +22,10 @@ class SlaveReporter(object):
         en_params = urllib.urlencode(params)
         try:
             readdata = urllib2.urlopen(req,en_params).read()
+            obj = json.loads(readdata)
+            if obj['ret'] != 0:
+                logging.error("report error,ret:%d,msg:%s",obj['ret'],obj['msg'])
+                return False
         except:
             logging.error("urllib2 urlopen error:"+data)
             return False
