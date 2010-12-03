@@ -8,6 +8,8 @@ from django.db import models
 class StatDetail(models.Model):
     reportId = models.IntegerField(verbose_name="上报ID")
 
+    clientIp = models.CharField(max_length=128,verbose_name="上报IP")
+
     firstTime = models.DateTimeField(verbose_name="时间片起点")
     secondTime = models.DateTimeField(verbose_name="时间片终点")
 
