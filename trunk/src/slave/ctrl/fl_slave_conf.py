@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #启动的worker进程数目
-WORKER_NUM = 10
+WORKER_NUM = 2
 
 #worker进程的输入文件
 INPUT_FILE = "./fl_input.txt"
