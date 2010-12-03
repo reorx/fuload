@@ -3,6 +3,9 @@
 
 from ipc import ipc
 
+MSGQUEUE_MTYPE = 1
+MSGQUEUE_BUFMAXLEN = 4096
+
 class SlaveMsg(object):
     _msg_id = -1
 
@@ -22,3 +25,11 @@ class SlaveMsg(object):
         id_dsp = ipc.msqid_ds()
         if 0 > ipc.msgctl(self._msg_id,ipc.IPC_RMID,id_dsp):
             return
+
+    def recv(self):
+        mbuf = ipc.msgbuf()
+        msg_len=ipc.msgrcv(self._msg_id,mbuf,MSGQUEUE_BUFMAXLEN,MSGQUEUE_MTYPE,ipc.IPC_NOWAIT)
+        if 0 > msg_len:
+            return ""
+        else:
+            return mbuf.mtext
