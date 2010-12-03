@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import urllib
 import urllib2
+import logging
 
 try:
     import json
@@ -17,7 +18,7 @@ class SlaveReporter(object):
         self._reportUrl = reportUrl
 
     def report(self,data):
-        print data
+        logging.error(data)
         return
         jsonObj = json.loads(data)
         jsonObj['reportid'] = self._reportId
