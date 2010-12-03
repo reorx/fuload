@@ -15,6 +15,7 @@
 
 #include "timecheck.h"
 #include "fl_slave_report.h"
+#include "fl_slave_msg.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ class CSlaveReporter
         CSlaveReporter ();
         virtual ~CSlaveReporter ();
 
-        int Init(int reportTime_sec);
+        int Init(int key,int reportTime_sec);
         void AddCount(int retcode, long usec);
         void ResetStat();
         
@@ -35,5 +36,7 @@ class CSlaveReporter
         StSWLocStat m_LocStat;
         StSWNetStat m_NetStat;
         CTimeCheck  m_Timer;
+
+        CSlaveMsg m_MsgWrapper;
 };
 #endif

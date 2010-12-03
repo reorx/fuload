@@ -33,41 +33,12 @@ typedef struct _st_swparam
 
     string inputFile;
     string moduleFile;
-    string msgQKey;
+    int msgQKey;
 }StSWParam;
 
 typedef int (*FunPtrInit)();
 typedef int (*FunPtrProcess)(const map<string,string>& mapParams);
 typedef int (*FunPtrFini)();
-
-typedef struct _st_mmapwrapper
-{
-    int run;
-    string inputdata;
-
-    _st_mmapwrapper()
-    {
-        run = 0;
-    }
-
-    int Input(const string& data)
-    {
-        Json::Reader reader;
-        Json::Value value;
-        std::string param;
-        param.assign(data.c_str(), data.size());
-        if (!reader.parse(param, value))
-        {
-            return -1;
-        }
-        run = value["run"].asInt();
-        if (run == 1)
-        {
-            inputdata = value["input"].asString();
-        }
-        return 0;
-    }
-}StMMapWrapper;
 
 class CFLSlaveWorker 
 {
@@ -125,7 +96,6 @@ class CFLSlaveWorker
 
     private:
         CFLSlaveInput m_SlaveInput;
-        StMMapWrapper m_MMapWrapper;
 
         FunPtrInit m_funPtrInit;
         FunPtrProcess m_funPtrProcess;
