@@ -39,7 +39,8 @@ int send_message(int msg_id,int mtype,char* message)
     MsgInfo.mtype = mtype;
     strcpy(MsgInfo.mtext, message);
 
-    result = msgsnd(msg_id,&MsgInfo,strlen(message)+1,0);
+    //result = msgsnd(msg_id,&MsgInfo,strlen(message)+1,0);
+    result = msgsnd(msg_id,&MsgInfo,strlen(message)+1,IPC_NOWAIT);
     if(result == -1)
     {
         perror("Failed to send message");
