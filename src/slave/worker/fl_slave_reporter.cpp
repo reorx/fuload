@@ -10,6 +10,7 @@
 #include "fl_slave_reporter.h"
 CSlaveReporter::CSlaveReporter()
 {
+    ResetStat();
 }
 CSlaveReporter::~CSlaveReporter ()
 {
@@ -43,8 +44,9 @@ void CSlaveReporter::ResetStat()
 }
 int CSlaveReporter::ReportToCtrl()
 {
-    CSWReport report(m_NetStat);
+    CSWReport report(&m_NetStat);
     string output = report.Output();
     m_MsgWrapper.send(output);
+    m_NetStat.ResetStat();
     return 0;
 }

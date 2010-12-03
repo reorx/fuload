@@ -44,6 +44,11 @@ typedef struct _StSWNetStat
         //统计返回码的调用数量
         map<int,unsigned> mapRetcodeStat;
 
+        _StSWNetStat()
+        {
+            ResetStat();
+        }
+
         void AddCount(int retcode,int time_ms)
         {
             ++allReqNum;
@@ -102,6 +107,7 @@ typedef struct _StSWLocStat
         _StSWLocStat()
         {
             m_stat_info.Init("fl_statfile",stat_desc,STAT_OVER);
+            ResetStat();
         }
         void AddCount(int retcode, int time_ms)
         {
@@ -163,29 +169,28 @@ typedef struct _StSWLocStat
 class CSWReport
 {
     public:
-        CSWReport(const StSWNetStat& netStat)
+        CSWReport(StSWNetStat* ptrNetStat)
         {
-            m_NetStat = netStat;
+            m_PtrNetStat = ptrNetStat;
         }
         virtual ~CSWReport()
         {
-            m_NetStat.ResetStat();
         }
         string Output()
         {
             Json::FastWriter writer;
             Json::Value root;
-            root["allTimeMsStat"] = m_NetStat.allTimeMsStat;
-            root["sucTimeMsStat"] = m_NetStat.sucTimeMsStat;
-            root["errTimeMsStat"] = m_NetStat.errTimeMsStat;
+            root["allTimeMsStat"] = m_PtrNetStat->allTimeMsStat;
+            root["sucTimeMsStat"] = m_PtrNetStat->sucTimeMsStat;
+            root["errTimeMsStat"] = m_PtrNetStat->errTimeMsStat;
 
-            root["allReqNum"] = m_NetStat.allReqNum;
-            root["sucReqNum"] = m_NetStat.sucReqNum;
-            root["errReqNum"] = m_NetStat.errReqNum;
+            root["allReqNum"] = m_PtrNetStat->allReqNum;
+            root["sucReqNum"] = m_PtrNetStat->sucReqNum;
+            root["errReqNum"] = m_PtrNetStat->errReqNum;
 
             char tmp[256];
             Json::Value valueTimeMap;
-            foreach(m_NetStat.mapTimeMsStat,it_time)
+            foreach(m_PtrNetStat->mapTimeMsStat,it_time)
             {
                 snprintf(tmp,sizeof(tmp),"%d",it_time->first);
                 valueTimeMap[tmp] = it_time->second;
@@ -193,7 +198,7 @@ class CSWReport
             root["timemap"] = valueTimeMap;
 
             Json::Value valueRetMap;
-            foreach(m_NetStat.mapRetcodeStat,it_ret)
+            foreach(m_PtrNetStat->mapRetcodeStat,it_ret)
             {
                 snprintf(tmp,sizeof(tmp),"%d",it_ret->first);
                 valueRetMap[tmp] = it_ret->second;
@@ -205,6 +210,6 @@ class CSWReport
             return output;
         }
     private:
-        StSWNetStat m_NetStat;
+        StSWNetStat *m_PtrNetStat;
 };
 #endif
