@@ -23,6 +23,9 @@ class SlaveCtrl(object):
         pass
 
     def createMsgQKey(self):
+        '''
+        找一个没有用过的msgkey
+        '''
         MaxKey = 0x0000FFFF
 
         getOne = False
