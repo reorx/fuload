@@ -16,14 +16,14 @@ class SlaveReporter(object):
         self._reportUrl = reportUrl
 
     def report(self,data):
-        logging.error(data)
-        return
+        #logging.error(data)
         req = urllib2.Request(self._reportUrl)
         params = {"reportinfo":data}
         en_params = urllib.urlencode(params)
         try:
-            data = urllib2.urlopen(req,en_params).read()
+            readdata = urllib2.urlopen(req,en_params).read()
         except:
+            logging.error("urllib2 urlopen error:"+data)
             return False
         else:
             return True
