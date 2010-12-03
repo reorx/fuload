@@ -16,8 +16,10 @@ from ipc import ipc
 
 from fl_slave_wkmng import WorkerManager
 from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC
+from fl_slave_msg import SlaveMsg
 
 class SlaveCtrl(object):
+    _slaveMsg = None
 
     def __init__(self):
         pass
@@ -40,6 +42,7 @@ class SlaveCtrl(object):
         msgQKey = self.createMsgQKey()
         if msgQKey < 0:
             return -1;
+        self._slaveMsg = SlaveMsg(msgQKey)
         WorkerManager.fork(
                 [ 
                     "./fl_slave_worker",
