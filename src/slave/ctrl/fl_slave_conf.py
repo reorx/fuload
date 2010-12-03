@@ -14,4 +14,4 @@ SO_FILE = "../../module/libmodule.so"
 REPORT_TIMESEC = 10
 
 #上报的URL
-REPORT_URL = 'http://10.6.207.119/report/upload/1/'
+REPORT_URL = 'http://dante.qq.com/report/upload/1/'
