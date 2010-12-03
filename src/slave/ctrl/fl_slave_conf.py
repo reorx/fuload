@@ -13,8 +13,5 @@ SO_FILE = "../../module/libmodule.so"
 #worker进程的上报间隔(sec)
 REPORT_TIMESEC = 10
 
-#上报的ID，用来区分统计
-REPORT_ID = 1
-
 #上报的URL
-REPORT_URL = 'http://10.6.207.119/report/upload'
+REPORT_URL = 'http://10.6.207.119/report/upload/1/'
