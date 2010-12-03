@@ -28,10 +28,12 @@ class ReportHandler(object):
 
     reportId = None
     slaveReport = None
+    clientIp = None
 
-    def __init__(self, reportId, slaveReport):
+    def __init__(self, reportId, clientIp, slaveReport):
         self.reportId = reportId
         self.slaveReport = slaveReport
+        self.clientIp = clientIp
 
     def handle_report(self):
         slaveReportObj = json.loads(self.slaveReport)
@@ -61,15 +63,15 @@ class ReportHandler(object):
                     pre_report_info[key][subkey] = value*pre_distance/(pre_distance+now_distance)
                     now_report_info[key][subkey] = value*now_distance/(pre_distance+now_distance)
         
-        self.save_report(self.reportId,pre_border_time['first_time'],pre_border_time['second_time'],pre_report_info)
-        self.save_report(self.reportId,now_border_time['first_time'],now_border_time['second_time'],now_report_info)
+        self.save_report(self.reportId,self.clientIp,pre_border_time['first_time'],pre_border_time['second_time'],pre_report_info)
+        self.save_report(self.reportId,self.clientIp,now_border_time['first_time'],now_border_time['second_time'],now_report_info)
 
         return True
 
-    def save_report(self, report_id, first_time, second_time, report_info):
+    def save_report(self, report_id, clientIp, first_time, second_time, report_info):
         new_report_info = {}
         try:
-            stat_detail = StatDetail.objects.get(reportId=report_id, firstTime=first_time, secondTime=second_time)
+            stat_detail = StatDetail.objects.get(reportId=report_id, clientIp = clientIp, firstTime=first_time, secondTime=second_time)
             try:
                 old_report_info = eval(stat_detail.reportInfo)
             except:
@@ -87,7 +89,7 @@ class ReportHandler(object):
                                 new_report_info[key][subkey] = tinfo[key][subkey]
 
         except StatDetail.DoesNotExist:
-            stat_detail = StatDetail(reportId=report_id, firstTime=first_time, secondTime=second_time)
+            stat_detail = StatDetail(reportId=report_id, clientIp = clientIp, firstTime=first_time, secondTime=second_time)
             new_report_info = report_info
 
         result = calc_values(new_report_info)

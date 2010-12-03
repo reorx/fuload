@@ -3,7 +3,8 @@ from mysite.report.models import *
 
 class StatDetailAdmin(admin.ModelAdmin):
     list_display = (
-            'reportId','firstTime', 'secondTime',
+            'reportId','clientIp',
+            'firstTime', 'secondTime',
             'allAvgNum','sucAvgNum','errAvgNum',
             'allAvgTime','sucAvgTime','errAvgTime',
             'sucRate','errRate'
