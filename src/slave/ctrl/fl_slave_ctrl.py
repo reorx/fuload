@@ -69,8 +69,9 @@ class SlaveCtrl(object):
                 )
         while SlaveCtrl.bRun:
             msg = self._slaveMsg.recv()
-            if msg is not None and len(msg)>0:
+            while msg is not None and len(msg)>0:
                 self._slaveReporter.report(msg)
+                msg = self._slaveMsg.recv()
             time.sleep(1)
         WorkerManager.wait();
 

@@ -14,8 +14,14 @@ CSlaveReporter::CSlaveReporter()
 CSlaveReporter::~CSlaveReporter ()
 {
 }
-int CSlaveReporter::Init(int reportTime_sec)
+int CSlaveReporter::Init(int key, int reportTime_sec)
 {
+    int ret;
+    ret = m_MsgWrapper.Init(key);
+    if (ret)
+    {
+        return -1;
+    }
     m_Timer.Init(reportTime_sec*1000,false);
     return 0;
 }
@@ -38,6 +44,7 @@ void CSlaveReporter::ResetStat()
 int CSlaveReporter::ReportToCtrl()
 {
     CSWReport report(m_NetStat);
-    string ouput = report.Output();
+    string output = report.Output();
+    m_MsgWrapper.send(output);
     return 0;
 }

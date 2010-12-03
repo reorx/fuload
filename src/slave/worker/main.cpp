@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         }
         if ( input == 'm' )
         {
-            param.msgQKey= optarg;
+            param.msgQKey= atoi(optarg);
             continue;
         }
     }
