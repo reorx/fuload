@@ -8,7 +8,7 @@ import signal
 
 from ipc import ipc
 
-from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_ID,REPORT_URL
+from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_URL
 from fl_slave_wkmng import WorkerManager
 from fl_slave_msg import SlaveMsg
 from fl_slave_reporter import SlaveReporter
@@ -31,7 +31,7 @@ class SlaveCtrl(object):
     bRun = True
 
     def __init__(self):
-        self._slaveReporter = SlaveReporter(REPORT_ID,REPORT_URL)
+        self._slaveReporter = SlaveReporter(REPORT_URL)
         self.signalhandler_reg()
 
     def signalhandler_reg(self):
