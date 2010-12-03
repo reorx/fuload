@@ -11,7 +11,7 @@ INPUT_FILE = "./fl_input.txt"
 SO_FILE = "../../module/libmodule.so"
 
 #worker进程的上报间隔(sec)
-REPORT_TIMESEC = 3
+REPORT_TIMESEC = 10
 
 #上报的ID，用来区分统计
 REPORT_ID = 1
