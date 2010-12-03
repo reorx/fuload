@@ -13,6 +13,9 @@ class StatMain(models.Model):
     sucReqNum = models.IntegerField()
     errReqNum = models.IntegerField()
 
+    sucAvgTime = models.IntegerField()
+    errAvgTime = models.IntegerField()
+
     sucRate = models.FloatField()
     errRate = models.FloatField()
 
@@ -39,6 +42,9 @@ class StatDetail(models.Model):
     allReqNum = models.IntegerField()
     sucReqNum = models.IntegerField()
     errReqNum = models.IntegerField()
+
+    sucAvgTime = models.IntegerField()
+    errAvgTime = models.IntegerField()
 
     sucRate = models.FloatField()
     errRate = models.FloatField()
