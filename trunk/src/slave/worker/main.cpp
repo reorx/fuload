@@ -13,10 +13,10 @@ using namespace std;
 void useage()
 {
     printf("USEAGE:\n");
-    printf("\t -i     inputfile\n");
-    printf("\t -r     reporttime(sec)\n");
-    printf("\t -s     sofile\n");
-    printf("\t -m     msgqueue\n");
+    printf("\t -i     inputFile\n");
+    printf("\t -r     reportTime(sec)\n");
+    printf("\t -s     soFile\n");
+    printf("\t -m     msgQueueKey\n");
     printf("\n");
 }
 int main(int argc, char *argv[])
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         }
         if ( input == 'm' )
         {
-            param.msgQueueName = optarg;
+            param.msgQKey= optarg;
             continue;
         }
     }
