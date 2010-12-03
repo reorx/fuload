@@ -55,16 +55,18 @@ def get_pre_time(now_time):
 
 def calc_values(report_info):
     result = {}
-    result['allReqNum'] = report_info['allReqNum']
-    result['sucReqNum'] = report_info['sucReqNum']
-    result['errReqNum'] = report_info['errReqNum']
 
-    result['allAvgTime'] = report_info['allTimeMsStat'] / result['allReqNum']
-    result['sucAvgTime'] = report_info['sucTimeMsStat'] / result['sucReqNum']
-    result['errAvgTime'] = report_info['errTimeMsStat'] / result['errReqNum']
+    #平均到每秒
+    result['allAvgNum'] = report_info['allReqNum']/(split_minutes * 60)
+    result['sucAvgNum'] = report_info['sucReqNum']/(split_minutes * 60)
+    result['errAvgNum'] = report_info['errReqNum']/(split_minutes * 60)
 
-    result['sucRate'] = float(result['sucReqNum']) / float(result['allReqNum'])
-    result['errRate'] = float(result['errReqNum']) / float(result['allReqNum'])
+    result['allAvgTime'] = report_info['allTimeMsStat'] / report_info['allReqNum']
+    result['sucAvgTime'] = report_info['sucTimeMsStat'] / report_info['sucReqNum']
+    result['errAvgTime'] = report_info['errTimeMsStat'] / report_info['errReqNum']
+
+    result['sucRate'] = float(report_info['sucReqNum']) / float(report_info['allReqNum'])
+    result['errRate'] = float(report_info['errReqNum']) / float(report_info['allReqNum'])
 
     return result
 

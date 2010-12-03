@@ -8,9 +8,9 @@ class StatMain(models.Model):
     firstTime = models.DateTimeField()
     secondTime = models.DateTimeField()
 
-    allReqNum = models.IntegerField()
-    sucReqNum = models.IntegerField()
-    errReqNum = models.IntegerField()
+    allAvgNum = models.IntegerField()
+    sucAvgNum = models.IntegerField()
+    errAvgNum = models.IntegerField()
 
     allAvgTime = models.IntegerField()
     sucAvgTime = models.IntegerField()
@@ -39,9 +39,9 @@ class StatDetail(models.Model):
     firstTime = models.DateTimeField()
     secondTime = models.DateTimeField()
 
-    allReqNum = models.IntegerField()
-    sucReqNum = models.IntegerField()
-    errReqNum = models.IntegerField()
+    allAvgNum = models.IntegerField()
+    sucAvgNum = models.IntegerField()
+    errAvgNum = models.IntegerField()
 
     allAvgTime = models.IntegerField()
     sucAvgTime = models.IntegerField()
