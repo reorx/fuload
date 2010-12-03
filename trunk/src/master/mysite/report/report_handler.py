@@ -29,17 +29,9 @@ class ReportHandler(object):
     reportId = None
     slaveReport = None
 
-    def __init__(self):
-        pass
-
-    def set_report(self, reportId, slaveReport):
+    def __init__(self, reportId, slaveReport):
         self.reportId = reportId
         self.slaveReport = slaveReport
-
-        ret = self.handle_report()
-        if ret is False:
-            return ret
-        return True
 
     def handle_report(self):
         slaveReportObj = json.loads(self.slaveReport)

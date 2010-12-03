@@ -1,25 +1,28 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 
 from django.db import models
 
 class StatDetail(models.Model):
-    reportId = models.IntegerField()
+    reportId = models.IntegerField(verbose_name="上报ID")
 
-    firstTime = models.DateTimeField()
-    secondTime = models.DateTimeField()
+    firstTime = models.DateTimeField(verbose_name="时间片起点")
+    secondTime = models.DateTimeField(verbose_name="时间片终点")
 
-    allAvgNum = models.IntegerField()
-    sucAvgNum = models.IntegerField()
-    errAvgNum = models.IntegerField()
+    allAvgNum = models.IntegerField(verbose_name="每秒总请求量")
+    sucAvgNum = models.IntegerField(verbose_name="每秒成功请求量")
+    errAvgNum = models.IntegerField(verbose_name="每秒失败请求量")
 
-    allAvgTime = models.IntegerField()
-    sucAvgTime = models.IntegerField()
-    errAvgTime = models.IntegerField()
+    allAvgTime = models.IntegerField(verbose_name="平均响应时间")
+    sucAvgTime = models.IntegerField(verbose_name="成功平均响应时间")
+    errAvgTime = models.IntegerField(verbose_name="失败平均响应时间")
 
-    sucRate = models.FloatField()
-    errRate = models.FloatField()
+    sucRate = models.FloatField(verbose_name="成功率")
+    errRate = models.FloatField(verbose_name="失败率")
 
-    reportInfo = models.TextField()
+    reportInfo = models.TextField(verbose_name="报告详细信息")
 
     class Meta:
         unique_together = (("reportId","firstTime","secondTime"))
