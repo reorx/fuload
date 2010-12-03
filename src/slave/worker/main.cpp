@@ -13,12 +13,10 @@ using namespace std;
 void useage()
 {
     printf("USEAGE:\n");
-    printf("\t -h     host\n");
-    printf("\t -p     port\n");
-    printf("\t -t     timeout_ms\n");
-    printf("\t -m     mmapfile\n");
+    printf("\t -i     inputfile\n");
     printf("\t -r     reporttime(sec)\n");
     printf("\t -s     sofile\n");
+    printf("\t -m     msgqueue\n");
     printf("\n");
 }
 int main(int argc, char *argv[])
@@ -32,26 +30,11 @@ int main(int argc, char *argv[])
 
     StSWParam param;
 
-    while ((input = getopt (argc, argv, "m:r:s:h:p:t:")) != -1) 
+    while ((input = getopt (argc, argv, "i:r:s:m:")) != -1) 
     {
-        if ( input == 'h' )
+        if ( input == 'i' )
         {
-            param.ip = optarg;
-            continue;
-        }
-        if ( input == 'p' )
-        {
-            param.port = atoi(optarg);
-            continue;
-        }
-        if ( input == 't' )
-        {
-            param.timeout_ms = atoi(optarg);
-            continue;
-        }
-        if ( input == 'm' )
-        {
-            param.mmapFile = optarg;
+            param.inputFile = optarg;
             continue;
         }
         if ( input == 'r' )
@@ -62,6 +45,11 @@ int main(int argc, char *argv[])
         if ( input == 's' )
         {
             param.moduleFile = optarg;
+            continue;
+        }
+        if ( input == 'm' )
+        {
+            param.msgQueueName = optarg;
             continue;
         }
     }

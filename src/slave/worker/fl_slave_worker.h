@@ -29,14 +29,11 @@ using namespace std;
 
 typedef struct _st_swparam
 {
-    //上报相关
-    string ip;
-    int port;
-    int timeout_ms;
     int reportTime_sec;
 
-    string mmapFile;
+    string inputFile;
     string moduleFile;
+    string msgQueueName;
 }StSWParam;
 
 typedef int (*FunPtrInit)();
@@ -76,7 +73,6 @@ class CFLSlaveWorker
 {
     public:
         static void *SoObj;
-        static int iSignal;
     public:
         CFLSlaveWorker ();
         virtual ~CFLSlaveWorker ();
@@ -90,17 +86,6 @@ class CFLSlaveWorker
          *          else        fail
          */
         int Init(const StSWParam& param);
-
-        /**
-         * @brief   设置输入数据
-         *
-         * @param   strInputData    数据
-         *
-         * @return  0               succ
-         *          else            fail
-         */
-        int SetInputData(const string& strInputData);
-
 
         /**
          * @brief   运行
@@ -120,40 +105,6 @@ class CFLSlaveWorker
         int process(const StSWInput& swi);
 
         /**
-         * @brief   获取文件大小
-         *
-         * @param   filename        文件名
-         *
-         * @return  文件大小
-         */
-        unsigned long get_file_size(const char *filename);
-
-        /**
-         * @brief   读取mmap文件中的信息
-         *
-         * @param   filename        文件名
-         *
-         * @return  0               succ
-         *          else            fail
-         */
-        int load_mmapdata(const string& filename);
-
-        /**
-         * @brief   在run设置成1之后，正式开始测试之前
-         *
-         * @return  0               succ
-         *          else            fail
-         */
-        int handle_starttest();
-        /**
-         * @brief   在run重新设置2之后，并重置回0之前
-         *
-         * @return  0               succ
-         *          else            fail
-         */
-        int handle_stoptest();
-
-        /**
          * @brief   设置要加载的so的文件
          *
          * @param   moduleFile      文件
@@ -162,6 +113,15 @@ class CFLSlaveWorker
          *          else            fail
          */
         int setModuleFile(const string& moduleFile);
+        /**
+         * @brief   设置输入数据
+         *
+         * @param   inputFile       输入文件
+         *
+         * @return  0               succ
+         *          else            fail
+         */
+        int setInputData(const string& inputFile);
 
     private:
         CFLSlaveInput m_SlaveInput;
@@ -170,9 +130,6 @@ class CFLSlaveWorker
         FunPtrInit m_funPtrInit;
         FunPtrProcess m_funPtrProcess;
         FunPtrFini m_funPtrFini;
-
-        bool m_bReadInput;
-        int m_iRun;
 
         string m_mmapFile;
 
