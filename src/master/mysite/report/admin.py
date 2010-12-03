@@ -9,7 +9,7 @@ class StatDetailAdmin(admin.ModelAdmin):
             'allAvgTime','sucAvgTime','errAvgTime',
             'sucRate','errRate'
             )
-    list_filter = ('reportId',)
+    list_filter = ('reportId', 'clientIp')
     ordering = ('reportId','firstTime')
 
 admin.site.register(StatDetail,StatDetailAdmin)
