@@ -1,15 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys
-import os
-import subprocess
-from subprocess import Popen
-import signal
 from os.path import abspath, dirname, join
-import thread,threading
-import time
 import logging
-import SocketServer
 import random
 
 from ipc import ipc
@@ -17,6 +9,11 @@ from ipc import ipc
 from fl_slave_wkmng import WorkerManager
 from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC
 from fl_slave_msg import SlaveMsg
+
+logging.basicConfig(level=logging.DEBUG,
+        format='%(asctime)s %(levelname)s %(message)s',
+        filename='./log.txt',
+        filemode='a+')
 
 class SlaveCtrl(object):
     _slaveMsg = None

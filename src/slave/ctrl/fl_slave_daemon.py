@@ -2,17 +2,12 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import logging
 from os.path import abspath, dirname, join
 from daemon import Daemon
 
 from fl_slave_ctrl import SlaveCtrl
 
 mpath = abspath(dirname(__file__))
-logging.basicConfig(level=logging.DEBUG,
-        format='%(asctime)s %(levelname)s %(message)s',
-        filename='./log.txt',
-        filemode='a+')
 
 class SlaveDaemon(Daemon):
     def _run(self):
