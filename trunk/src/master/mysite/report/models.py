@@ -1,13 +1,12 @@
 from datetime import datetime
 
 from django.db import models
-from comm_func import TimeToString
 
 class StatMain(models.Model):
     reportId = models.IntegerField()
 
-    beginTime = models.DateTimeField()
-    endTime = models.DateTimeField()
+    firstTime = models.DateTimeField()
+    secondTime = models.DateTimeField()
 
     allReqNum = models.IntegerField()
     sucReqNum = models.IntegerField()
@@ -25,19 +24,19 @@ class StatMain(models.Model):
         unique_together = (("reportId",))
 
     #def save(self, *args, **kwargs):
-        #if self.beginTime is None:
-            #self.beginTime = datetime.now()
-        #self.endTime = datetime.now()
+        #if self.firstTime is None:
+            #self.firstTime = datetime.now()
+        #self.secondTime = datetime.now()
         #super(StatMain,self).save(*args,**kwargs)
 
     def __unicode__(self):
-        return "[%s][%s][%u]" % (self.beginTime, self.endTime, self.reportId)
+        return "[%s][%s][%u]" % (self.firstTime, self.secondTime, self.reportId)
 
 class StatDetail(models.Model):
     reportId = models.IntegerField()
 
-    beginTime = models.DateTimeField()
-    endTime = models.DateTimeField()
+    firstTime = models.DateTimeField()
+    secondTime = models.DateTimeField()
 
     allReqNum = models.IntegerField()
     sucReqNum = models.IntegerField()
@@ -52,4 +51,4 @@ class StatDetail(models.Model):
     reportInfo = models.TextField()
 
     def __unicode__(self):
-        return "[%s][%s][%u]" % (self.beginTime, self.endTime, self.reportId)
+        return "[%s][%s][%u]" % (self.firstTime, self.secondTime, self.reportId)
