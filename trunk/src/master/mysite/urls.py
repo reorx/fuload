@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+import mysite.report.views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -13,4 +14,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^report/upload/(\d+)/$', mysite.report.views.HandleReportUpload),
 )
