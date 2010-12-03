@@ -3,12 +3,8 @@
 
 import time
 import datetime
+from comm_def import split_minutes
 
-#=============================================================================
-#五分钟
-split_minutes = 5
-detail_report_keys = ('allTimeMsStat', 'sucTimeMsStat', 'errTimeMsStat', 'allReqNum', 'sucReqNum', 'errReqNum')
-#=============================================================================
 def get_border_time(now_time):
     '''
     now_time = datetime.datetime.now()
@@ -69,12 +65,6 @@ def calc_values(report_info):
     result['errRate'] = float(report_info['errReqNum']) / float(report_info['allReqNum'])
 
     return result
-
-def copy_report_detail(report_info):
-    new_report_info = {}
-    for key in detail_report_keys:
-        new_report_info[key] = report_info[key]
-    return new_report_info
 
 if __name__ == '__main__':
     print get_border_time(datetime.datetime.now())
