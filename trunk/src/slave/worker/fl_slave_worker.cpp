@@ -9,19 +9,12 @@
 =============================================================================*/
 #include "fl_slave_worker.h"
 void* CFLSlaveWorker::SoObj=NULL;
-int CFLSlaveWorker::iSignal=0;
-void handle_signal_user1(int sig)
-{
-    CFLSlaveWorker::iSignal= 1;
-}
 
 CFLSlaveWorker::CFLSlaveWorker()
 {
     m_funPtrInit = NULL;
     m_funPtrProcess = NULL;
     m_funPtrFini = NULL;
-
-    m_bReadInput = false;
 }
 
 CFLSlaveWorker::~CFLSlaveWorker()
@@ -41,11 +34,12 @@ int CFLSlaveWorker::Init(const StSWParam& param)
     {
         return -2;
     }
+    ret = setInputData(param.inputFile);
+    if (ret)
+    {
+        return -3;
+    }
     return 0;
-}
-int CFLSlaveWorker::SetInputData(const string& strInputData)
-{
-    return m_SlaveInput.SetInputData(strInputData);
 }
 int CFLSlaveWorker::setModuleFile(const string& moduleFile)
 {
@@ -62,9 +56,22 @@ int CFLSlaveWorker::setModuleFile(const string& moduleFile)
     m_funPtrFini= (FunPtrFini)dlsym(SoObj, "fuload_handle_fini");
     return 0;
 }
+int CFLSlaveWorker::setInputData(const string& inputFile)
+{
+    ifstream fin;
+    fin.open(inputFile.c_str());
+
+    string strInputData;
+    string strLine;
+    while(getline(fin,strLine))
+    {
+        strInputData.append(strLine);
+        strInputData.append("\n");
+    }
+    return m_SlaveInput.SetInputData(strInputData);
+}
 int CFLSlaveWorker::Run()
 {
-    signal(SIGUSR1,handle_signal_user1);
     int ret;
     struct timeval stBegin;
     struct timeval stEnd;
@@ -80,37 +87,6 @@ int CFLSlaveWorker::Run()
 
     while(1)
     {
-        if (CFLSlaveWorker::iSignal == 1)
-        {
-            CFLSlaveWorker::iSignal = 0;
-            ret = load_mmapdata(m_SWParam.mmapFile);
-            if (ret)
-            {
-                break;
-            }
-            if (m_MMapWrapper.run == 1)
-            {
-                ret = handle_starttest();
-                if (ret)
-                {
-                    break;
-                }
-            }
-            else
-            {
-                ret = handle_stoptest();
-                if (ret)
-                {
-                    break;
-                }
-            }
-        }
-        if (m_MMapWrapper.run != 1)
-        {
-            sleep(1);
-            continue;
-        }
-
         StSWInput swi;
         ret = m_SlaveInput.Alloc(swi);
         if (ret)
@@ -146,43 +122,4 @@ int CFLSlaveWorker::process(const StSWInput& swi)
         return -1;
     }
     return (*m_funPtrProcess)(mapParams);
-}
-unsigned long CFLSlaveWorker::get_file_size(const char *filename)
-{
-    struct stat buf;
-    if(stat(filename, &buf)<0)
-    {
-        return 0;
-    }
-    return (unsigned long)buf.st_size;
-}
-int CFLSlaveWorker::load_mmapdata(const string& filename)
-{
-    ifstream fin;
-    fin.open(filename.c_str());
-
-    string mmapData;
-    string strLine;
-    while(getline(fin,strLine))
-    {
-        mmapData.append(strLine);
-        mmapData.append("\n");
-    }
-    int ret = m_MMapWrapper.Input(mmapData);
-    if (ret)
-    {
-        printf("m_MMapWrapper input error:%d\n",ret);
-        return ret;
-    }
-    return SetInputData(m_MMapWrapper.inputdata);
-}
-int CFLSlaveWorker::handle_starttest()
-{
-    m_reporter.ResetStat();
-    return 0;
-}
-int CFLSlaveWorker::handle_stoptest()
-{
-    m_bReadInput = false;
-    return 0;
 }
