@@ -36,8 +36,8 @@ def HandleReportUpload(request,reportId):
             }
     slaveReport = json.dumps(slaveReport)
 
-    handler = ReportHandler()
-    ret = handler.set_report(int(reportId), slaveReport)
+    handler = ReportHandler(int(reportId), slaveReport)
+    ret = handler.handle_report()
     if ret is False:
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))

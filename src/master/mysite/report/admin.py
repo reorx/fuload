@@ -9,6 +9,6 @@ class StatDetailAdmin(admin.ModelAdmin):
             'sucRate','errRate'
             )
     list_filter = ('reportId',)
-    ordering = ('reportId',)
+    ordering = ('reportId','firstTime')
 
 admin.site.register(StatDetail,StatDetailAdmin)
