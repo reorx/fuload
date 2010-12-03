@@ -8,17 +8,26 @@ from django.shortcuts import render_to_response
 
 from report_handler import ReportHandler
 
-def HandleReportUpload(request,masterId):
+def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
         #return HttpResponse(json.dumps({"ret":-1,"msg":"please use post method"}))
 
-    if 'reportinfo' not in request.POST:
-        return HttpResponse(json.dumps({"ret":-1,"msg":"no reportinfo in postdata"}))
+    #if 'reportinfo' not in request.POST:
+        #return HttpResponse(json.dumps({"ret":-1,"msg":"no reportinfo in postdata"}))
+    #slaveReport = request.POST['reportinfo'];
 
-    slaveReport = request.POST['reportinfo'];
+    slaveReport = {
+            'allTimeMsStat':1000,
+            'sucTimeMsStat':900,
+            'errTimeMsStat':100,
+            'allReqNum':10,
+            'sucReqNum':8,
+            'errReqNum':2,
+            }
+    slaveReport = json.dumps(slaveReport)
 
     handler = ReportHandler()
-    ret = handler.set_report(int(masterId), slaveReport)
+    ret = handler.set_report(int(reportId), slaveReport)
     if ret is False:
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))
