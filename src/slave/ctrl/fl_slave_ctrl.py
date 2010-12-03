@@ -13,14 +13,14 @@ import SocketServer
 
 from fl_slave_wkmng import WorkerManager
 from fl_slave_srv import MyRequestHandler
-from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,MSGQUEUE_PRE
+from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC
 from fl_slave_mmap import MMapWrapper
 
 class SlaveCtrl(object):
-    _msgQueueName = ""
+    _msgQueueKey = ""
 
     def __init__(self):
-        self._msgQueueName = MSGQUEUE_PRE + str(int(time.time()))
+        self._msgQKey = 1000
 
     def start(self):
         WorkerManager.fork(
@@ -29,7 +29,7 @@ class SlaveCtrl(object):
                     "-i"+INPUT_FILE,
                     "-r"+str(REPORT_TIMESEC),
                     "-s"+SO_FILE,
-                    "-m"+self._msgQueueName,
+                    "-m"+str(self._msgQKey),
                     ],
                 WORKER_NUM
                 )

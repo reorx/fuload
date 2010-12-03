@@ -7,8 +7,7 @@ C_FLAGS += -march=i486 -g -Wall -pthread
 INC += -I./comm/ -I./jsoncpp/include
 LIB += -L./jsoncpp/lib -ljsoncpp -ldl
 
-dirs = jsoncpp \
-	   tcp_client 
+dirs = jsoncpp
 
 .PHONY: all clean $(dirs)
 

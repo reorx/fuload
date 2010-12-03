@@ -33,7 +33,7 @@ typedef struct _st_swparam
 
     string inputFile;
     string moduleFile;
-    string msgQueueName;
+    string msgQKey;
 }StSWParam;
 
 typedef int (*FunPtrInit)();
