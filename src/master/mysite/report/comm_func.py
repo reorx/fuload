@@ -4,9 +4,11 @@
 import time
 import datetime
 
+#=============================================================================
 #五分钟
 split_minutes = 5
-
+detail_report_keys = ('allTimeMsStat', 'sucTimeMsStat', 'errTimeMsStat', 'allReqNum', 'sucReqNum', 'errReqNum')
+#=============================================================================
 def get_border_time(now_time):
     '''
     now_time = datetime.datetime.now()
@@ -36,7 +38,6 @@ def get_border_time(now_time):
     second_distance = second_stamp - now_stamp
 
     return {
-            'now_time':now_time, 
             'first_time':first_time,
             'second_time':second_time,
             'first_distance':first_distance,
@@ -51,6 +52,27 @@ def get_pre_time(now_time):
     t = datetime.timedelta(minutes=split_minutes)
     pre_time = now_time - t
     return pre_time
+
+def calc_values(report_info):
+    result = {}
+    result['allReqNum'] = report_info['allReqNum']
+    result['sucReqNum'] = report_info['sucReqNum']
+    result['errReqNum'] = report_info['errReqNum']
+
+    result['allAvgTime'] = report_info['allTimeMsStat'] / result['allReqNum']
+    result['sucAvgTime'] = report_info['sucTimeMsStat'] / result['sucReqNum']
+    result['errAvgTime'] = report_info['errTimeMsStat'] / result['errReqNum']
+
+    result['sucRate'] = float(result['sucReqNum']) / float(result['allReqNum'])
+    result['errRate'] = float(result['errReqNum']) / float(result['allReqNum'])
+
+    return result
+
+def copy_report_detail(report_info):
+    new_report_info = {}
+    for key in detail_report_keys:
+        new_report_info[key] = report_info[key]
+    return new_report_info
 
 if __name__ == '__main__':
     print get_border_time(datetime.datetime.now())

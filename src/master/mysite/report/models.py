@@ -12,6 +12,7 @@ class StatMain(models.Model):
     sucReqNum = models.IntegerField()
     errReqNum = models.IntegerField()
 
+    allAvgTime = models.IntegerField()
     sucAvgTime = models.IntegerField()
     errAvgTime = models.IntegerField()
 
@@ -42,6 +43,7 @@ class StatDetail(models.Model):
     sucReqNum = models.IntegerField()
     errReqNum = models.IntegerField()
 
+    allAvgTime = models.IntegerField()
     sucAvgTime = models.IntegerField()
     errAvgTime = models.IntegerField()
 
@@ -49,6 +51,9 @@ class StatDetail(models.Model):
     errRate = models.FloatField()
 
     reportInfo = models.TextField()
+
+    class Meta:
+        unique_together = (("reportId","firstTime","secondTime"))
 
     def __unicode__(self):
         return "[%s][%s][%u]" % (self.firstTime, self.secondTime, self.reportId)
