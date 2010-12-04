@@ -8,7 +8,7 @@ WORKER_NUM = 2
 INPUT_FILE = "./fl_input.txt"
 
 #worker进程需要加载的so
-SO_FILE = "../../module/libmodule.so"
+SO_FILE = "../module/libmodule.so"
 
 #worker进程的上报间隔(sec)
 REPORT_TIMESEC = 10
