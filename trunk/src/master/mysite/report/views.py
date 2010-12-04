@@ -13,7 +13,7 @@ from django.shortcuts import render_to_response
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
-from comm_func import get_report_data
+from comm_func import get_report_data,get_report_objs
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -77,10 +77,10 @@ def HttpReportData(request):
     if 'endtime' in cd and cd['endtime'] is not None:
         endtime = cd['endtime']
 
-    objs = get_report_data(cd)
+    data = get_report_data(cd)
 
     return render_to_response('show/line_data.xml',
-            {'objs':objs,'begintime':begintime,'endtime':endtime,'clientip':clientip,'header':u'总每秒请求量'}
+            {'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}
             )
 
 def HttpReportShow(request):
@@ -89,7 +89,7 @@ def HttpReportShow(request):
         return render_to_response('show/show.html',{'form':form})
 
     cd = form.cleaned_data
-    objs = get_report_data(cd)
+    objs = get_report_objs(cd)
     if len(objs) <= 0:
         return render_to_response('show/show.html',{'form':form})
 

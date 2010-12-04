@@ -21,3 +21,15 @@ loop_keys = (
 'errtimemap',
 'retmap'
 )
+rtype2attr_line = {
+        'allavgnum':'allAvgNum',
+        'sucavgnum':'sucAvgNum',
+        'erravgnum':'errAvgNum',
+
+        'allavgtime':'allAvgTime',
+        'sucavgtime':'sucAvgTime',
+        'erravgtime':'errAvgTime',
+        
+        'sucrate':'sucRate',
+        'errrate':'errRate',
+        }
