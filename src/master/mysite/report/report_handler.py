@@ -52,14 +52,14 @@ class ReportHandler(object):
 
         for key in report_keys:
             if key not in loop_keys:
-                value = int(slaveReportObj[key])
+                value = slaveReportObj[key]
                 pre_report_info[key] = value*pre_distance/(pre_distance+now_distance)
                 now_report_info[key] = value*now_distance/(pre_distance+now_distance)
             else:
                 pre_report_info[key] = {}
                 now_report_info[key] = {}
                 for subkey in slaveReportObj[key]:
-                    value = int(slaveReportObj[key][subkey])
+                    value = slaveReportObj[key][subkey]
                     pre_report_info[key][subkey] = value*pre_distance/(pre_distance+now_distance)
                     now_report_info[key][subkey] = value*now_distance/(pre_distance+now_distance)
         
