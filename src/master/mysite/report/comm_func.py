@@ -3,7 +3,7 @@
 
 import time
 import datetime
-from comm_def import split_minutes
+from comm_def import split_minutes,rtype2attr_line
 
 def get_border_time(now_time):
     '''
@@ -66,7 +66,8 @@ def calc_values(report_info):
 
     return result
 
-def get_report_data(cd):
+#仅仅是把数据查找出来没有做进一步的处理
+def get_report_objs(cd):
     from models import StatDetail
     objs = StatDetail.objects.filter(reportId=cd['reportid'])
 
@@ -82,6 +83,45 @@ def get_report_data(cd):
     objs.order_by('firstTime')
 
     return objs
+
+def get_report_data(cd):
+    rtype = cd['rtype']
+    if rtype in rtype2attr_line:
+        return get_report_data_line(cd)
+    else:
+        return get_report_data_pie(cd)
+
+def get_report_data_line(cd):
+    from models import StatDetail
+
+    objs = get_report_objs(cd)
+
+    if objs is None or len(objs) == 0:
+        return []
+
+    rtype = cd['rtype']
+
+    begintime = objs[0].firstTime
+    endtime = objs[len(objs)-1].firstTime
+
+    data = []
+    t = datetime.timedelta(minutes=split_minutes)
+    d = begintime+t
+    while d <= (endtime - t):
+        dict_d = {}
+        dict_d['x']=d
+        try:
+             obj = objs.get(firstTime=d)
+        except StatDetail.DoesNotExist:
+            dict_d['y'] = ''
+        else:
+            dict_d['y'] = getattr(obj,rtype2attr_line[rtype])
+        data.append(dict_d)
+        d = d+t
+    return data
+
+def get_report_data_pie(cd):
+    return None
 
 if __name__ == '__main__':
     print get_border_time(datetime.datetime.now())
