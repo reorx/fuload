@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<graph>
+    <general_settings bg_color="ffffff" bagel="0" animation="1" />
+    <header text="{{ header }}" font="Verdana" color="000000" size="15" />
+    <subheader text="{{ begintime }}-{{ endtime }}" font="Verdana" color="000000" size="10" />
+    <legend show="1" font="Verdana" font_color="000000" font_size="10" bgcolor="ffffff" alternate_bg_color="EAEAEA" border_color="000000" />
+    <legend_popup font="Verdana" bgcolor="FFFFE3" font_size="10" />
+    <pie_chart radius="100" alpha="100" />
+        {% for d in data %}
+        <data name="{{ d.name }}" value="{{ d.value }}" color="{{ d.color }}" distance_sliced="0" />
+        {% endfor %}
+</graph>
