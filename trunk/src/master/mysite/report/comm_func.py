@@ -84,13 +84,6 @@ def get_report_objs(cd):
 
     return objs
 
-def get_report_data(cd):
-    rtype = cd['rtype']
-    if rtype in rtype2attr_line:
-        return get_report_data_line(cd)
-    else:
-        return get_report_data_pie(cd)
-
 def get_report_data_line(cd):
     from models import StatDetail
 
@@ -107,7 +100,7 @@ def get_report_data_line(cd):
     data = []
     t = datetime.timedelta(minutes=split_minutes)
     d = begintime+t
-    while d <= (endtime - t):
+    while d < (endtime - t):
         dict_d = {}
         dict_d['x']=d
         try:
