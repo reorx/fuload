@@ -22,7 +22,9 @@ class ReportUploadHandler(object):
     sucReqNum
     errReqNum
 
-    timemap = {}
+    alltimemap = {}
+    suctimemap = {}
+    errtimemap = {}
     retmap = {}
     '''
 
