@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
+from forms import SearchReportForm
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -55,23 +56,25 @@ def HandleReportUpload(request,reportId):
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))
 
-def HttpReportDataAvgTime(request,reportId):
-    objs = StatDetail.objects.filter(reportId=reportId)
+def HttpReportData(request):
+    form = SearchReportForm(request.GET)
+    if not form.is_valid():
+        return HttpResponse('error input')
 
-    if 'ip' in request.GET:
-        if request.GET['ip'] is not None and request.GET['ip'] != 'all':
-            objs = objs.filter(clientIp=request.GET['ip'])
+    cd = form.cleaned_data
 
-    if 'searchBeginTime' in request.GET:
-        objs = objs.filter(firstTime__gte=request.GET['searchBeginTime'])
+    objs = StatDetail.objects.filter(reportId=cd['reportid'])
 
-    if 'searchEndTime' in request.GET:
-        objs = objs.filter(secondTime__lte=request.GET['searchEndTime'])
+    if 'begintime' in cd and cd['begintime'] is not None:
+        objs = objs.filter(firstTime__gte=cd['begintime'])
+
+    if 'endtime' in cd and cd['endtime'] is not None:
+        objs = objs.filter(secondTime__lte=request.GET['endtime'])
 
     objs.order_by('firstTime')
 
-    return render_to_response('show/avgtime/data.xml',{'objs':objs})
+    return render_to_response('show/line_data.xml',{'objs':objs})
 
-def HttpReportShowAvgTime(request,reportId):
+def HttpReportShow(request):
     data_url = '/report/data/avgtime/1/'
-    return render_to_response('show/avgtime/show.html',{'data_url':data_url})
+    return render_to_response('show/show.html',{'data_url':data_url})
