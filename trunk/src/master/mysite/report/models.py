@@ -13,13 +13,13 @@ class StatDetail(models.Model):
     firstTime = models.DateTimeField(verbose_name="时间片起点")
     secondTime = models.DateTimeField(verbose_name="时间片终点")
 
-    allAvgNum = models.IntegerField(verbose_name="每秒总请求量")
-    sucAvgNum = models.IntegerField(verbose_name="每秒成功请求量")
-    errAvgNum = models.IntegerField(verbose_name="每秒失败请求量")
+    allAvgNum = models.FloatField(verbose_name="每秒总请求量")
+    sucAvgNum = models.FloatField(verbose_name="每秒成功请求量")
+    errAvgNum = models.FloatField(verbose_name="每秒失败请求量")
 
-    allAvgTime = models.IntegerField(verbose_name="平均响应时间")
-    sucAvgTime = models.IntegerField(verbose_name="成功平均响应时间")
-    errAvgTime = models.IntegerField(verbose_name="失败平均响应时间")
+    allAvgTime = models.FloatField(verbose_name="平均响应时间")
+    sucAvgTime = models.FloatField(verbose_name="成功平均响应时间")
+    errAvgTime = models.FloatField(verbose_name="失败平均响应时间")
 
     sucRate = models.FloatField(verbose_name="成功率")
     errRate = models.FloatField(verbose_name="失败率")
