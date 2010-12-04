@@ -10,11 +10,10 @@
     </head>
 
     <body>
-        {% for obj in objs %}
-        start
-        <ul>
-            <li>{{ obj.firstTime }}</li>
-        </ul>
-        {% endfor %}
+        <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="481" height="353">
+            <param name="movie" value="/site_media/fcp-line-chart.swf?xml_file={{ data_url }}" />
+            <param name="quality" value="high" />
+            <embed name="flashchart" src="/site_media/fcp-line-chart.swf?xml_file={{ data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="481" height="353"></embed>
+        </object>
     </body>
 </html>
