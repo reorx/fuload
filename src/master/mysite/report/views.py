@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import urllib
+import random
 try:
     import json
 except ImportError:
@@ -11,7 +12,7 @@ from django.shortcuts import render_to_response
 
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
-from forms import SearchReportForm
+from forms import SearchReportShowForm,SearchReportDataForm
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -60,32 +61,57 @@ def HandleReportUpload(request,reportId):
     return HttpResponse(json.dumps({"ret":0}))
 
 def HttpReportData(request):
-    form = SearchReportForm(request.GET)
+    form = SearchReportDataForm(request.GET)
     if not form.is_valid():
         return HttpResponse('error input')
 
     cd = form.cleaned_data
 
-    objs = StatDetail.objects.filter(reportId=cd['reportid'])
+    clientip = cd['clientip']
+    objs = StatDetail.objects.filter(reportId=cd['reportid'],clientIp=clientip)
 
+    begintime = ''
     if 'begintime' in cd and cd['begintime'] is not None:
         objs = objs.filter(firstTime__gte=cd['begintime'])
+        begintime = cd['begintime']
 
+    endtime = ''
     if 'endtime' in cd and cd['endtime'] is not None:
         objs = objs.filter(secondTime__lte=request.GET['endtime'])
+        endtime = cd['endtime']
 
     objs.order_by('firstTime')
 
-    return render_to_response('show/line_data.xml',{'objs':objs})
+    return render_to_response('show/line_data.xml',{'objs':objs,'begintime':begintime,'endtime':endtime,'clientip':clientip,'header':u'总每秒请求量'})
 
 def HttpReportShow(request):
-    form = SearchReportForm(request.GET)
+    form = SearchReportShowForm(request.GET)
     if not form.is_valid():
         return HttpResponse('error input')
 
-    data_url = '/report/data?'
+    swffile = ''
+    rtype = request.GET['rtype']
+    if rtype in ('alltimepie','suctimepie','errtimepie','retpie'):
+        swffile = ''
+    else:
+        swffile = 'fcp-line-chart.swf'
+
+    clientIps = StatDetail.objects.values("clientIp").distinct()
+
+    base_data_url = '/report/data?r='+str(random.randint(0,10000))
     for k,v in request.GET.items():
         if v is not None:
-            data_url += (k+'='+v+'&')
-    data_url = urllib.quote(data_url)
-    return render_to_response('show/show.html',{'data_url':data_url})
+            base_data_url += ('&'+k+'='+v)
+
+    listData = []
+    for ip_dict in clientIps:
+        ip = ip_dict['clientIp']
+        if ip is None or len(ip) == 0:
+            continue
+        data_url = base_data_url + '&clientip=' + ip
+        data_url = urllib.quote(data_url)
+        listData.append(
+                {'ip':ip, 'data_url':data_url}
+                )
+
+    return render_to_response('show/show.html',{'listData':listData,'swffile':swffile})
