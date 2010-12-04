@@ -22,10 +22,10 @@ class SearchReportShowForm(forms.Form):
                     ('sucrate','成功率'),
                     ('errrate','失败率'),
 
-                    ('alltimepie','总响应时间饼图'),
-                    ('suctimepie','成功响应时间饼图'),
-                    ('errtimepie','失败响应时间饼图'),
-                    ('retpie','返回码饼图'),
+                    ('alltimemap','总响应时间饼图'),
+                    ('suctimemap','成功响应时间饼图'),
+                    ('errtimemap','失败响应时间饼图'),
+                    ('retmap','返回码饼图'),
                     ]
                 )
             )

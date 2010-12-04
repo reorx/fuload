@@ -13,7 +13,7 @@ from django.shortcuts import render_to_response
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
-from comm_func import get_report_data_line,get_report_objs
+from comm_func import get_report_data_line,get_report_data_pie,get_report_objs
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -99,9 +99,9 @@ def HttpReportDataPie(request):
     if 'endtime' in cd and cd['endtime'] is not None:
         endtime = cd['endtime']
 
-    data = get_report_data_line(cd)
+    data = get_report_data_pie(cd)
 
-    return render_to_response('show/line_data.xml',
+    return render_to_response('show/pie_data.xml',
             {'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}
             )
 
@@ -118,8 +118,8 @@ def HttpReportShow(request):
 
     swffile = ''
     rtype = request.GET['rtype']
-    if rtype in ('alltimepie','suctimepie','errtimepie','retpie'):
-        swffile = ''
+    if rtype in ('alltimemap','suctimemap','errtimemap','retmap'):
+        swffile = 'fcp-pie-2d-charts.swf'
         base_data_url = '/report/data/pie?r='+str(random.randint(0,10000))
     else:
         swffile = 'fcp-line-chart.swf'

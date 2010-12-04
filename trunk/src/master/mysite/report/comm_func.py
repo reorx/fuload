@@ -109,12 +109,58 @@ def get_report_data_line(cd):
             dict_d['y'] = ''
         else:
             dict_d['y'] = getattr(obj,rtype2attr_line[rtype])
+            if rtype in ('sucrate','errrate'):
+                dict_d['y'] = '%.4f' % (dict_d['y'])
+            else:
+                dict_d['y'] = '%.2f' % (dict_d['y'])
         data.append(dict_d)
         d = d+t
     return data
 
 def get_report_data_pie(cd):
-    return None
+    objs = get_report_objs(cd)
+
+    if objs is None or len(objs) == 0:
+        return []
+    rtype = cd['rtype']
+
+    data_map = {}
+    for obj in objs:
+        report_info = eval(obj.reportInfo)
+        single_map = report_info[rtype]
+        for k,v in single_map.items():
+            if k in data_map:
+                data_map[k] += v
+            else:
+                data_map[k] = v
+
+    tmp_data = []
+    for k,v in data_map.items():
+        dict_d = {
+                'name':k,
+                'value':v
+                }
+        tmp_data.append(dict_d)
+
+    tmp_data.sort(lambda x,y: cmp(y['value'], x['value']))   
+    res_data = tmp_data[:6]
+
+    if len(tmp_data) > 6:
+        sum_d = 0
+        for i in range(6,len(tmp_data)):
+            sum_d += tmp_data[i]['value']
+        res_data.append({'name':'else','value':sum_d})
+
+    sum_value = 0
+    for v in res_data:
+        sum_value+=v['value']
+
+    colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
+    for i in range(0,len(res_data)):
+        res_data[i]['color'] = colors[i]
+        res_data[i]['value'] = '%.2f' % (res_data[i]['value'] * 100 / sum_value)
+
+    return res_data
 
 if __name__ == '__main__':
     print get_border_time(datetime.datetime.now())
