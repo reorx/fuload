@@ -60,4 +60,8 @@ def HttpReportDataAvgTime(request,reportId):
 
     objs.order_by('firstTime')
 
-    return render_to_response('show/avgtime.html',{'objs':objs})
+    return render_to_response('show/avgtime/data.xml',{'objs':objs})
+
+def HttpReportShowAvgTime(request,reportId):
+    data_url = '/report/data/avgtime/1/'
+    return render_to_response('show/avgtime/show.html',{'data_url':data_url})
