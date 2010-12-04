@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import urllib
 try:
     import json
 except ImportError:
@@ -76,5 +79,13 @@ def HttpReportData(request):
     return render_to_response('show/line_data.xml',{'objs':objs})
 
 def HttpReportShow(request):
-    data_url = '/report/data/avgtime/1/'
+    form = SearchReportForm(request.GET)
+    if not form.is_valid():
+        return HttpResponse('error input')
+
+    data_url = '/report/data?'
+    for k,v in request.GET.items():
+        if v is not None:
+            data_url += (k+'='+v+'&')
+    data_url = urllib.quote(data_url)
     return render_to_response('show/show.html',{'data_url':data_url})
