@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <graph>
     <general_settings bg_color="F6F6F6" showAnchor="1" showArea="0" type_animation="1">
-        <header text="Annual Economic Growth" font="Verdana" color="000000" size="18" />
-        <subheader text="GDP Growth 1983-2006" font="Verdana" color="000000" size="12" />
+        <header text="{{ header }}" font="Verdana" color="000000" size="18" />
+        <subheader text="{{ begintime }}-{{ endtime }}" font="Verdana" color="000000" size="12" />
         <legend font="Verdana" color="000000" font_size="11" />
         <legend_popup font="Verdana" bgcolor="FFFFE3" font_size="10" />
         <Xheaders rotate="90" color="000000" size="9" title="" title_color="000000" />
@@ -14,9 +14,9 @@
         <x value="{{ obj.firstTime }}" />
         {% endfor %}
     </abscissa_data>
-    <ordinate_data seriesName="Germany" color="0080C0" size="3.5">
+    <ordinate_data seriesName="{{ clientip }}" color="0080C0" size="3.5">
         {% for obj in objs %}
-        <y value="{{ obj.allAvgNum }}" />
+        <y value="{{ obj.allAvgTime }}" />
         {% endfor %}
     </ordinate_data>
 </graph>
