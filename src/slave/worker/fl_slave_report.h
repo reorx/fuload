@@ -25,7 +25,9 @@ typedef struct _StSWNetStat
 {
     public:
         //统计了不同时间状态的调用数量
-        map<int, unsigned> mapTimeMsStat;
+        map<int, unsigned> mapAllTimeMsStat;
+        map<int, unsigned> mapSucTimeMsStat;
+        map<int, unsigned> mapErrTimeMsStat;
 
         //所有请求的累计调用时间
         unsigned allTimeMsStat;
@@ -66,11 +68,21 @@ typedef struct _StSWNetStat
             }
             mapRetcodeStat[retcode] += 1;
             int mTime = get_maptime(time_ms);
-            mapTimeMsStat[mTime] += 1;
+            mapAllTimeMsStat[mTime] += 1;
+            if (retcode == 0)
+            {
+                mapSucTimeMsStat[mTime] += 1;
+            }
+            else
+            {
+                mapErrTimeMsStat[mTime] += 1;
+            }
         }
         void ResetStat()
         {
-            mapTimeMsStat.clear();
+            mapAllTimeMsStat.clear();
+            mapSucTimeMsStat.clear();
+            mapErrTimeMsStat.clear();
             mapRetcodeStat.clear();
             allTimeMsStat = 0;
             sucTimeMsStat = 0;
@@ -189,13 +201,29 @@ class CSWReport
             root["errReqNum"] = m_PtrNetStat->errReqNum;
 
             char tmp[256];
-            Json::Value valueTimeMap;
-            foreach(m_PtrNetStat->mapTimeMsStat,it_time)
+            Json::Value valueAllTimeMap;
+            foreach(m_PtrNetStat->mapAllTimeMsStat,it_time)
             {
                 snprintf(tmp,sizeof(tmp),"%d",it_time->first);
-                valueTimeMap[tmp] = it_time->second;
+                valueAllTimeMap[tmp] = it_time->second;
             }
-            root["timemap"] = valueTimeMap;
+            root["alltimemap"] = valueAllTimeMap;
+
+            Json::Value valueSucTimeMap;
+            foreach(m_PtrNetStat->mapAllTimeMsStat,it_time)
+            {
+                snprintf(tmp,sizeof(tmp),"%d",it_time->first);
+                valueSucTimeMap[tmp] = it_time->second;
+            }
+            root["suctimemap"] = valueSucTimeMap;
+
+            Json::Value valueErrTimeMap;
+            foreach(m_PtrNetStat->mapAllTimeMsStat,it_time)
+            {
+                snprintf(tmp,sizeof(tmp),"%d",it_time->first);
+                valueErrTimeMap[tmp] = it_time->second;
+            }
+            root["errtimemap"] = valueErrTimeMap;
 
             Json::Value valueRetMap;
             foreach(m_PtrNetStat->mapRetcodeStat,it_ret)
