@@ -7,11 +7,20 @@
         <meta name="author" content="dantezhu" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
+    <script type="text/javascript">
+        function set_randomnum()
+{
+    var x=document.getElementById("id_randomnum");
+    var num = Math.random();
+    x.value = num;
+        return true;
+}
+</script>
     </head>
 
     <body>
         <div>
-            <form action="" method="get">
+            <form action="" method="get" onsubmit="set_randomnum()">
                 <table border="0">
                     <tr>
                         <th>上报ID</th>
@@ -42,6 +51,7 @@
                         {% endif %}
                     </tr>
                 </table>
+                <input type="hidden" name="randomnum" id="id_randomnum" value=""/>
                 <input type="submit" class="action_button" id="searchBtn" value="搜&nbsp;&nbsp;索">
             </form>
             <input id="id_seqid" type="hidden" value="{{seqid}}"/>
