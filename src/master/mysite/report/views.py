@@ -6,7 +6,7 @@ except ImportError:
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 
-from report_handler import ReportUploadHandler
+from report_upload_handler import ReportUploadHandler
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -43,4 +43,3 @@ def HandleReportUpload(request,reportId):
     if ret is False:
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))
-
