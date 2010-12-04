@@ -13,7 +13,7 @@ from django.shortcuts import render_to_response
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
-from comm_func import get_report_data,get_report_objs
+from comm_func import get_report_data_line,get_report_objs
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -61,7 +61,7 @@ def HandleReportUpload(request,reportId):
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))
 
-def HttpReportData(request):
+def HttpReportDataLine(request):
     form = SearchReportDataForm(request.GET)
     if not form.is_valid():
         return HttpResponse('error input')
@@ -77,11 +77,34 @@ def HttpReportData(request):
     if 'endtime' in cd and cd['endtime'] is not None:
         endtime = cd['endtime']
 
-    data = get_report_data(cd)
+    data = get_report_data_line(cd)
 
     return render_to_response('show/line_data.xml',
             {'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}
             )
+
+def HttpReportDataPie(request):
+    form = SearchReportDataForm(request.GET)
+    if not form.is_valid():
+        return HttpResponse('error input')
+
+    cd = form.cleaned_data
+    clientip = cd['clientip']
+
+    begintime = ''
+    if 'begintime' in cd and cd['begintime'] is not None:
+        begintime = cd['begintime']
+
+    endtime = ''
+    if 'endtime' in cd and cd['endtime'] is not None:
+        endtime = cd['endtime']
+
+    data = get_report_data_line(cd)
+
+    return render_to_response('show/line_data.xml',
+            {'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}
+            )
+
 
 def HttpReportShow(request):
     form = SearchReportShowForm(request.GET)
@@ -97,12 +120,13 @@ def HttpReportShow(request):
     rtype = request.GET['rtype']
     if rtype in ('alltimepie','suctimepie','errtimepie','retpie'):
         swffile = ''
+        base_data_url = '/report/data/pie?r='+str(random.randint(0,10000))
     else:
         swffile = 'fcp-line-chart.swf'
+        base_data_url = '/report/data/line?r='+str(random.randint(0,10000))
 
     clientIps = StatDetail.objects.values("clientIp").distinct()
 
-    base_data_url = '/report/data?r='+str(random.randint(0,10000))
     for k,v in request.GET.items():
         if v is not None:
             base_data_url += ('&'+k+'='+v)
