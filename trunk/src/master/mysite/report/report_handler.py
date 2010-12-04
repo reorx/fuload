@@ -11,7 +11,7 @@ from models import StatDetail
 from comm_def import report_keys,loop_keys
 from comm_func import get_border_time, get_pre_time,calc_values
 
-class ReportHandler(object):
+class ReportUploadHandler(object):
     '''
     这是worker进程中的定义
     allTimeMsStat
