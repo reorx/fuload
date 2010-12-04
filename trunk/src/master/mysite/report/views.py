@@ -13,6 +13,7 @@ from django.shortcuts import render_to_response
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
+from comm_func import get_report_data
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -66,28 +67,31 @@ def HttpReportData(request):
         return HttpResponse('error input')
 
     cd = form.cleaned_data
-
     clientip = cd['clientip']
-    objs = StatDetail.objects.filter(reportId=cd['reportid'],clientIp=clientip)
 
     begintime = ''
     if 'begintime' in cd and cd['begintime'] is not None:
-        objs = objs.filter(firstTime__gte=cd['begintime'])
         begintime = cd['begintime']
 
     endtime = ''
     if 'endtime' in cd and cd['endtime'] is not None:
-        objs = objs.filter(secondTime__lte=request.GET['endtime'])
         endtime = cd['endtime']
 
-    objs.order_by('firstTime')
+    objs = get_report_data(cd)
 
-    return render_to_response('show/line_data.xml',{'objs':objs,'begintime':begintime,'endtime':endtime,'clientip':clientip,'header':u'总每秒请求量'})
+    return render_to_response('show/line_data.xml',
+            {'objs':objs,'begintime':begintime,'endtime':endtime,'clientip':clientip,'header':u'总每秒请求量'}
+            )
 
 def HttpReportShow(request):
     form = SearchReportShowForm(request.GET)
     if not form.is_valid():
-        return HttpResponse('error input')
+        return render_to_response('show/show.html',{'form':form})
+
+    cd = form.cleaned_data
+    objs = get_report_data(cd)
+    if len(objs) <= 0:
+        return render_to_response('show/show.html',{'form':form})
 
     swffile = ''
     rtype = request.GET['rtype']
@@ -114,4 +118,4 @@ def HttpReportShow(request):
                 {'ip':ip, 'data_url':data_url}
                 )
 
-    return render_to_response('show/show.html',{'listData':listData,'swffile':swffile})
+    return render_to_response('show/show.html',{'listData':listData,'swffile':swffile,'form':form})
