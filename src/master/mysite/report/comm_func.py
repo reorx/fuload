@@ -66,6 +66,23 @@ def calc_values(report_info):
 
     return result
 
+def get_report_data(cd):
+    from models import StatDetail
+    objs = StatDetail.objects.filter(reportId=cd['reportid'])
+
+    if 'clientip' in cd and cd['clientip'] is not None:
+        objs = objs.filter(clientIp=cd['clientip'])
+
+    if 'begintime' in cd and cd['begintime'] is not None:
+        objs = objs.filter(firstTime__gte=cd['begintime'])
+
+    if 'endtime' in cd and cd['endtime'] is not None:
+        objs = objs.filter(secondTime__lte=cd['endtime'])
+
+    objs.order_by('firstTime')
+
+    return objs
+
 if __name__ == '__main__':
     print get_border_time(datetime.datetime.now())
     #print get_pre_time(datetime.datetime.now())

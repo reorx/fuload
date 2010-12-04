@@ -4,10 +4,11 @@
 from django import forms
 
 class SearchReportShowForm(forms.Form):
-    reportid = forms.IntegerField(required=True)
-    begintime = forms.DateTimeField(required=False)
-    endtime = forms.DateTimeField(required=False)
+    reportid = forms.IntegerField(required=True,label='上报ID')
+    begintime = forms.DateTimeField(required=False,label='起始时间')
+    endtime = forms.DateTimeField(required=False,label='终止时间')
     rtype = forms.CharField(required=True,
+            label='报表类型',
             widget=forms.Select(
                 choices = [
                     ('allavgnum','总每秒调用量'),
