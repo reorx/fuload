@@ -6,6 +6,7 @@ except ImportError:
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 
+from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 
 def HandleReportUpload(request,reportId):
@@ -43,3 +44,20 @@ def HandleReportUpload(request,reportId):
     if ret is False:
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))
+
+def HttpReportDataAvgTime(request,reportId):
+    objs = StatDetail.objects.filter(reportId=reportId)
+
+    if 'ip' in request.GET:
+        if request.GET['ip'] is not None and request.GET['ip'] != 'all':
+            objs = objs.filter(clientIp=request.GET['ip'])
+
+    if 'searchBeginTime' in request.GET:
+        objs = objs.filter(firstTime__gte=request.GET['searchBeginTime'])
+
+    if 'searchEndTime' in request.GET:
+        objs = objs.filter(secondTime__lte=request.GET['searchEndTime'])
+
+    objs.order_by('firstTime')
+
+    return render_to_response('show/avgtime.html',{'objs':objs})
