@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import urllib
 import random
+import copy
 try:
     import json
 except ImportError:
@@ -113,15 +114,18 @@ def HttpReportShow(request):
     form = SearchReportShowForm(request.GET)
     if not form.is_valid():
         return render_to_response('show/show.html',{'form':form})
+    cd = form.cleaned_data
 
     swffile = ''
     rtype = request.GET['rtype']
     if rtype2attr[rtype]['swftype'] == 'pie':
         swffile = 'fcp-pie-2d-charts.swf'
         base_data_url = '/report/data/pie?r='+str(random.random())
+        func_getdata = get_report_data_pie
     else:
         swffile = 'fcp-line-chart.swf'
         base_data_url = '/report/data/line?r='+str(random.random())
+        func_getdata = get_report_data_line
 
     clientIps = StatDetail.objects.values("clientIp").distinct()
 
@@ -133,6 +137,12 @@ def HttpReportShow(request):
     for ip_dict in clientIps:
         ip = ip_dict['clientIp']
         if ip is None or len(ip) == 0:
+            continue
+        tmpcd = copy.deepcopy(cd)
+        tmpcd['clientip'] = ip
+
+        tmpdata = func_getdata(tmpcd)
+        if len(tmpdata) < 2:
             continue
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
