@@ -138,9 +138,9 @@ def HttpReportShow(request):
         if ip is None or len(ip) == 0:
             continue
         data_url = base_data_url + '&clientip=' + ip
-        data_url = urllib.quote(data_url)
+        quote_data_url = urllib.quote(data_url)
         listData.append(
-                {'ip':ip, 'data_url':data_url}
+                {'ip':ip, 'data_url':data_url,'quote_data_url':quote_data_url}
                 )
 
     return render_to_response('show/show.html',{'listData':listData,'swffile':swffile,'form':form})
