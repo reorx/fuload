@@ -86,11 +86,12 @@ def get_report_objs(cd):
 
 def get_report_data_line(cd):
     from models import StatDetail
+    t = datetime.timedelta(minutes=split_minutes)
 
     objs = get_report_objs(cd)
 
     if objs is None or len(objs) == 0:
-        return []
+        return [{'x':datetime.datetime.now(),'y':0},{'x':datetime.datetime.now()+t,'y':0}]
 
     rtype = cd['rtype']
 
@@ -98,7 +99,6 @@ def get_report_data_line(cd):
     endtime = objs[len(objs)-1].firstTime
 
     data = []
-    t = datetime.timedelta(minutes=split_minutes)
     d = begintime+t
     while d < (endtime - t):
         dict_d = {}
@@ -125,9 +125,10 @@ def get_report_data_line(cd):
 
 def get_report_data_pie(cd):
     objs = get_report_objs(cd)
+    colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
 
     if objs is None or len(objs) == 0:
-        return []
+        return [{'name':'empty','value':100,'color':colors[0]}]
     rtype = cd['rtype']
 
     data_map = {}
@@ -161,7 +162,6 @@ def get_report_data_pie(cd):
     for v in res_data:
         sum_value+=v['value']
 
-    colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
     for i in range(0,len(res_data)):
         res_data[i]['color'] = colors[i]
         res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (res_data[i]['value'] * 100 / sum_value)
