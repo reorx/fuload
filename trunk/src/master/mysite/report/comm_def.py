@@ -65,19 +65,19 @@ rtype2attr = {
         'allavgtime':{
             'attr':'allAvgTime',
             'swftype':'line',
-            'name':'总平均响应时间',
+            'name':'总平均响应时间(ms)',
             'accuracy':'%.2f',
             },
         'sucavgtime':{
             'attr':'sucAvgTime',
             'swftype':'line',
-            'name':'成功平均响应时间',
+            'name':'成功平均响应时间(ms)',
             'accuracy':'%.2f',
             },
         'erravgtime':{
             'attr':'errAvgTime',
             'swftype':'line',
-            'name':'失败平均响应时间',
+            'name':'失败平均响应时间(ms)',
             'accuracy':'%.2f',
             },
         
@@ -97,19 +97,19 @@ rtype2attr = {
         'alltimemap':{
             'attr':'alltimemap',
             'swftype':'pie',
-            'name':'总响应时间饼图',
+            'name':'总响应时间饼图(ms)',
             'accuracy':'%.2f',
             },
         'suctimemap':{
             'attr':'suctimemap',
             'swftype':'pie',
-            'name':'成功响应时间饼图',
+            'name':'成功响应时间饼图(ms)',
             'accuracy':'%.2f',
             },
         'errtimemap':{
             'attr':'errtimemap',
             'swftype':'pie',
-            'name':'失败响应时间饼图',
+            'name':'失败响应时间饼图(ms)',
             'accuracy':'%.2f',
             },
 
