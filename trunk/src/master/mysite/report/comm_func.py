@@ -3,7 +3,7 @@
 
 import time
 import datetime
-from comm_def import split_minutes,rtype2attr_line
+from comm_def import split_minutes,rtype2attr
 
 def get_border_time(now_time):
     '''
@@ -108,11 +108,8 @@ def get_report_data_line(cd):
         except StatDetail.DoesNotExist:
             dict_d['y'] = ''
         else:
-            dict_d['y'] = getattr(obj,rtype2attr_line[rtype])
-            if rtype in ('sucrate','errrate'):
-                dict_d['y'] = '%.4f' % (dict_d['y'])
-            else:
-                dict_d['y'] = '%.2f' % (dict_d['y'])
+            dict_d['y'] = getattr(obj,rtype2attr[rtype]['attr'])
+            dict_d['y'] = rtype2attr[rtype]['accuracy'] % (dict_d['y'])
         data.append(dict_d)
         d = d+t
     return data
@@ -158,7 +155,7 @@ def get_report_data_pie(cd):
     colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
     for i in range(0,len(res_data)):
         res_data[i]['color'] = colors[i]
-        res_data[i]['value'] = '%.2f' % (res_data[i]['value'] * 100 / sum_value)
+        res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (res_data[i]['value'] * 100 / sum_value)
 
     return res_data
 

@@ -3,6 +3,7 @@
 
 #五分钟
 split_minutes = 5
+#上报数据时json的字段
 report_keys = (
 'allTimeMsStat',
 'sucTimeMsStat',
@@ -15,21 +16,89 @@ report_keys = (
 'errtimemap',
 'retmap'
 )
+#上报数据时，对这些字段要进行遍历累加
 loop_keys = (
 'alltimemap',
 'suctimemap',
 'errtimemap',
 'retmap'
 )
-rtype2attr_line = {
-        'allavgnum':'allAvgNum',
-        'sucavgnum':'sucAvgNum',
-        'erravgnum':'errAvgNum',
+#展示数据时，前台传来的rtype与attr，name等的对应
+rtype2attr = {
+        'allavgnum':{
+            'attr':'allAvgNum',
+            'swftype':'line',
+            'name':'总每秒调用量',
+            'accuracy':'%.2f',
+            },
+        'sucavgnum':{
+            'attr':'sucAvgNum',
+            'swftype':'line',
+            'name':'成功每秒调用量',
+            'accuracy':'%.2f',
+            },
+        'erravgnum':{
+            'attr':'errAvgNum',
+            'swftype':'line',
+            'name':'失败每秒调用量',
+            'accuracy':'%.2f',
+            },
 
-        'allavgtime':'allAvgTime',
-        'sucavgtime':'sucAvgTime',
-        'erravgtime':'errAvgTime',
+        'allavgtime':{
+            'attr':'allAvgTime',
+            'swftype':'line',
+            'name':'总平均响应时间',
+            'accuracy':'%.2f',
+            },
+        'sucavgtime':{
+            'attr':'sucAvgTime',
+            'swftype':'line',
+            'name':'成功平均响应时间',
+            'accuracy':'%.2f',
+            },
+        'erravgtime':{
+            'attr':'errAvgTime',
+            'swftype':'line',
+            'name':'失败平均响应时间',
+            'accuracy':'%.2f',
+            },
         
-        'sucrate':'sucRate',
-        'errrate':'errRate',
+        'sucrate':{
+            'attr':'sucRate',
+            'swftype':'line',
+            'name':'成功率',
+            'accuracy':'%.4f',
+            },
+        'errrate':{
+            'attr':'errRate',
+            'swftype':'line',
+            'name':'失败率',
+            'accuracy':'%.4f',
+            },
+
+        'alltimemap':{
+            'attr':'alltimemap',
+            'swftype':'pie',
+            'name':'总响应时间饼图',
+            'accuracy':'%.2f',
+            },
+        'suctimemap':{
+            'attr':'suctimemap',
+            'swftype':'pie',
+            'name':'成功响应时间饼图',
+            'accuracy':'%.2f',
+            },
+        'errtimemap':{
+            'attr':'errtimemap',
+            'swftype':'pie',
+            'name':'失败响应时间饼图',
+            'accuracy':'%.2f',
+            },
+
+        'retmap':{
+            'attr':'retmap',
+            'swftype':'pie',
+            'name':'返回码饼图',
+            'accuracy':'%.2f',
+            },
         }
