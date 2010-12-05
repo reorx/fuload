@@ -16,54 +16,30 @@
         return true;
 }
 </script>
+<link rel="stylesheet" type="text/css" href="/admin_media/css/base.css" /> 
+<link rel="stylesheet" type="text/css" href="/admin_media/css/forms.css" /> 
     </head>
 
     <body>
-        <div>
-            <form action="" method="get" onsubmit="set_randomnum()">
-                <table border="0">
-                    <tr>
-                        <th>上报ID</th>
-                        <td>{{ form.reportid }}</td>
-                        {% if form.reportid.errors %}
-                        <td>{{ form.reportid.errors }}</td>
-                        {% endif %}
-                    </tr>
-                    <tr>
-                        <th>报表类型</th>
-                        <td>{{ form.rtype }}</td>
-                        {% if form.rtype.errors %}
-                        <td>{{ form.rtype.errors }}</td>
-                        {% endif %}
-                    </tr>
-                    <tr>
-                        <th>起始时间</th>
-                        <td>{{ form.begintime }}</td>
-                        {% if form.begintime.errors %}
-                        <td>{{ form.begintime.errors }}</td>
-                        {% endif %}
-                    </tr>
-                    <tr>
-                        <th>终止时间</th>
-                        <td>{{ form.endtime }}</td>
-                        {% if form.endtime.errors %}
-                        <td>{{ form.endtime.errors }}</td>
-                        {% endif %}
-                    </tr>
-                </table>
-                <input type="hidden" name="randomnum" id="id_randomnum" value=""/>
-                <input type="submit" class="action_button" id="searchBtn" value="搜&nbsp;&nbsp;索">
+        <div id="toolbar">
+            <form id="changelist-search" action="" method="get" onsubmit="set_randomnum()"> 
+                <div><!-- DIV needed for valid HTML --> 
+                    <label for="searchbar"><img src="/admin_media/img/admin/icon_searchbox.png" alt="Search" /></label> 
+                    上报ID:{{ form.reportid }} 报表类型:{{ form.rtype }} 起始时间:{{ form.begintime }} 终止时间:{{ form.endtime }}
+                    <input type="hidden" name="randomnum" id="id_randomnum" value=""/>
+                    <input type="submit" value="搜索" /> 
+                </div> 
             </form>
-            <input id="id_seqid" type="hidden" value="{{seqid}}"/>
-            </p>
         </div>
         {% for d in listData %}
-        <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="800" height="600">
+        <div class="colM">
+        <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="800" height="500">
             <param name="movie" value="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" />
             <param name="quality" value="high" />
-            <embed name="flashchart" src="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="800" height="600"></embed>
+            <embed name="flashchart" src="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="800" height="500"></embed>
         </object>
         <a href="{{ d.data_url }}" target="_blank" >查看数据</a>
+        </div>
         {% endfor %}
     </body>
 </html>
