@@ -2,5 +2,5 @@
 test[1]
     name=dantezhu&string=woaininiuniu&laopo = niuniu
 #这个也是注释
-test[2]
+test2[2]
     name=niuniu&string=woainidandan&laogong = dandan
