@@ -12,8 +12,11 @@
 
 二.架构说明
     整个框架实际包括两个部分:master和slave，master上运行用来统计的网站，slave上会调用用户自写的so并实现向master的上报（如图fuload架构.png所示）。
+    http://www.vimer.cn/wp-content/uploads/2010/12/fuload%E6%9E%B6%E6%9E%84.png
 
     上报的结果可以直接在master端查看,链接如下：http://{youhost}/report/show/（如图report_example.png，report_example_pie.png所示）:
+    http://www.vimer.cn/wp-content/uploads/2010/12/report_example.png
+    http://www.vimer.cn/wp-content/uploads/2010/12/report_example_pie.png
 
 三.使用说明
     1.master部署
