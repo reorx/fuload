@@ -13,6 +13,7 @@ from django.shortcuts import render_to_response
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
+from comm_def import rtype2attr
 from comm_func import get_report_data_line,get_report_data_pie,get_report_objs
 
 def HandleReportUpload(request,reportId):
@@ -118,7 +119,7 @@ def HttpReportShow(request):
 
     swffile = ''
     rtype = request.GET['rtype']
-    if rtype in ('alltimemap','suctimemap','errtimemap','retmap'):
+    if rtype2attr[rtype]['swftype'] == 'pie':
         swffile = 'fcp-pie-2d-charts.swf'
         base_data_url = '/report/data/pie?r='+str(random.random())
     else:
