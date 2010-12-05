@@ -84,14 +84,14 @@ rtype2attr = {
         'sucrate':{
             'attr':'sucRate',
             'swftype':'line',
-            'name':'成功率',
-            'accuracy':'%.4f',
+            'name':'成功率(%)',
+            'accuracy':'%.2f',
             },
         'errrate':{
             'attr':'errRate',
             'swftype':'line',
-            'name':'失败率',
-            'accuracy':'%.4f',
+            'name':'失败率(%)',
+            'accuracy':'%.2f',
             },
 
         'alltimemap':{
