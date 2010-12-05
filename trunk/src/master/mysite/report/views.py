@@ -141,9 +141,13 @@ def HttpReportShow(request):
         tmpcd = copy.deepcopy(cd)
         tmpcd['clientip'] = ip
 
-        tmpdata = func_getdata(tmpcd)
-        if len(tmpdata) < 2:
-            continue
+        if rtype2attr[rtype]['swftype'] == 'pie':
+            tmpdata = get_report_data_pie(tmpcd)
+        else:
+            tmpdata = get_report_data_line(tmpcd)
+            #line swf的问题，必须起码有两个点
+            if len(tmpdata) < 2:
+                continue
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
         listData.append(
