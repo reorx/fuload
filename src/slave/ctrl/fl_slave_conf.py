@@ -4,6 +4,9 @@
 #启动的worker进程数目
 WORKER_NUM = 2
 
+#每个worker每秒速度限制(-1为不限制)
+LIMIT_SPEED = -1
+
 #worker进程的输入文件
 INPUT_FILE = "./fl_input.txt"
 

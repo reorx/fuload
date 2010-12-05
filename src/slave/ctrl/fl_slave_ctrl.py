@@ -8,7 +8,7 @@ import signal
 
 from ipc import ipc
 
-from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_URL
+from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_URL,LIMIT_SPEED
 from fl_slave_wkmng import WorkerManager
 from fl_slave_msg import SlaveMsg
 from fl_slave_reporter import SlaveReporter
@@ -64,6 +64,7 @@ class SlaveCtrl(object):
                     "-r"+str(REPORT_TIMESEC),
                     "-s"+SO_FILE,
                     "-m"+str(msgQKey),
+                    '-l'+str(LIMIT_SPEED),
                     ],
                 WORKER_NUM
                 )

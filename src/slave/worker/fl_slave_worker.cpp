@@ -39,6 +39,7 @@ int CFLSlaveWorker::Init(const StSWParam& param)
     {
         return -3;
     }
+    m_SpeedLimit.Init(param.limitSpeed);
     return 0;
 }
 int CFLSlaveWorker::setModuleFile(const string& moduleFile)
@@ -103,6 +104,7 @@ int CFLSlaveWorker::Run()
         {
             printf("process error:%d\n",ret);
         }
+        m_SpeedLimit.DetectAndLimit();
     }
     if (m_funPtrFini)
     {
