@@ -61,8 +61,8 @@ def calc_values(report_info):
     result['sucAvgTime'] = report_info['sucTimeMsStat'] / report_info['sucReqNum']
     result['errAvgTime'] = report_info['errTimeMsStat'] / report_info['errReqNum']
 
-    result['sucRate'] = float(report_info['sucReqNum']) / float(report_info['allReqNum'])
-    result['errRate'] = float(report_info['errReqNum']) / float(report_info['allReqNum'])
+    result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum'])
+    result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum'])
 
     return result
 
