@@ -112,6 +112,15 @@ def get_report_data_line(cd):
             dict_d['y'] = rtype2attr[rtype]['accuracy'] % (dict_d['y'])
         data.append(dict_d)
         d = d+t
+
+    #容错
+    if len(data)<=0:
+        data.append({'x':d,'y':'0'})
+        data.append({'x':d+t,'y':'0'})
+
+    if len(data) < 2:
+        data.append({'x':data[0]['x']+t,'y':0})
+
     return data
 
 def get_report_data_pie(cd):
@@ -156,6 +165,9 @@ def get_report_data_pie(cd):
     for i in range(0,len(res_data)):
         res_data[i]['color'] = colors[i]
         res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (res_data[i]['value'] * 100 / sum_value)
+
+    if len(res_data) <= 0:
+        res_data.append({'name':'empty','value':100,'color':colors[0]})
 
     return res_data
 
