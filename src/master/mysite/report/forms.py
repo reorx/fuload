@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from comm_def import rtype2attr
+from comm_def import rtype_original_keys,rtype2attr
 
 class SearchReportShowForm(forms.Form):
     reportid = forms.IntegerField(required=True,label='上报ID')
@@ -11,7 +11,7 @@ class SearchReportShowForm(forms.Form):
     rtype = forms.CharField(required=True,
             label='报表类型',
             widget=forms.Select(
-                choices = [(k,v['name']) for k,v in rtype2attr.items()]
+                choices = [(v,rtype2attr[v]['name']) for v in rtype_original_keys]
                 )
             )
 class SearchReportDataForm(SearchReportShowForm):
