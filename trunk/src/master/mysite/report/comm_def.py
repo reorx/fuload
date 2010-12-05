@@ -23,6 +23,24 @@ loop_keys = (
 'errtimemap',
 'retmap'
 )
+#form中原始展现的rtype顺序
+rtype_original_keys = (
+        'allavgnum',
+        'sucavgnum',
+        'erravgnum',
+
+        'allavgtime',
+        'sucavgtime',
+        'erravgtime',
+
+        'sucrate',
+        'errrate',
+
+        'alltimemap',
+        'suctimemap',
+        'errtimemap',
+        'retmap',
+        )
 #展示数据时，前台传来的rtype与attr，name等的对应
 rtype2attr = {
         'allavgnum':{
