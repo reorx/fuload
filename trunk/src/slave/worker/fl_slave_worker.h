@@ -21,6 +21,8 @@
 
 #include <json/json.h>
 
+#include "speedlimit.h"
+
 #include "fl_commfunc.h"
 #include "fl_slave_input.h"
 #include "fl_slave_reporter.h"
@@ -34,6 +36,13 @@ typedef struct _st_swparam
     string inputFile;
     string moduleFile;
     int msgQKey;
+    int limitSpeed;
+    _st_swparam()
+    {
+        reportTime_sec = 30;
+        msgQKey = -1;
+        limitSpeed = -1;//全速
+    }
 }StSWParam;
 
 typedef int (*FunPtrInit)();
@@ -106,6 +115,8 @@ class CFLSlaveWorker
         StSWParam m_SWParam;
 
         CSlaveReporter m_reporter;
+
+        CSpeedLimit m_SpeedLimit;
 };
 
 #endif
