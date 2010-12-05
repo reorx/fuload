@@ -9,6 +9,8 @@ except ImportError:
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.template.loader import get_template
+from django.template import Context
 
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
@@ -80,9 +82,9 @@ def HttpReportDataLine(request):
 
     data = get_report_data_line(cd)
 
-    return render_to_response('show/line_data.xml',
-            {'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}
-            )
+    t = get_template('show/line_data.xml')
+    html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}))
+    return HttpResponse(html,mimetype='application/xml')
 
 def HttpReportDataPie(request):
     form = SearchReportDataForm(request.GET)
@@ -102,19 +104,14 @@ def HttpReportDataPie(request):
 
     data = get_report_data_pie(cd)
 
-    return render_to_response('show/pie_data.xml',
-            {'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}
-            )
+    t = get_template('show/pie_data.xml')
+    html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}))
+    return HttpResponse(html,mimetype='application/xml')
 
 
 def HttpReportShow(request):
     form = SearchReportShowForm(request.GET)
     if not form.is_valid():
-        return render_to_response('show/show.html',{'form':form})
-
-    cd = form.cleaned_data
-    objs = get_report_objs(cd)
-    if len(objs) <= 0:
         return render_to_response('show/show.html',{'form':form})
 
     swffile = ''
