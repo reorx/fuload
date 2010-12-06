@@ -41,32 +41,9 @@ class ReportUploadHandler(object):
         slaveReportObj = json.loads(self.slaveReport)
 
         now_time = datetime.datetime.now()
-        pre_time = get_pre_time(now_time)
-
-        pre_border_time = get_border_time(pre_time)
         now_border_time = get_border_time(now_time)
 
-        pre_report_info = {}
-        now_report_info = {}
-
-        pre_distance = pre_border_time['second_distance']
-        now_distance = now_border_time['first_distance']
-
-        for key in report_keys:
-            if key not in loop_keys:
-                value = slaveReportObj[key]
-                pre_report_info[key] = value*pre_distance/(pre_distance+now_distance)
-                now_report_info[key] = value*now_distance/(pre_distance+now_distance)
-            else:
-                pre_report_info[key] = {}
-                now_report_info[key] = {}
-                for subkey in slaveReportObj[key]:
-                    value = slaveReportObj[key][subkey]
-                    pre_report_info[key][subkey] = value*pre_distance/(pre_distance+now_distance)
-                    now_report_info[key][subkey] = value*now_distance/(pre_distance+now_distance)
-        
-        self.save_report(self.reportId,self.clientIp,pre_border_time['first_time'],pre_border_time['second_time'],pre_report_info)
-        self.save_report(self.reportId,self.clientIp,now_border_time['first_time'],now_border_time['second_time'],now_report_info)
+        self.save_report(self.reportId,self.clientIp,now_border_time['first_time'],now_border_time['second_time'],slaveReportObj)
 
         return True
 
