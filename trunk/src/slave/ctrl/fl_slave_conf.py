@@ -8,7 +8,7 @@ WORKER_NUM = 2
 LIMIT_SPEED = -1
 
 #worker进程的输入文件
-INPUT_FILE = "./fl_input.txt"
+INPUT_FILE = "../module/fl_input.txt"
 
 #worker进程需要加载的so
 SO_FILE = "../module/libmodule.so"
