@@ -53,13 +53,13 @@ def calc_values(report_info):
     result = {}
 
     #平均到每秒
-    result['allAvgNum'] = report_info['allReqNum']/(split_minutes * 60)
-    result['sucAvgNum'] = report_info['sucReqNum']/(split_minutes * 60)
-    result['errAvgNum'] = report_info['errReqNum']/(split_minutes * 60)
+    result['allAvgNum'] = float(report_info['allReqNum'])/float(split_minutes * 60)
+    result['sucAvgNum'] = float(report_info['sucReqNum'])/float(split_minutes * 60)
+    result['errAvgNum'] = float(report_info['errReqNum'])/float(split_minutes * 60)
 
-    result['allAvgTime'] = report_info['allTimeMsStat'] / report_info['allReqNum']
-    result['sucAvgTime'] = report_info['sucTimeMsStat'] / report_info['sucReqNum']
-    result['errAvgTime'] = report_info['errTimeMsStat'] / report_info['errReqNum']
+    result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum'])
+    result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum'])
+    result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum'])
 
     result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum'])
     result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum'])
@@ -156,7 +156,7 @@ def get_report_data_pie(cd):
     colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
     for i in range(0,len(res_data)):
         res_data[i]['color'] = colors[i]
-        res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (res_data[i]['value'] * 100 / sum_value)
+        res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (float(res_data[i]['value']) * float(100) / float(sum_value))
 
     return res_data
 
