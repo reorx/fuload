@@ -55,8 +55,8 @@ extern "C" int fuload_handle_process(const map<string,string>& mapParams)
     for(typeof(mapParams.begin()) it = mapParams.begin(); it != mapParams.end(); ++it)
     {
         printf("%s=%s&",it->first.c_str(),it->second.c_str());
-        usleep(1000);
     }
+    usleep(10000);
     printf("\n");
     unsigned res = rand() % 1000;
     if (res == 0)
