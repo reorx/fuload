@@ -99,7 +99,7 @@ def get_report_data_line(cd):
 
     data = []
     t = datetime.timedelta(minutes=split_minutes)
-    d = begintime+t
+    d = begintime + t + t
     while d < (endtime - t):
         dict_d = {}
         dict_d['x']=d
