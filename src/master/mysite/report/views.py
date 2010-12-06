@@ -65,13 +65,14 @@ def HandleReportUpload(request,reportId):
         return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
     return HttpResponse(json.dumps({"ret":0}))
 
-def HttpReportDataLine(request):
+def HttpReportData(request):
     form = SearchReportDataForm(request.GET)
     if not form.is_valid():
         return HttpResponse('error input')
 
     cd = form.cleaned_data
     clientip = cd['clientip']
+    rtype = request.GET['rtype']
 
     begintime = ''
     if 'begintime' in cd and cd['begintime'] is not None:
@@ -81,34 +82,15 @@ def HttpReportDataLine(request):
     if 'endtime' in cd and cd['endtime'] is not None:
         endtime = cd['endtime']
 
-    data = get_report_data_line(cd)
+    if rtype2attr[rtype]['swftype'] == 'pie':
+        data = get_report_data_pie(cd)
+        t = get_template('show/pie_data.xml')
+    else:
+        data = get_report_data_line(cd)
+        t = get_template('show/line_data.xml')
 
-    t = get_template('show/line_data.xml')
     html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}))
     return HttpResponse(html,mimetype='application/xml')
-
-def HttpReportDataPie(request):
-    form = SearchReportDataForm(request.GET)
-    if not form.is_valid():
-        return HttpResponse('error input')
-
-    cd = form.cleaned_data
-    clientip = cd['clientip']
-
-    begintime = ''
-    if 'begintime' in cd and cd['begintime'] is not None:
-        begintime = cd['begintime']
-
-    endtime = ''
-    if 'endtime' in cd and cd['endtime'] is not None:
-        endtime = cd['endtime']
-
-    data = get_report_data_pie(cd)
-
-    t = get_template('show/pie_data.xml')
-    html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}))
-    return HttpResponse(html,mimetype='application/xml')
-
 
 def HttpReportShow(request):
     form = SearchReportShowForm(request.GET)
@@ -120,10 +102,10 @@ def HttpReportShow(request):
     rtype = request.GET['rtype']
     if rtype2attr[rtype]['swftype'] == 'pie':
         swffile = 'fcp-pie-2d-charts.swf'
-        base_data_url = '/report/data/pie?r='+str(random.random())
+        base_data_url = '/report/data?r='+str(random.random())
     else:
         swffile = 'fcp-line-chart.swf'
-        base_data_url = '/report/data/line?r='+str(random.random())
+        base_data_url = '/report/data?r='+str(random.random())
 
     clientIps = StatDetail.objects.values("clientIp").distinct()
 
