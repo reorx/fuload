@@ -7,7 +7,7 @@
         <legend_popup font="Verdana" bgcolor="FFFFE3" font_size="10" />
         <Xheaders rotate="90" color="000000" size="9" title="" title_color="000000" />
         <Yheaders color="000000" size="10" title="" title_rotate="0" title_color="000000" />
-        <grid showX="1" showY="1" persent_stepY_from_stepX="175" grid_width="550" grid_height="250" grid_color="000000" grid_alpha="40" grid_thickness="1" bg_color="ffffff" bg_alpha="100" alternate_bg_color="FFFCF0" border_color="000000" border_thickness="2" />
+        <grid showX="1" showY="1" persent_stepY_from_stepX="175" grid_width="900" grid_height="250" grid_color="000000" grid_alpha="40" grid_thickness="1" bg_color="ffffff" bg_alpha="100" alternate_bg_color="FFFCF0" border_color="000000" border_thickness="2" />
     </general_settings>
     <abscissa_data>
         {% for d in data %}
