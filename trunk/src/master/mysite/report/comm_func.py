@@ -3,7 +3,7 @@
 
 import time
 import datetime
-from comm_def import split_minutes,rtype2attr
+from comm_def import split_minutes,rtype2attr,max_x_len
 
 def get_border_time(now_time):
     '''
@@ -112,6 +112,9 @@ def get_report_data_line(cd):
             dict_d['y'] = rtype2attr[rtype]['accuracy'] % (dict_d['y'])
         data.append(dict_d)
         d = d+t
+
+    while len(data) > max_x_len:
+        data = [d for i,d in enumerate(data) if i%2 == 0]
 
     return data
 
