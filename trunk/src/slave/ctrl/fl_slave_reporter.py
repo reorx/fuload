@@ -16,7 +16,7 @@ class SlaveReporter(object):
         self._reportUrl = reportUrl
 
     def report(self,data):
-        #logging.error(data)
+        logging.error(data)
         req = urllib2.Request(self._reportUrl)
         params = {"reportinfo":data}
         en_params = urllib.urlencode(params)

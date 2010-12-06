@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import datetime
+import logging
 
 try:
     import json
@@ -48,6 +49,8 @@ class ReportUploadHandler(object):
         return True
 
     def save_report(self, report_id, clientIp, first_time, second_time, report_info):
+        logging.error('come:'+repr(report_info['allTimeMsStat']))
+        logging.error('come:'+repr(report_info))
         new_report_info = {}
         try:
             stat_detail = StatDetail.objects.get(reportId=report_id, clientIp = clientIp, firstTime=first_time, secondTime=second_time)
@@ -70,6 +73,8 @@ class ReportUploadHandler(object):
         except StatDetail.DoesNotExist:
             stat_detail = StatDetail(reportId=report_id, clientIp = clientIp, firstTime=first_time, secondTime=second_time)
             new_report_info = report_info
+
+        logging.error('new:'+repr(new_report_info['allTimeMsStat']))
 
         result = calc_values(new_report_info)
         for k,v in result.items():
