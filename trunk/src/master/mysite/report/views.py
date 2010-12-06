@@ -3,6 +3,7 @@
 import urllib
 import random
 import copy
+import datetime
 try:
     import json
 except ImportError:
@@ -74,13 +75,10 @@ def HttpReportData(request):
     clientip = cd['clientip']
     rtype = request.GET['rtype']
 
-    begintime = ''
-    if 'begintime' in cd and cd['begintime'] is not None:
-        begintime = cd['begintime']
-
-    endtime = ''
-    if 'endtime' in cd and cd['endtime'] is not None:
-        endtime = cd['endtime']
+    begintime = cd['begintime']
+    t = datetime.timedelta(hours=24)
+    endtime = begintime + t
+    cd['endtime'] = endtime
 
     if rtype2attr[rtype]['swftype'] == 'pie':
         data = get_report_data_pie(cd)
@@ -97,6 +95,11 @@ def HttpReportShow(request):
     if not form.is_valid():
         return render_to_response('show/show.html',{'form':form})
     cd = form.cleaned_data
+
+    begintime = cd['begintime']
+    t = datetime.timedelta(hours=24)
+    endtime = begintime + t
+    cd['endtime'] = endtime
 
     swffile = ''
     rtype = request.GET['rtype']
