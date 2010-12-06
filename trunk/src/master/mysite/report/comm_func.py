@@ -114,7 +114,19 @@ def get_report_data_line(cd):
         d = d+t
 
     while len(data) > max_x_len:
-        data = [d for i,d in enumerate(data) if i%2 == 0]
+        tmpdata = []
+        for i,d in enumerate(data):
+            if i%2 == 0:
+                if i+1 < len(data):
+                    tmp_d = {
+                            'x':d['x'],
+                            'y':(float(d['y'])+float(data[i+1]['y'])) / 2
+                            }
+                    tmp_d['y'] = rtype2attr[rtype]['accuracy'] % (tmp_d['y'])
+                else:
+                    tmp_d = d
+                tmpdata.append(tmp_d)
+        data = tmpdata
 
     return data
 

@@ -4,7 +4,7 @@
 #五分钟
 split_minutes = 5
 #X轴最大的长度
-max_x_len = 192
+max_x_len = 96
 #上报数据时json的字段
 report_keys = (
 'allTimeMsStat',
