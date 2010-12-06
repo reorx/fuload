@@ -17,4 +17,4 @@ SO_FILE = "../module/libmodule.so"
 REPORT_TIMESEC = 10
 
 #上报的URL
-REPORT_URL = 'http://dante.qq.com/report/upload/1/'
+REPORT_URL = 'http://fuload.qq.com/report/upload/1/'
