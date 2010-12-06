@@ -29,6 +29,10 @@ int CSlaveReporter::Init(int key, int reportTime_sec)
 void CSlaveReporter::AddCount(int retcode, long usec)
 {
     int time_ms = usec / 1000;
+    if (time_ms < 0)
+    {
+        time_ms = 0;
+    }
     m_LocStat.AddCount(retcode,time_ms);
     m_NetStat.AddCount(retcode,time_ms);
 
