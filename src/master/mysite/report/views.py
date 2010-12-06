@@ -91,7 +91,14 @@ def HttpReportData(request):
     return HttpResponse(html,mimetype='application/xml')
 
 def HttpReportShow(request):
-    form = SearchReportShowForm(request.GET)
+    form_data = {}
+    for k,v in request.GET.items():
+        if v is not None:
+            form_data[k] = v
+    if 'begintime' not in form_data or form_data['begintime'] is None:
+        form_data['begintime'] = datetime.date.today()
+    form = SearchReportShowForm(form_data)
+
     if not form.is_valid():
         return render_to_response('show/show.html',{'form':form})
     cd = form.cleaned_data
