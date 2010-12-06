@@ -141,6 +141,8 @@ def HttpReportShow(request):
 
         if rtype2attr[rtype]['swftype'] == 'pie':
             tmpdata = get_report_data_pie(tmpcd)
+            if len(tmpdata) == 0:
+                continue
         else:
             tmpdata = get_report_data_line(tmpcd)
             #line swf的问题，必须起码有两个点
