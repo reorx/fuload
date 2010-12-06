@@ -3,7 +3,6 @@
 import urllib
 import random
 import copy
-import logging
 try:
     import json
 except ImportError:
@@ -19,11 +18,6 @@ from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
 from comm_def import rtype2attr
 from comm_func import get_report_data_line,get_report_data_pie,get_report_objs
-
-logging.basicConfig(level=logging.DEBUG,
-        format='%(asctime)s %(levelname)s %(message)s',
-        filename='/tmp/fl_master_log.txt',
-        filemode='a+')
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
