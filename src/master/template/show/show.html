@@ -7,7 +7,7 @@
         <meta name="author" content="dantezhu" />
         <meta name="keywords" content="fuload" />
         <meta name="description" content="fuload报表服务,项目地址:http://code.google.com/p/fuload/" />
-        <script src="/js/meteora/meteora.js"></script>
+        <script src="/js/date_select.js"></script>
     <script type="text/javascript">
         function set_randomnum()
 {
@@ -16,31 +16,6 @@
     x.value = num;
         return true;
 }
-Meteora.uses('Meteora.Calendar');
-Meteora.onStart(
-  function () {
-    new Calendar(
-      'id_begintime',
-      {
-        format: '%Y-%m-%d %H:%i',
-        minYear: 2000,
-        maxYear: 2100,
-        showHour: true,
-        showMinute: true,
-        showMeridiem: true
-    });
-    new Calendar(
-      'id_endtime',
-      {
-        format: '%Y-%m-%d %H:%i',
-        minYear: 2000,
-        maxYear: 2100,
-        showHour: true,
-        showMinute: true,
-        showMeridiem: true
-    });
-  }
-);
 </script>
 <link rel="stylesheet" type="text/css" href="/admin_media/css/base.css" /> 
 <link rel="stylesheet" type="text/css" href="/admin_media/css/forms.css" /> 
