@@ -102,10 +102,10 @@ def HttpReportShow(request):
     rtype = request.GET['rtype']
     if rtype2attr[rtype]['swftype'] == 'pie':
         swffile = 'fcp-pie-2d-charts.swf'
-        base_data_url = '/report/data?r='+str(random.random())
+        base_data_url = '/report/data/?r='+str(random.random())
     else:
         swffile = 'fcp-line-chart.swf'
-        base_data_url = '/report/data?r='+str(random.random())
+        base_data_url = '/report/data/?r='+str(random.random())
 
     clientIps = StatDetail.objects.values("clientIp").distinct()
 

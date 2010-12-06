@@ -48,7 +48,7 @@
             <param name="wmode" value="transparent" />
             <embed name="flashchart" src="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="800" height="500"></embed>
         </object>
-        <a href="{{ d.data_url }}" target="_blank" >查看数据</a>
+        <a href="{{ d.data_url|safe }}" target="_blank" >查看数据</a>
         </div>
         {% endfor %}
     </body>
