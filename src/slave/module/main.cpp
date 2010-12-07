@@ -45,7 +45,7 @@ extern "C" int fuload_handle_init()
 /**
  * @brief   业务逻辑，每次进入
  *
- * @param   mapParams       将输入数据按照空格拆分之后的vector
+ * @param   mapParams       将输入数据按照url方式解析之后的key-value结构
  *
  * @return  0               succ
  *          else            返回值,会用来做统计
