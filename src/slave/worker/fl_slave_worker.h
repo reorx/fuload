@@ -46,7 +46,7 @@ typedef struct _st_swparam
 }StSWParam;
 
 typedef int (*FunPtrInit)();
-typedef int (*FunPtrProcess)(const map<string,string>& mapParams);
+typedef int (*FunPtrProcess)(map<string,string>& mapParams);
 typedef int (*FunPtrFini)();
 
 class CFLSlaveWorker 
@@ -82,7 +82,7 @@ class CFLSlaveWorker
          * @return  0               succ
          *          else            fail
          */
-        int process(const StSWInput& swi);
+        int process(StSWInput& swi);
 
         /**
          * @brief   设置要加载的so的文件

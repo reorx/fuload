@@ -116,12 +116,11 @@ int CFLSlaveWorker::Run()
     }
     return 0;
 }
-int CFLSlaveWorker::process(const StSWInput& swi)
+int CFLSlaveWorker::process(StSWInput& swi)
 {
-    const map<string,string> &mapParams = swi.mapParams;
     if (m_funPtrProcess == NULL)
     {
         return -1;
     }
-    return (*m_funPtrProcess)(mapParams);
+    return (*m_funPtrProcess)(swi.mapParams);
 }
