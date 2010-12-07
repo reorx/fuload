@@ -8,13 +8,15 @@ WORKER_NUM = 2
 LIMIT_SPEED = -1
 
 #worker进程的输入文件
-INPUT_FILE = "../module/fl_input.txt"
+#INPUT_FILE = "../module/fl_input.txt"
+INPUT_FILE = "/home/dantezhu/baseplatform/application/ThirdPartApp/server/spp_openlogin/src/tools/fl_so/login_input.txt"
 
 #worker进程需要加载的so
-SO_FILE = "../module/libmodule.so"
+#SO_FILE = "../module/libmodule.so"
+SO_FILE = "/home/dantezhu/baseplatform/application/ThirdPartApp/server/spp_openlogin/src/tools/fl_so/login.so"
 
 #worker进程的上报间隔(sec)
 REPORT_TIMESEC = 10
 
 #上报的URL
-REPORT_URL = 'http://fuload.qq.com/report/upload/1/'
+REPORT_URL = 'http://fuload.qq.com/report/upload/2/'
