@@ -26,7 +26,7 @@ class CSlaveReporter
         virtual ~CSlaveReporter ();
 
         int Init(int key,int reportTime_sec);
-        void AddCount(int retcode, long usec);
+        void AddCount(int retcode, int time_ms);
         void ResetStat();
         
     private:
