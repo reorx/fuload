@@ -76,7 +76,7 @@ int CFLSlaveWorker::Run()
     int ret;
     struct timeval stBegin;
     struct timeval stEnd;
-    long usec;
+    int time_ms;
     if (m_funPtrInit)
     {
         ret = (*m_funPtrInit)();
@@ -98,8 +98,8 @@ int CFLSlaveWorker::Run()
         gettimeofday(&stBegin, NULL);
         ret = process(swi);
         gettimeofday(&stEnd, NULL);
-        usec = (stEnd.tv_sec-stBegin.tv_sec)*1000000+stEnd.tv_usec-stBegin.tv_usec;
-        m_reporter.AddCount(ret, usec);
+        time_ms = (stEnd.tv_sec-stBegin.tv_sec)*1000+(stEnd.tv_usec-stBegin.tv_usec)/1000;
+        m_reporter.AddCount(ret, time_ms);
         if (ret)
         {
             printf("process error:%d\n",ret);

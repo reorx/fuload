@@ -26,9 +26,8 @@ int CSlaveReporter::Init(int key, int reportTime_sec)
     m_Timer.Init(reportTime_sec*1000,false);
     return 0;
 }
-void CSlaveReporter::AddCount(int retcode, long usec)
+void CSlaveReporter::AddCount(int retcode, int time_ms)
 {
-    int time_ms = usec / 1000;
     if (time_ms < 0)
     {
         time_ms = 0;
