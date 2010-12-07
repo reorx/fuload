@@ -7,6 +7,8 @@ split_minutes = 5
 max_x_len = 96
 #flash默认宽度
 default_grid_width = 900
+#flash y,x默认比例
+default_persent_yx = 175
 #上报数据时json的字段
 report_keys = (
 'allTimeMsStat',
