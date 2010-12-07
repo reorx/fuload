@@ -100,7 +100,7 @@
     1.apache的错误日志中经常出现如下错误:
     [Tue Dec 07 15:06:32 2010] [error] [client 10.6.207.189] mod_wsgi (pid=28287): Exception occurred processing WSGI script '/home/dantezhu/htdocs/fuload/conf/setting.wsgi'.
     [Tue Dec 07 15:06:32 2010] [error] [client 10.6.207.189] IOError: failed to write data
-    A:在apache的配置文件中加入如下项:Timeout 60,设置超时时间(sec)
+    A:在apache的配置文件中加入如下项:Timeout 360000,设置超时时间(sec)
     
             
 OK，基本就是这样，目前的介绍还比较简单，等以后再补充~
