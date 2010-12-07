@@ -1,0 +1,39 @@
+WSGIPythonEggs /tmp
+<VirtualHost *:80>
+    ServerName fuload.qq.com
+    WSGIScriptAlias / /home/dantezhu/htdocs/fuload/conf/setting.wsgi
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride
+        Order allow,deny 
+        Allow from all 
+    </Directory>
+    <Directory "/home/dantezhu/htdocs/fuload/mysite">
+        Order Deny,Allow 
+        Deny from all 
+    </Directory>
+    Alias /admin_media "/usr/local/lib/python2.7/site-packages/django/contrib/admin/media"
+    <Directory "/usr/local/lib/python2.7/site-packages/django/contrib/admin/media">
+        Order allow,deny 
+        Options Indexes
+        Allow from all 
+        IndexOptions FancyIndexing
+    </Directory>
+    #AliasMatch /js/(.*\.(js)) /home/dantezhu/htdocs/fuload/js/$1 
+    Alias /js /home/dantezhu/htdocs/fuload/js/
+    <Directory "/home/dantezhu/htdocs/fuload/js/">
+        Order allow,deny 
+        Options Indexes
+        Allow from all 
+        IndexOptions FancyIndexing
+    </Directory>
+
+    #AliasMatch /site_media/(.*\.(css|gif|png|jpg|jpeg)) /home/dantezhu/htdocs/fuload/media/$1 
+    Alias /site_media /home/dantezhu/htdocs/fuload/media/
+    <Directory "/home/dantezhu/htdocs/fuload/media/">
+        Order allow,deny 
+        Options Indexes
+        Allow from all 
+        IndexOptions FancyIndexing
+    </Directory>
+</VirtualHost>
