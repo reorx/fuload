@@ -50,7 +50,7 @@ extern "C" int fuload_handle_init()
  * @return  0               succ
  *          else            返回值,会用来做统计
  */
-extern "C" int fuload_handle_process(const map<string,string>& mapParams)
+extern "C" int fuload_handle_process(map<string,string>& mapParams)
 {
     for(typeof(mapParams.begin()) it = mapParams.begin(); it != mapParams.end(); ++it)
     {
