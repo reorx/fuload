@@ -95,5 +95,12 @@
 
         其中test[1]中的1是权重的作用，即占整个请求的1/3。
         name=dantezhu&string=woaininiuniu&laopo = niuniu 是具体的内容，框架会按照url的方式来解析，而用户自己的so只需要按照mapParams来取的数据即可。
-        
+
+四.FAQ
+    1.apache的错误日志中经常出现如下错误:
+    [Tue Dec 07 15:06:32 2010] [error] [client 10.6.207.189] mod_wsgi (pid=28287): Exception occurred processing WSGI script '/home/dantezhu/htdocs/fuload/conf/setting.wsgi'.
+    [Tue Dec 07 15:06:32 2010] [error] [client 10.6.207.189] IOError: failed to write data
+    A:在apache的配置文件中加入如下项:Timeout 60,设置超时时间(sec)
+    
+            
 OK，基本就是这样，目前的介绍还比较简单，等以后再补充~
