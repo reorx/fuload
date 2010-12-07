@@ -57,12 +57,23 @@ def calc_values(report_info):
     result['sucAvgNum'] = float(report_info['sucReqNum'])/float(split_minutes * 60)
     result['errAvgNum'] = float(report_info['errReqNum'])/float(split_minutes * 60)
 
-    result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum'])
-    result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum'])
-    result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum'])
+    result['allAvgTime'] = 0
+    result['sucAvgTime'] = 0
+    result['errAvgTime'] = 0
 
-    result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum'])
-    result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum'])
+    result['sucRate'] = 100
+    result['errRate'] = 0
+
+    if float(report_info['allReqNum']) != 0:
+        result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum'])
+    if float(report_info['sucReqNum']) != 0:
+        result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum'])
+    if float(report_info['errReqNum']) != 0:
+        result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum'])
+
+    if float(report_info['allReqNum']) != 0:
+        result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum'])
+        result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum'])
 
     return result
 
@@ -177,7 +188,10 @@ def get_report_data_pie(cd):
     colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
     for i in range(0,len(res_data)):
         res_data[i]['color'] = colors[i]
-        res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (float(res_data[i]['value']) * float(100) / float(sum_value))
+        if float(sum_value) != 0:
+            res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (float(res_data[i]['value']) * float(100) / float(sum_value))
+        else:
+            res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % 0
 
     return res_data
 
