@@ -57,23 +57,12 @@ def calc_values(report_info):
     result['sucAvgNum'] = float(report_info['sucReqNum'])/float(split_minutes * 60)
     result['errAvgNum'] = float(report_info['errReqNum'])/float(split_minutes * 60)
 
-    result['allAvgTime'] = 0
-    result['sucAvgTime'] = 0
-    result['errAvgTime'] = 0
+    result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum']) if float(report_info['allReqNum']) != 0 else 0
+    result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum']) if float(report_info['sucReqNum']) != 0 else 0
+    result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum']) if float(report_info['errReqNum']) != 0 else 0
 
-    result['sucRate'] = 100
-    result['errRate'] = 0
-
-    if float(report_info['allReqNum']) != 0:
-        result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum'])
-    if float(report_info['sucReqNum']) != 0:
-        result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum'])
-    if float(report_info['errReqNum']) != 0:
-        result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum'])
-
-    if float(report_info['allReqNum']) != 0:
-        result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum'])
-        result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum'])
+    result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum']) if float(report_info['allReqNum']) != 0 else 100
+    result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum']) if float(report_info['allReqNum']) != 0 else 0
 
     return result
 
