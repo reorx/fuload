@@ -10,7 +10,6 @@ except ImportError:
     import simplejson as json
 
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.loader import get_template
 from django.template import Context
@@ -64,8 +63,8 @@ def HandleReportUpload(request,reportId):
     handler = ReportUploadHandler(int(reportId), clientIp, slaveReport)
     ret = handler.handle_report()
     if ret is False:
-        return HttpResponseRedirect('/report/result/-1/')
-    return HttpResponseRedirect('/report/result/0/')
+        return HttpResponse(json.dumps({"ret":-1,"msg":"set_report failed"}))
+    return HttpResponse(json.dumps({"ret":0}))
 
 def HttpReportData(request):
     form = SearchReportDataForm(request.GET)
@@ -161,6 +160,3 @@ def HttpReportShow(request):
                 )
 
     return render_to_response('show/show.html',{'listData':listData,'swffile':swffile,'form':form})
-
-def HandleReportResult(request,res):
-    return HttpResponse(json.dumps({"ret":int(res)}))
