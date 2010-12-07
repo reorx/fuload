@@ -119,11 +119,16 @@ def get_report_data_line(cd):
             for i,d in enumerate(data):
                 if i%2 == 0:
                     if i+1 < len(data):
+                        if len(d['y']) > 0 and len(data[i+1]['y'])>0:
+                            tmp_y = (float(d['y'])+float(data[i+1]['y'])) / 2
+                            tmp_y = rtype2attr[rtype]['accuracy'] % tmp_y
+                        else:
+                            tmp_y = d['y'] if len(d['y']) > 0 else data[i+1]['y']
+
                         tmp_d = {
                                 'x':d['x'],
-                                'y':(float(d['y'])+float(data[i+1]['y'])) / 2
+                                'y':tmp_y
                                 }
-                        tmp_d['y'] = rtype2attr[rtype]['accuracy'] % (tmp_d['y'])
                     else:
                         tmp_d = d
                     tmpdata.append(tmp_d)
