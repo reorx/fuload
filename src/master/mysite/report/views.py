@@ -18,7 +18,7 @@ from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
 from comm_def import rtype2attr
-from comm_func import get_report_data_line,get_report_data_pie,get_report_objs,cal_grid_width
+from comm_func import get_report_data_line,get_report_data_pie,get_report_objs,cal_grid_width,cal_persent_yx
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -87,8 +87,18 @@ def HttpReportData(request):
         data = get_report_data_line(cd)
         t = get_template('show/line_data.xml')
     grid_width = cal_grid_width(len(data))
+    persent_yx = cal_persent_yx(len(data))
 
-    html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip,'grid_width':grid_width}))
+    html = t.render(Context(
+        {
+            'data':data,
+            'begintime':begintime,
+            'endtime':endtime,
+            'clientip':clientip,
+            'grid_width':grid_width,
+            'persent_yx':persent_yx
+            }
+        ))
     return HttpResponse(html,mimetype='application/xml')
 
 def HttpReportShow(request):
