@@ -18,7 +18,7 @@ from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
 from comm_def import rtype2attr
-from comm_func import get_report_data_line,get_report_data_pie,get_report_objs
+from comm_func import get_report_data_line,get_report_data_pie,get_report_objs,cal_grid_width
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -86,8 +86,9 @@ def HttpReportData(request):
     else:
         data = get_report_data_line(cd)
         t = get_template('show/line_data.xml')
+    grid_width = cal_grid_width(len(data))
 
-    html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip}))
+    html = t.render(Context({'data':data,'begintime':begintime,'endtime':endtime,'clientip':clientip,'grid_width':grid_width}))
     return HttpResponse(html,mimetype='application/xml')
 
 def HttpReportShow(request):
@@ -142,8 +143,10 @@ def HttpReportShow(request):
                 continue
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
+
+        flash_width = cal_grid_width(len(tmpdata)) + 50
         listData.append(
-                {'ip':ip, 'data_url':data_url,'quote_data_url':quote_data_url}
+                {'ip':ip, 'data_url':data_url,'quote_data_url':quote_data_url,'flash_width':flash_width}
                 )
 
     return render_to_response('show/show.html',{'listData':listData,'swffile':swffile,'form':form})

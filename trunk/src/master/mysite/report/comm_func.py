@@ -3,7 +3,7 @@
 
 import time
 import datetime
-from comm_def import split_minutes,rtype2attr,max_x_len
+from comm_def import split_minutes,rtype2attr,max_x_len,default_grid_width
 
 def get_border_time(now_time):
     '''
@@ -113,20 +113,21 @@ def get_report_data_line(cd):
         data.append(dict_d)
         d = d+t
 
-    while len(data) > max_x_len:
-        tmpdata = []
-        for i,d in enumerate(data):
-            if i%2 == 0:
-                if i+1 < len(data):
-                    tmp_d = {
-                            'x':d['x'],
-                            'y':(float(d['y'])+float(data[i+1]['y'])) / 2
-                            }
-                    tmp_d['y'] = rtype2attr[rtype]['accuracy'] % (tmp_d['y'])
-                else:
-                    tmp_d = d
-                tmpdata.append(tmp_d)
-        data = tmpdata
+    if cd['adjust'] == 0:
+        while len(data) > max_x_len:
+            tmpdata = []
+            for i,d in enumerate(data):
+                if i%2 == 0:
+                    if i+1 < len(data):
+                        tmp_d = {
+                                'x':d['x'],
+                                'y':(float(d['y'])+float(data[i+1]['y'])) / 2
+                                }
+                        tmp_d['y'] = rtype2attr[rtype]['accuracy'] % (tmp_d['y'])
+                    else:
+                        tmp_d = d
+                    tmpdata.append(tmp_d)
+            data = tmpdata
 
     return data
 
@@ -174,6 +175,11 @@ def get_report_data_pie(cd):
         res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (float(res_data[i]['value']) * float(100) / float(sum_value))
 
     return res_data
+
+def cal_grid_width(len_data=0):
+    if len_data <= max_x_len:
+        return default_grid_width
+    return default_grid_width * len_data / max_x_len
 
 if __name__ == '__main__':
     print get_border_time(datetime.datetime.now())

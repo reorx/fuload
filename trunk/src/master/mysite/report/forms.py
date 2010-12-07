@@ -14,5 +14,11 @@ class SearchReportShowForm(forms.Form):
                 choices = [(v,rtype2attr[v]['name']) for v in rtype_original_keys]
                 )
             )
+    adjust = forms.IntegerField(required=True,
+            label='展示调整',
+            widget=forms.Select(
+                choices = [(0,'自动调整精度'),(1,'自动调整宽度')]
+                )
+            )
 class SearchReportDataForm(SearchReportShowForm):
     clientip = forms.CharField(required=True)
