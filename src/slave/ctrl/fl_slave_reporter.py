@@ -19,6 +19,8 @@ class SlaveReporter(object):
     def report(self,data):
         #logging.error(data)
         req = urllib2.Request(self._reportUrl)
+        req.add_header('User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)')
+        req.add_header('Connection','Keep-Alive')
         params = {"reportinfo":data}
         en_params = urllib.urlencode(params)
         try:
