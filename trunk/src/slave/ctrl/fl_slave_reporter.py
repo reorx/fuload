@@ -27,7 +27,7 @@ class SlaveReporter(object):
                 logging.error("report error,ret:%d,msg:%s",obj['ret'],obj['msg'])
                 return False
         except Exception,ex:
-            logging.error("urllib2 exception:"+ ex.message + ",data:" +data)
+            logging.error("urllib2 exception:"+ repr(ex) + ",data:" +data)
             return False
         else:
             return True
