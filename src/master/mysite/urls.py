@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^report/upload/(\d+)/$', mysite.report.views.HandleReportUpload),
+    (r'^report/result/(\d+)/$', mysite.report.views.HandleReportResult),
     (r'^report/data/$', mysite.report.views.HttpReportData),
 
 
