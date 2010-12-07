@@ -37,7 +37,7 @@
             <form id="changelist-search" action="" method="get" onsubmit="set_randomnum()"> 
                 <div><!-- DIV needed for valid HTML --> 
                     <label for="searchbar"><img src="/admin_media/img/admin/icon_searchbox.png" alt="Search" /></label> 
-                    上报ID:{{ form.reportid }} 报表类型:{{ form.rtype }} 日期:{{ form.begintime }}
+                    上报ID:{{ form.reportid }} 报表类型:{{ form.rtype }} 日期:{{ form.begintime }} 展示调整:{{ form.adjust }}
                     <input type="hidden" name="randomnum" id="id_randomnum" value=""/>
                     <input type="submit" value="搜索" /> 
                 </div> 
@@ -45,13 +45,13 @@
         </div>
         {% for d in listData %}
         <div>
-        <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="950" height="500">
-            <param name="movie" value="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" />
-            <param name="quality" value="high" />
-            <param name="wmode" value="transparent" />
-            <embed name="flashchart" wmode="transparent" src="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="950" height="500"></embed>
-        </object>
-        <a href="{{ d.data_url|safe }}" target="_blank" >查看数据</a>
+            <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="{{ d.flash_width }}" height="500">
+                <param name="movie" value="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" />
+                <param name="quality" value="high" />
+                <param name="wmode" value="transparent" />
+                <embed name="flashchart" wmode="transparent" src="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="{{ d.flash_width }}" height="500"></embed>
+            </object>
+            <a href="{{ d.data_url|safe }}" target="_blank" >查看数据</a>
         </div>
         {% endfor %}
     </body>
