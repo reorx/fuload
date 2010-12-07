@@ -3,6 +3,7 @@
 import urllib
 import urllib2
 import logging
+import traceback
 
 try:
     import json
@@ -26,8 +27,8 @@ class SlaveReporter(object):
             if obj['ret'] != 0:
                 logging.error("report error,ret:%d,msg:%s",obj['ret'],obj['msg'])
                 return False
-        except Exception,ex:
-            logging.error("urllib2 exception:"+ repr(ex) + ",data:" +data)
+        except Exception, ex:
+            logging.error("urllib2 exception:"+ repr(ex) + traceback.format_exc() + ",data:" +data)
             return False
         else:
             return True
