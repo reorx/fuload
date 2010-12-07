@@ -44,16 +44,19 @@ int CFLSlaveInput::parseInputData(const string& strInputData)
             size_t begin_index = tempLine.find("[");
             if (begin_index == string::npos)
             {
-                return -1;
+                loopNum = 1;
+                continue;
             }
             size_t end_index = tempLine.find("]",begin_index);
             if (end_index == string::npos)
             {
-                return -2;
+                loopNum = 1;
+                continue;
             }
             if (begin_index == end_index)
             {
-                return -3;
+                loopNum = 1;
+                continue;
             }
 
             string substr = tempLine.substr(begin_index+1,end_index-begin_index-1);
