@@ -50,7 +50,7 @@
          * @return  0               succ
          *          else            返回值,会用来做统计
          */
-        extern "C" int fuload_handle_process(const map<string,string>& mapParams)
+        extern "C" int fuload_handle_process(map<string,string>& mapParams)
 
         /**
          * @brief   so结束时的收尾工作，只会调用一次。一般不用编写
