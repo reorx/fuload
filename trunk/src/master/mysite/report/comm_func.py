@@ -3,7 +3,7 @@
 
 import time
 import datetime
-from comm_def import split_minutes,rtype2attr,max_x_len,default_grid_width,default_persent_yx
+from comm_def import split_minutes,rtype2attr,max_x_len,default_grid_width,default_persent_yx,pie_colors
 
 def get_border_time(now_time):
     '''
@@ -162,11 +162,14 @@ def get_report_data_pie(cd):
         tmp_data.append(dict_d)
 
     tmp_data.sort(lambda x,y: cmp(y['value'], x['value']))   
-    res_data = tmp_data[:6]
 
-    if len(tmp_data) > 6:
+    max_pie_typecount = len(pie_colors) - 1
+
+    res_data = tmp_data[:max_pie_typecount]
+
+    if len(tmp_data) > max_pie_typecount:
         sum_d = 0
-        for i in range(6,len(tmp_data)):
+        for i in range(max_pie_typecount,len(tmp_data)):
             sum_d += tmp_data[i]['value']
         res_data.append({'name':'else','value':sum_d})
 
@@ -174,9 +177,8 @@ def get_report_data_pie(cd):
     for v in res_data:
         sum_value+=v['value']
 
-    colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
     for i in range(0,len(res_data)):
-        res_data[i]['color'] = colors[i]
+        res_data[i]['color'] = pie_colors[i]
         if float(sum_value) != 0:
             res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (float(res_data[i]['value']) * float(100) / float(sum_value))
         else:
