@@ -61,6 +61,8 @@ class ReportUploadHandler(object):
                 else:
                     new_report_info[key] = {}
                     for tinfo in (old_report_info, report_info):
+                        if tinfo[key] is None:
+                            continue
                         for subkey in tinfo[key]:
                             if subkey in new_report_info[key]:
                                 new_report_info[key][subkey] += tinfo[key][subkey]

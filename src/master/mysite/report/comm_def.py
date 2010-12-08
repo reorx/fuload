@@ -3,12 +3,19 @@
 
 #五分钟
 split_minutes = 5
+
+#显示饼图的最大分类数
+pie_colors = ('004CB0','EC0033','FF7300','999999','00B869','FFCD00','A0D300')
+
 #X轴最大的长度
 max_x_len = 96
+
 #flash默认宽度
 default_grid_width = 900
+
 #flash y,x默认比例
 default_persent_yx = 175
+
 #上报数据时json的字段
 report_keys = (
 'allTimeMsStat',
@@ -22,6 +29,7 @@ report_keys = (
 'errtimemap',
 'retmap'
 )
+
 #上报数据时，对这些字段要进行遍历累加
 loop_keys = (
 'alltimemap',
@@ -29,6 +37,7 @@ loop_keys = (
 'errtimemap',
 'retmap'
 )
+
 #form中原始展现的rtype顺序
 rtype_original_keys = (
         'allavgnum',
@@ -47,6 +56,7 @@ rtype_original_keys = (
         'errtimemap',
         'retmap',
         )
+
 #展示数据时，前台传来的rtype与attr，name等的对应
 rtype2attr = {
         'allavgnum':{

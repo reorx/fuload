@@ -25,9 +25,9 @@ typedef struct _StSWNetStat
 {
     public:
         //统计了不同时间状态的调用数量
-        map<int, unsigned> mapAllTimeMsStat;
-        map<int, unsigned> mapSucTimeMsStat;
-        map<int, unsigned> mapErrTimeMsStat;
+        map<string, unsigned> mapAllTimeMsStat;
+        map<string, unsigned> mapSucTimeMsStat;
+        map<string, unsigned> mapErrTimeMsStat;
 
         //所有请求的累计调用时间
         unsigned allTimeMsStat;
@@ -67,7 +67,7 @@ typedef struct _StSWNetStat
                 errTimeMsStat += time_ms;
             }
             mapRetcodeStat[retcode] += 1;
-            int mTime = get_maptime(time_ms);
+            string mTime = get_maptime(time_ms);
             mapAllTimeMsStat[mTime] += 1;
             if (retcode == 0)
             {
@@ -94,21 +94,35 @@ typedef struct _StSWNetStat
         }
 
     private:
-        int get_maptime(int time_ms)
+        string get_maptime(int time_ms)
         {
-            int arr_times[] = {
-                5,10,50,100,200,500,1000
+            struct
+            {
+                int iTime;
+                string strTimeKey;
+            }arr_times[]={
+                {5,"[0,5]"},
+                {10,"(5,10]"},
+                {50,"(10,50]"},
+                {100,"(50,100]"},
+                {500,"(100,500]"},
+                {1000,"(500,1000]"},
+                {-1,"(1000,~)"},
             };
-            int count = sizeof(arr_times)/4;
+            int count = 5;
 
             for (int i = 0; i < count; i++)
             {
-                if (time_ms <= arr_times[i])
+                if (arr_times[i].iTime == -1)
                 {
-                    return arr_times[i];
+                    return arr_times[i].strTimeKey;
+                }
+                if (time_ms <= arr_times[i].iTime)
+                {
+                    return arr_times[i].strTimeKey;
                 }
             }
-            return -1;
+            return "(1000,~)";//实际上到不了这一步
         }
 } StSWNetStat;
 
@@ -204,24 +218,21 @@ class CSWReport
             Json::Value valueAllTimeMap;
             foreach(m_PtrNetStat->mapAllTimeMsStat,it_time)
             {
-                snprintf(tmp,sizeof(tmp),"%d",it_time->first);
-                valueAllTimeMap[tmp] = it_time->second;
+                valueAllTimeMap[it_time->first] = it_time->second;
             }
             root["alltimemap"] = valueAllTimeMap;
 
             Json::Value valueSucTimeMap;
-            foreach(m_PtrNetStat->mapAllTimeMsStat,it_time)
+            foreach(m_PtrNetStat->mapSucTimeMsStat,it_time)
             {
-                snprintf(tmp,sizeof(tmp),"%d",it_time->first);
-                valueSucTimeMap[tmp] = it_time->second;
+                valueSucTimeMap[it_time->first] = it_time->second;
             }
             root["suctimemap"] = valueSucTimeMap;
 
             Json::Value valueErrTimeMap;
-            foreach(m_PtrNetStat->mapAllTimeMsStat,it_time)
+            foreach(m_PtrNetStat->mapErrTimeMsStat,it_time)
             {
-                snprintf(tmp,sizeof(tmp),"%d",it_time->first);
-                valueErrTimeMap[tmp] = it_time->second;
+                valueErrTimeMap[it_time->first] = it_time->second;
             }
             root["errtimemap"] = valueErrTimeMap;
 
