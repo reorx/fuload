@@ -109,7 +109,7 @@ typedef struct _StSWNetStat
                 {1000,"(500,1000]"},
                 {-1,"(1000,~)"},
             };
-            int count = 5;
+            int count = sizeof(arr_times) / sizeof(arr_times[0]);
 
             for (int i = 0; i < count; i++)
             {
