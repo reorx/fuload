@@ -113,11 +113,7 @@ typedef struct _StSWNetStat
 
             for (int i = 0; i < count; i++)
             {
-                if (arr_times[i].iTime == -1)
-                {
-                    return arr_times[i].strTimeKey;
-                }
-                if (time_ms <= arr_times[i].iTime)
+                if (arr_times[i].iTime == -1 || time_ms <= arr_times[i].iTime)
                 {
                     return arr_times[i].strTimeKey;
                 }
@@ -142,45 +138,39 @@ typedef struct _StSWLocStat
         }
         void dealTimeStat(int retcode, int time_ms)
         {
-            if (retcode == 0)
+            struct {
+                int time_ms;
+                int suc_stat;
+                int err_stat;
+            }arr_statinfos[] = {
+                {5,STAT_5_SUC,STAT_5_ERR},
+                {10,STAT_10_SUC,STAT_10_ERR},
+                {50,STAT_50_SUC,STAT_50_ERR},
+                {100,STAT_100_SUC,STAT_100_ERR},
+                {200,STAT_200_SUC,STAT_200_ERR},
+                {500,STAT_500_SUC,STAT_500_ERR},
+                {1000,STAT_1000_SUC,STAT_1000_ERR},
+                {-1,STAT_MORE_SUC,STAT_MORE_ERR},
+            };
+            int count = sizeof(arr_statinfos) / sizeof(arr_statinfos[0]);
+            
+            for (int i = 0; i < count; i++)
             {
-                m_stat_info.AddCount(STAT_SUC);
-                if(time_ms<5)
-                    m_stat_info.AddCount(STAT_5_SUC);
-                else if(time_ms<10)
-                    m_stat_info.AddCount(STAT_10_SUC);
-                else if(time_ms<50)
-                    m_stat_info.AddCount(STAT_50_SUC);
-                else if(time_ms<100)
-                    m_stat_info.AddCount(STAT_100_SUC);
-                else if(time_ms<200)
-                    m_stat_info.AddCount(STAT_200_SUC);
-                else if(time_ms<500)
-                    m_stat_info.AddCount(STAT_500_SUC);
-                else if(time_ms<1000)
-                    m_stat_info.AddCount(STAT_1000_SUC);
-                else
-                    m_stat_info.AddCount(STAT_MORE_SUC);
-            }
-            else
-            {
-                m_stat_info.AddCount(STAT_ERR);
-                if(time_ms<5)
-                    m_stat_info.AddCount(STAT_5_ERR);
-                else if(time_ms<10)
-                    m_stat_info.AddCount(STAT_10_ERR);
-                else if(time_ms<50)
-                    m_stat_info.AddCount(STAT_50_ERR);
-                else if(time_ms<100)
-                    m_stat_info.AddCount(STAT_100_ERR);
-                else if(time_ms<200)
-                    m_stat_info.AddCount(STAT_200_ERR);
-                else if(time_ms<500)
-                    m_stat_info.AddCount(STAT_500_ERR);
-                else if(time_ms<1000)
-                    m_stat_info.AddCount(STAT_1000_ERR);
-                else
-                    m_stat_info.AddCount(STAT_MORE_ERR);
+                if (arr_statinfos[i].time_ms == -1 || time_ms <= arr_statinfos[i].time_ms)
+                {
+                    if (retcode == 0)
+                    {
+                        m_stat_info.AddCount(STAT_SUC);
+                        m_stat_info.AddCount(arr_statinfos[i].suc_stat);
+                        return;
+                    }
+                    else
+                    {
+                        m_stat_info.AddCount(STAT_ERR);
+                        m_stat_info.AddCount(arr_statinfos[i].err_stat);
+                        return;
+                    }
+                }
             }
         }
         void ResetStat()
