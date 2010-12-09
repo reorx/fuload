@@ -78,7 +78,7 @@ def get_report_objs(cd):
         objs = objs.filter(firstTime__gte=cd['begintime'])
 
     if 'endtime' in cd and cd['endtime'] is not None:
-        objs = objs.filter(secondTime__lte=cd['endtime'])
+        objs = objs.filter(firstTime__lt=cd['endtime'])
 
     objs.order_by('firstTime')
 
@@ -99,8 +99,8 @@ def get_report_data_line(cd):
 
     data = []
     t = datetime.timedelta(minutes=split_minutes)
-    d = begintime + t
-    while d < (endtime):
+    d = begintime
+    while d <= endtime:
         dict_d = {}
         dict_d['x']=d
         try:
