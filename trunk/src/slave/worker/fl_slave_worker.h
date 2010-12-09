@@ -23,7 +23,7 @@
 
 #include "speedlimit.h"
 
-#include "fl_commfunc.h"
+#include "fl_slave_func.h"
 #include "fl_slave_input.h"
 #include "fl_slave_reporter.h"
 

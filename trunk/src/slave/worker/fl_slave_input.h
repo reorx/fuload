@@ -14,7 +14,7 @@
 #include <vector>
 #include <map>
 
-#include "fl_commfunc.h"
+#include "fl_slave_func.h"
 #include "fl_weight_route.h"
 using namespace std;
 

@@ -15,7 +15,7 @@
 
 #include <json/json.h>
 
-#include "fl_commdef.h"
+#include "fl_slave_def.h"
 #include "stat.h"
 #include "stat_def.h"
 using namespace std;
