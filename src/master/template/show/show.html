@@ -9,19 +9,30 @@
         <meta name="description" content="fuload报表服务,项目地址:http://code.google.com/p/fuload/" />
         <link rel="stylesheet" type="text/css" href="/admin_media/css/base.css" /> 
         <link rel="stylesheet" type="text/css" href="/admin_media/css/forms.css" /> 
-        <script type="text/javascript">window.__admin_media_prefix__ = "/admin_media/";</script>
-        <script type="text/javascript" src="/admin/jsi18n/"></script>
-        <script type="text/javascript" src="/admin_media/js/core.js"></script>
-        {{ form.media }}
-    <script type="text/javascript">
-        function set_randomnum()
-{
-    var x=document.getElementById("id_randomnum");
-    var num = Math.random();
-    x.value = num;
-        return true;
-}
-</script>
+        <link rel="stylesheet" media="all" type="text/css" href="/site_media/css/ui-lightness/jquery-ui-1.8.6.custom.css" />
+        <style type="text/css">
+            /* css for timepicker */
+            .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+            .ui-timepicker-div dl{ text-align: left; }
+            .ui-timepicker-div dl dt{ height: 25px; }
+            .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+            .ui-timepicker-div td { font-size: 90%; }
+        </style>
+        <script type="text/javascript" src="/site_media/js/jquery-1.4.3.min.js"></script>
+        <script type="text/javascript" src="/site_media/js/jquery-ui-1.8.6.custom.min.js"></script>
+        <script type="text/javascript" src="/site_media/js/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript">
+            function set_randomnum() {
+                var x=document.getElementById("id_randomnum");
+                var num = Math.random();
+                x.value = num;
+                return true;
+            }
+            $(function() {
+                $('#id_begintime').datetimepicker();
+                $('#id_begintime').datetimepicker("option","dateFormat","yy-mm-dd");
+            });
+        </script>
     </head>
 
     <body>
@@ -46,10 +57,10 @@
         {% for d in listData %}
         <div>
             <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="{{ d.flash_width }}" height="500">
-                <param name="movie" value="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" />
+                <param name="movie" value="/site_media/swf/{{ swffile }}?xml_file={{ d.quote_data_url }}" />
                 <param name="quality" value="high" />
                 <param name="wmode" value="transparent" />
-                <embed name="flashchart" wmode="transparent" src="/site_media/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="{{ d.flash_width }}" height="500"></embed>
+                <embed name="flashchart" wmode="transparent" src="/site_media/swf/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="{{ d.flash_width }}" height="500"></embed>
             </object>
             <a href="{{ d.data_url|safe }}" target="_blank" >查看数据</a>
         </div>
