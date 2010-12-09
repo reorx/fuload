@@ -101,6 +101,11 @@
     [Tue Dec 07 15:06:32 2010] [error] [client 10.6.207.189] mod_wsgi (pid=28287): Exception occurred processing WSGI script '/home/dantezhu/htdocs/fuload/conf/setting.wsgi'.
     [Tue Dec 07 15:06:32 2010] [error] [client 10.6.207.189] IOError: failed to write data
     A:在apache的配置文件中加入如下项:Timeout 360000,设置超时时间(sec)
+
+    2.响应时间的统计总是有很多规律性峰值，与实际情况不符
+    A:看一下slave机器crontab脚本中是否有定时对时的脚本，如:
+    */20 * * * * /usr/sbin/ntpdate 172.23.32.142 172.24.18.141 172.18.70.180
+    如果有，删除即可。
     
             
 OK，基本就是这样，目前的介绍还比较简单，等以后再补充~
