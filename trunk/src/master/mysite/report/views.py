@@ -4,6 +4,7 @@ import urllib
 import random
 import copy
 import datetime
+import time
 try:
     import json
 except ImportError:
@@ -106,12 +107,24 @@ def HttpReportData(request):
     return HttpResponse(html,mimetype='application/xml')
 
 def HttpReportShow(request):
+    date_today = datetime.date.today()
+
     form_data = {}
     for k,v in request.GET.items():
         if v is not None:
             form_data[k] = v
-    if 'begintime' not in form_data or form_data['begintime'] is None:
-        form_data['begintime'] = datetime.date.today()
+
+    #这里主要是自动填上初始化的数据
+    if 'begintime' not in form_data or form_data['begintime'] is None or len(form_data['begintime']) <= 0:
+        form_data['begintime'] = datetime.datetime(*(date_today.timetuple())[:6])
+        form_data['begintime'] = form_data['begintime'].strftime("%Y-%m-%d %H:%M")
+
+    #不要把这个时间生成更方便一些，默认就是后面的一整天的数据
+    #if 'endtime' not in form_data or form_data['endtime'] is None or len(form_data['endtime']) <= 0:
+        #t_begintime = datetime.datetime.strptime(form_data['begintime'],"%Y-%m-%d %H:%M")
+        #form_data['endtime'] = datetime.datetime(*(t_begintime + datetime.timedelta(hours=24)).timetuple()[0:6])
+        #form_data['endtime'] = form_data['endtime'].strftime("%Y-%m-%d %H:%M")
+
     form = SearchReportShowForm(form_data)
 
     if not form.is_valid():
@@ -139,8 +152,14 @@ def HttpReportShow(request):
     clientIps = StatDetail.objects.values("clientIp").distinct()
 
     for k,v in request.GET.items():
+        if k in ('begintime','endtime'):
+            continue
         if v is not None:
             base_data_url += ('&'+k+'='+v)
+
+    #这里用timestamp来获取data，主要是因为前段swf要求xml_file的url里面不能有空格而2020-1-1 2:2精确到分就会出现空格
+    base_data_url += ('&begintime='+str(int(time.mktime(begintime.timetuple()))))
+    base_data_url += ('&endtime='+str(int(time.mktime(endtime.timetuple()))))
 
     listData = []
     for ip_dict in clientIps:
