@@ -61,10 +61,10 @@ class CTimeCheck
                 return false;
             }
 
-            int lefttime  = 0;
+            long lefttime  = 0;
             static struct timeval now_tv;
             gettimeofday(&now_tv, NULL);
-            lefttime =  (now_tv.tv_sec  - m_Start_TV.tv_sec ) * 1000 + (now_tv.tv_usec - m_Start_TV.tv_usec) / 1000;
+            lefttime = ((now_tv.tv_sec  - m_Start_TV.tv_sec ) * 1000000 + (now_tv.tv_usec - m_Start_TV.tv_usec)) / 1000;
             if (lefttime < 0)
             {
                 lefttime = 0;

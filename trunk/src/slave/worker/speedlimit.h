@@ -55,7 +55,7 @@ class CSpeedLimit
             }
             int ret=0;
             gettimeofday(&m_tpend,NULL);
-            int timeuse=1000000*(m_tpend.tv_sec-m_tpstart.tv_sec)+m_tpend.tv_usec-m_tpstart.tv_usec;//Œ¢√Î
+            long timeuse=1000000*(m_tpend.tv_sec-m_tpstart.tv_sec)+m_tpend.tv_usec-m_tpstart.tv_usec;//Œ¢√Î
             if (timeuse < 0)
             {
                 timeuse = 0;
