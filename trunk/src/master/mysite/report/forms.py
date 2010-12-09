@@ -7,7 +7,8 @@ from django.contrib.admin import widgets
 
 class SearchReportShowForm(forms.Form):
     reportid = forms.IntegerField(required=True,label='上报ID')
-    begintime = forms.DateTimeField(required=True,label='起始时间',widget=widgets.AdminDateWidget())
+    begintime = forms.DateTimeField(required=True,label='起始时间')
+    #begintime = forms.DateTimeField(required=True,label='起始时间',widget=widgets.AdminDateWidget())
     endtime = forms.DateTimeField(required=False,label='终止时间',widget=widgets.AdminDateWidget())
     rtype = forms.CharField(required=True,
             label='报表类型',
