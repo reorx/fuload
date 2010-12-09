@@ -76,9 +76,13 @@ def HttpReportData(request):
     rtype = request.GET['rtype']
 
     begintime = cd['begintime']
-    t = datetime.timedelta(hours=24)
-    endtime = begintime + t
-    cd['endtime'] = endtime
+
+    if 'endtime' not in cd or cd['endtime'] is None:
+        t = datetime.timedelta(hours=24)
+        endtime = begintime + t
+        cd['endtime'] = endtime
+    else:
+        endtime = cd['endtime']
 
     if rtype2attr[rtype]['swftype'] == 'pie':
         data = get_report_data_pie(cd)
@@ -115,9 +119,13 @@ def HttpReportShow(request):
     cd = form.cleaned_data
 
     begintime = cd['begintime']
-    t = datetime.timedelta(hours=24)
-    endtime = begintime + t
-    cd['endtime'] = endtime
+
+    if 'endtime' not in cd or cd['endtime'] is None:
+        t = datetime.timedelta(hours=24)
+        endtime = begintime + t
+        cd['endtime'] = endtime
+    else:
+        endtime = cd['endtime']
 
     swffile = ''
     rtype = request.GET['rtype']
