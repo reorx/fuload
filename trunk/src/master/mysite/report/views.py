@@ -116,13 +116,13 @@ def HttpReportShow(request):
 
     #这里主要是自动填上初始化的数据
     if 'begintime' not in form_data or form_data['begintime'] is None or len(form_data['begintime']) <= 0:
-        form_data['begintime'] = datetime.datetime(*(date_today.timetuple())[:6])
+        form_data['begintime'] = datetime.datetime(*(date_today.timetuple()[:6]))
         form_data['begintime'] = form_data['begintime'].strftime("%Y-%m-%d %H:%M")
 
     #不要把这个时间生成更方便一些，默认就是后面的一整天的数据
     #if 'endtime' not in form_data or form_data['endtime'] is None or len(form_data['endtime']) <= 0:
         #t_begintime = datetime.datetime.strptime(form_data['begintime'],"%Y-%m-%d %H:%M")
-        #form_data['endtime'] = datetime.datetime(*(t_begintime + datetime.timedelta(hours=24)).timetuple()[0:6])
+        #form_data['endtime'] = datetime.datetime(*(t_begintime + datetime.timedelta(hours=24).timetuple()[0:6]))
         #form_data['endtime'] = form_data['endtime'].strftime("%Y-%m-%d %H:%M")
 
     form = SearchReportShowForm(form_data)
