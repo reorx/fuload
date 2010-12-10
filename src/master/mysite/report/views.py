@@ -181,7 +181,7 @@ def HttpReportShow(request):
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
 
-        flash_width = cal_grid_width(len(tmpdata)) + 50
+        flash_width = cal_grid_width(len(tmpdata)) + 110
         listData.append(
                 {'ip':ip, 'data_url':data_url,'quote_data_url':quote_data_url,'flash_width':flash_width}
                 )
