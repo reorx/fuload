@@ -31,12 +31,13 @@
             //分别初始化id_begintime和id_endtime是不行的，弹不出框，所以要这样初始化
             $(function() {
                     $('#id_begintime,#id_endtime').datetimepicker({
-                        onSelect: function( selectedDate ) {
-                            $(this).datetimepicker("option","dateFormat","yy-mm-dd");
-                        }
+                        //onSelect: function( selectedDate ) {
+                        //    $(this).datetimepicker("option","dateFormat","yy-mm-dd");
+                        //},
+                        dateFormat:"yy-mm-dd"
                     });
-            //$('#id_endtime').datetimepicker();
             //$('#id_endtime').datetimepicker("option","dateFormat","yy-mm-dd");
+            //$('#id_begintime').datetimepicker("option","dateFormat","yy-mm-dd");
             });
         </script>
     </head>
