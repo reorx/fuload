@@ -25,7 +25,7 @@ REPORT_TIMESEC = 10
 REPORT_URL = 'http://fuload.qq.com/report/upload/2/'
 
 #worker进程的路径(默认不用修改)
-WORKER_FILE = '../fl_slave_worker'
+WORKER_FILE = './fl_slave_worker'
 
 #worker进程统计文件的路径(默认不用修改)
 WORKER_STATFILE = './fl_statfile'
