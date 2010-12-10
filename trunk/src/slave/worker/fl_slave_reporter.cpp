@@ -10,12 +10,11 @@
 #include "fl_slave_reporter.h"
 CSlaveReporter::CSlaveReporter()
 {
-    ResetStat();
 }
 CSlaveReporter::~CSlaveReporter ()
 {
 }
-int CSlaveReporter::Init(int key, int reportTime_sec)
+int CSlaveReporter::Init(int key, int reportTime_sec,const string& statFile)
 {
     int ret;
     ret = m_MsgWrapper.Init(key);
@@ -24,6 +23,7 @@ int CSlaveReporter::Init(int key, int reportTime_sec)
         return -1;
     }
     m_Timer.Init(reportTime_sec*1000,false);
+    m_LocStat.Init(statFile);
     return 0;
 }
 void CSlaveReporter::AddCount(int retcode, int time_ms)
@@ -39,11 +39,6 @@ void CSlaveReporter::AddCount(int retcode, int time_ms)
     {
         ReportToCtrl();
     }
-}
-void CSlaveReporter::ResetStat()
-{
-    m_LocStat.ResetStat();
-    m_NetStat.ResetStat();
 }
 int CSlaveReporter::ReportToCtrl()
 {

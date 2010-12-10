@@ -37,6 +37,7 @@ typedef struct _st_swparam
     string moduleFile;
     int msgQKey;
     int limitSpeed;
+    string statFile;
     _st_swparam()
     {
         reportTime_sec = 30;

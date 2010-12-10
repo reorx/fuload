@@ -29,7 +29,7 @@ int CFLSlaveWorker::Init(const StSWParam& param)
     {
         return -1;
     }
-    ret = m_reporter.Init(param.msgQKey, param.reportTime_sec);
+    ret = m_reporter.Init(param.msgQKey, param.reportTime_sec, param.statFile);
     if (ret)
     {
         return -2;

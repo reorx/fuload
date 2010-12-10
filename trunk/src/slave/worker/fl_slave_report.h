@@ -127,10 +127,11 @@ typedef struct _StSWNetStat
 typedef struct _StSWLocStat
 {
     public:
-        _StSWLocStat()
+        int Init(const string& statFile)
         {
-            m_stat_info.Init("fl_statfile",stat_desc,STAT_OVER);
+            m_stat_info.Init(statFile.c_str(),stat_desc,STAT_OVER);
             ResetStat();
+            return 0;
         }
         void AddCount(int retcode, int time_ms)
         {
