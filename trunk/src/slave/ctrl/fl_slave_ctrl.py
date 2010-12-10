@@ -8,14 +8,14 @@ import signal
 
 from ipc import ipc
 
-from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_URL,LIMIT_SPEED
+from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_URL,LIMIT_SPEED,LOG_FILE,WORKER_FILE,WORKER_STATFILE
 from fl_slave_wkmng import WorkerManager
 from fl_slave_msg import SlaveMsg
 from fl_slave_reporter import SlaveReporter
 
 logging.basicConfig(level=logging.DEBUG,
         format='%(asctime)s %(levelname)s %(message)s',
-        filename='./log.txt',
+        filename=LOG_FILE,
         filemode='a+')
 
 def handler_signal(signo, frame):
@@ -59,12 +59,13 @@ class SlaveCtrl(object):
         self._slaveMsg = SlaveMsg(msgQKey)
         WorkerManager.fork(
                 [ 
-                    "./fl_slave_worker",
+                    WORKER_FILE,
                     "-i"+INPUT_FILE,
                     "-r"+str(REPORT_TIMESEC),
                     "-s"+SO_FILE,
                     "-m"+str(msgQKey),
                     '-l'+str(LIMIT_SPEED),
+                    "-t"+WORKER_STATFILE,
                     ],
                 WORKER_NUM
                 )
