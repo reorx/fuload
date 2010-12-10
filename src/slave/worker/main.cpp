@@ -17,7 +17,8 @@ void useage()
     printf("\t -r     reportTime(sec)\n");
     printf("\t -s     soFile\n");
     printf("\t -m     msgQueueKey\n");
-    printf("\t -l     limitspeed\n");
+    printf("\t -l     limitSpeed\n");
+    printf("\t -t     statFile\n");
     printf("\n");
 }
 int main(int argc, char *argv[])
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
 
     StSWParam param;
 
-    while ((input = getopt (argc, argv, "i:r:s:m:l:")) != -1) 
+    while ((input = getopt (argc, argv, "i:r:s:m:l:t:")) != -1) 
     {
         if ( input == 'i' )
         {
@@ -56,6 +57,11 @@ int main(int argc, char *argv[])
         if ( input == 'l' )
         {
             param.limitSpeed= atoi(optarg);
+            continue;
+        }
+        if ( input == 't' )
+        {
+            param.statFile= optarg;
             continue;
         }
     }

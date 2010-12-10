@@ -25,9 +25,8 @@ class CSlaveReporter
         CSlaveReporter ();
         virtual ~CSlaveReporter ();
 
-        int Init(int key,int reportTime_sec);
+        int Init(int key,int reportTime_sec,const string& statFile);
         void AddCount(int retcode, int time_ms);
-        void ResetStat();
         
     private:
         int ReportToCtrl();
