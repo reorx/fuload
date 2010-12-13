@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        fl_slave_daemon.py
+#  Description:     通过daemon继承的子类
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:36:55
+#  History:         
+#=============================================================================
+'''
 import sys
 import os
 from os.path import abspath, dirname, join

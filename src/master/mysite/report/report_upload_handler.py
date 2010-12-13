@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        report_upload_handler.py
+#  Description:     处理slave上报数据的类
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:39:37
+#  History:         
+#=============================================================================
+'''
 import datetime
 
 try:

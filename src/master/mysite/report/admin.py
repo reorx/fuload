@@ -1,3 +1,16 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        admin.py
+#  Description:     定制后台管理端展现
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:38:32
+#  History:         
+#=============================================================================
+'''
 from django.contrib import admin
 from mysite.report.models import *
 
