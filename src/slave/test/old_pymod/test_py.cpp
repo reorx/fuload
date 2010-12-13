@@ -19,7 +19,17 @@ int main()
         return -1;
     }
     pFunc= PyObject_GetAttrString(pModule, "fuload_handle_init");//这里是要调用的函数名
-    PyObject_CallFunction(pFunc, NULL);//调用函数
+    PyObject *objResult =  PyObject_CallFunction(pFunc, NULL);//调用函数
+    int ret = -1;
+    if (objResult)
+    {
+        ret = PyInt_AsLong(objResult);
+        printf("ret:%d\n",ret);
+    }
+    else
+    {
+        printf("result is null");
+    }
 
     pFunc= PyObject_GetAttrString(pModule, "fuload_handle_process");//这里是要调用的函数名
     //PyObject_CallFunction(pFunc,"{s:i,s:i}","abc", 123, "def", 456);//调用函数
