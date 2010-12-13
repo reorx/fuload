@@ -1,7 +1,9 @@
 CC = gcc
 CXX = g++
-CFLAGS  = -Wall -pipe -DDEBUG -D_NEW_LIC -g -D_GNU_SOURCE -shared -D_REENTRANT -fPIC -pthread
-LIB     = -L/usr/local/lib/ -lpython2.7 -ldl -lrt -lutil
+CFLAGS  = -Wall -pipe -DDEBUG -D_NEW_LIC -g -D_GNU_SOURCE \
+		  -shared -D_REENTRANT -fPIC -pthread -Xlinker -export-dynamic \
+
+LIB     = -L/usr/local/lib/ -lpython2.7 -ldl -lutil
 INC     = -I. -I/usr/local/include/python2.7/
 
 
