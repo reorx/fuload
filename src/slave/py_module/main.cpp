@@ -20,6 +20,8 @@ using namespace std;
 #define PYFUNC_PROCESS  "fuload_handle_process"
 #define PYFUNC_FINI     "fuload_handle_fini"
 
+#define PYMODULE_PATH   "../py_module/"
+
 PyObject * g_pModule = NULL;
 PyObject * g_pInitFunc = NULL;
 PyObject * g_pProcessFunc = NULL;
@@ -41,6 +43,7 @@ extern "C" int fuload_handle_init()
     }
     PyRun_SimpleString("import sys");
     PyRun_SimpleString("sys.path.append('./')");
+    PyRun_SimpleString("sys.path.append('"PYMODULE_PATH"')");
 
     g_pModule =PyImport_ImportModule(PYMODULE_NAME);//这里是要调用的文件名
     if (!g_pModule) {
@@ -120,4 +123,14 @@ extern "C" int fuload_handle_fini()
     }
     Py_Finalize();//调用Py_Finalize，这个根Py_Initialize相对应的。
     return ret;
+}
+int main(int argc, const char *argv[])
+{
+    map<string,string> mapParams;
+    mapParams["first"]="1";
+    mapParams["second"]="2";
+    fuload_handle_init();
+    fuload_handle_process(mapParams);
+    fuload_handle_fini();
+    return 0;
 }
