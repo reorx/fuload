@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        fl_slave_ctrl.py
+#  Description:     主程序文件，程序的骨架逻辑
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:36:31
+#  History:         
+#=============================================================================
+'''
 from os.path import abspath, dirname, join
 import logging
 import random

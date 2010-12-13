@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        fl_slave_msg.py
+#  Description:     消息队列
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:37:09
+#  History:         
+#=============================================================================
+'''
 
 from ipc import ipc
 

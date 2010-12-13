@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        comm_def.py
+#  Description:     定义的一些全局参数
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:38:57
+#  History:         
+#=============================================================================
+'''
 
 #五分钟
 split_minutes = 5

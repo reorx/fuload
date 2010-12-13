@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        views.py
+#  Description:     视图
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:39:52
+#  History:         
+#=============================================================================
+'''
 import urllib
 import random
 import copy

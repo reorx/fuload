@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        daemon.py
+#  Description:     将进程变为守护进程
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:35:43
+#  History:         
+#=============================================================================
+'''
 import sys, os, time, atexit
 from signal import SIGTERM 
 class Daemon:

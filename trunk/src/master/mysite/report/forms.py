@@ -1,5 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+#=============================================================================
+#  Author:          dantezhu - http://www.vimer.cn
+#  Email:           zny2008@gmail.com
+#  FileName:        forms.py
+#  Description:     表单
+#  Version:         1.0
+#  LastChange:      2010-12-13 11:39:25
+#  History:         
+#=============================================================================
+'''
 
 import datetime
 
