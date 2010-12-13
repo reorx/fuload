@@ -26,8 +26,8 @@ INPUT_FILE = "../module/fl_input.txt"
 #INPUT_FILE = "/home/dantezhu/baseplatform/application/ThirdPartApp/server/spp_openlogin/src/tools/fl_so/login_input.txt"
 
 #worker进程需要加载的so
-SO_FILE = "../module/libmodule.so"
-#SO_FILE = "../py_module/libmodule.so"
+#SO_FILE = "../module/libmodule.so"
+SO_FILE = "../py_module/libmodule.so"
 #SO_FILE = "/home/dantezhu/baseplatform/application/ThirdPartApp/server/spp_openlogin/src/tools/fl_so/login.so"
 
 #worker进程的上报间隔(sec)
