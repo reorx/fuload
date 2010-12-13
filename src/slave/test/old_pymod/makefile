@@ -2,7 +2,7 @@ CXX = g++
 
 TARGET = test_py
 
-C_FLAGS += -g -Wall -pthread
+C_FLAGS += -g -Wall -pthread -export-dynamic
 
 INC = -I/usr/local/include/python2.7/
 LIB = -L/usr/local/lib/ -lpython2.7 -ldl -lutil
