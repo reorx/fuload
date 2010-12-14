@@ -107,6 +107,7 @@ extern "C" int fuload_handle_init()
     g_pModule =PyImport_ImportModule(PYMODULE_NAME);//这里是要调用的文件名
     if (!g_pModule) {
         printf("Cant open python file!\n");
+        printf("%s\n",log_python_exception().c_str());
         return -1002;
     }
     g_pInitFunc = PyObject_GetAttrString(g_pModule, PYFUNC_INIT);//这里是要调用的函数名
