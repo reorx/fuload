@@ -12,7 +12,7 @@
 #=============================================================================
 '''
 #from hello import hi
-from kuorong import basetest
+from kuorong import basetest,paytest
 import urllib
 
 def fuload_handle_init():
@@ -21,10 +21,10 @@ def fuload_handle_init():
 
 def fuload_handle_process(mapParams):
     #print repr(mapParams)
-    basetest()
+    return paytest()
     #hi()
     #print urllib.urlopen("http://web.isd.com").read()
-    return 0
+    #return 0
 
 def fuload_handle_fini():
     print 'fini'
