@@ -11,8 +11,6 @@
 #  History:         
 #=============================================================================
 '''
-#from hello import hi
-from kuorong import basetest,paytest
 import urllib
 
 def fuload_handle_init():
@@ -21,10 +19,15 @@ def fuload_handle_init():
 
 def fuload_handle_process(mapParams):
     #print repr(mapParams)
-    return paytest()
-    #hi()
-    #print urllib.urlopen("http://web.isd.com").read()
-    #return 0
+    try:
+        from kuorong import basetest,paytest
+    except Exception,e:
+        pass
+    else:
+        return paytest()
+
+    print urllib.urlopen("http://www.vimer.cn").read()
+    return 0
 
 def fuload_handle_fini():
     print 'fini'
