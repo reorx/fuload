@@ -46,7 +46,7 @@ int CFLSlaveWorker::setModuleFile(const string& moduleFile)
 {
     if(CFLSlaveWorker::SoObj == NULL)
     {
-        SoObj=dlopen((char*)moduleFile.c_str(),RTLD_LAZY);
+        SoObj=dlopen((char*)moduleFile.c_str(),RTLD_LAZY|RTLD_GLOBAL);
         if(SoObj==NULL)
         {
             return -1;
