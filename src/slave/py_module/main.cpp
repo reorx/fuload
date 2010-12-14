@@ -185,7 +185,8 @@ extern "C" int fuload_handle_fini()
     Py_Finalize();//调用Py_Finalize，这个根Py_Initialize相对应的。
     return ret;
 }
-/*int main(int argc, const char *argv[])
+#ifdef FL_MODULE_MAIN
+int main(int argc, const char *argv[])
 {
     map<string,string> mapParams;
     mapParams["first"]="1";
@@ -194,4 +195,5 @@ extern "C" int fuload_handle_fini()
     fuload_handle_process(mapParams);
     fuload_handle_fini();
     return 0;
-}*/
+}
+#endif
