@@ -16,7 +16,7 @@
 WORKER_NUM = 2
 
 #每个worker每秒速度限制(-1为不限制)
-LIMIT_SPEED = -1
+LIMIT_SPEED = 50
 
 #log文件的路径
 LOG_FILE = './log.txt'
