@@ -11,19 +11,23 @@
 #  History:         
 #=============================================================================
 '''
-from hello import hi
+#from hello import hi
+#from kuorong import basetest
+import urllib
 
 def fuload_handle_init():
     print 'init'
     return 0
 
 def fuload_handle_process(mapParams):
-    #from kuorong import basetest
-    #print repr(mapParams)
+    print repr(mapParams)
     #basetest()
-    hi()
+    #hi()
+    print urllib.urlopen("web.isd.com").read()
     return 0
 
 def fuload_handle_fini():
     print 'fini'
     return 0
+if __name__ == '__main__':
+    fuload_handle_process("")

@@ -11,17 +11,13 @@
 #  History:         
 #=============================================================================
 '''
-
 def fuload_handle_init():
     print 'init'
     return 0
 
 def fuload_handle_process(mapParams):
-    #from kuorong import basetest
-    #print repr(mapParams)
-    #basetest()
-    from hello import hi
-    hi()
+    print 'process'
+    print repr(mapParams)
     return 0
 
 def fuload_handle_fini():
