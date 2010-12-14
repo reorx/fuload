@@ -2,7 +2,7 @@ CXX = g++
 
 TARGET = main
 
-C_FLAGS += -g -Wall -pthread -export-dynamic
+C_FLAGS += -g -Wall -pthread -export-dynamic -DFL_MODULE_MAIN
 LIB     = -L/usr/local/lib/ -lpython2.7 -ldl -lutil
 INC     = -I. -I/usr/local/include/python2.7/
 
