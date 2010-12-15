@@ -94,7 +94,7 @@ void clear_pyenv()
     Py_CLEAR(g_pInitFunc);
     Py_CLEAR(g_pProcessFunc);
     Py_CLEAR(g_pFiniFunc);
-    Py_Finalize();//调用Py_Finalize，这个根Py_Initialize相对应的。
+    Py_Finalize();//调用Py_Finalize，这个跟Py_Initialize相对应的。
 
     g_pModule = NULL;
     g_pInitFunc = NULL;
