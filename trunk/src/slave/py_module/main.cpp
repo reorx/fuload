@@ -12,7 +12,7 @@
 #include <vector>
 #include <set>
 #include <map>
-#include<Python.h>
+#include <python2.7/Python.h>
 using namespace std;
 
 #define PYMODULE_NAME   "fl_module"
@@ -85,6 +85,23 @@ string log_python_exception()
     return strErrorMsg;
 }
 
+/**
+ * @brief   清理python环境
+ */
+void clear_pyobj()
+{
+    Py_CLEAR(g_pModule);
+    Py_CLEAR(g_pInitFunc);
+    Py_CLEAR(g_pProcessFunc);
+    Py_CLEAR(g_pFiniFunc);
+    Py_Finalize();//调用Py_Finalize，这个根Py_Initialize相对应的。
+
+    g_pModule = NULL;
+    g_pInitFunc = NULL;
+    g_pProcessFunc = NULL;
+    g_pFiniFunc = NULL;
+}
+
 
 /**
  * @brief   第一次进入so时，需要做的初始化工作，只会执行一次。
@@ -108,6 +125,7 @@ extern "C" int fuload_handle_init()
     if (!g_pModule) {
         printf("Cant open python file!\n");
         printf("%s\n",log_python_exception().c_str());
+        clear_pyobj();
         return -1002;
     }
     g_pInitFunc = PyObject_GetAttrString(g_pModule, PYFUNC_INIT);//这里是要调用的函数名
@@ -116,11 +134,13 @@ extern "C" int fuload_handle_init()
     if (!g_pInitFunc || !g_pProcessFunc || !g_pFiniFunc)
     {
         printf("func name not find\n");
+        clear_pyobj();
         return -1003;
     }
     PyObject *objResult =  PyObject_CallFunction(g_pInitFunc, NULL);//调用函数
     if (!objResult)
     {
+        clear_pyobj();
         return -1004;
     }
     int ret = PyInt_AsLong(objResult);
@@ -169,20 +189,12 @@ extern "C" int fuload_handle_fini()
     PyObject *objResult =  PyObject_CallFunction(g_pFiniFunc, NULL);//调用函数
     if (!objResult)
     {
+        clear_pyobj();
         return -1004;
     }
     int ret = PyInt_AsLong(objResult);
 
-    PyObject* arrObj[]={g_pModule,g_pInitFunc,g_pProcessFunc,g_pFiniFunc};
-    int count = sizeof(arrObj) / sizeof(arrObj[0]);
-    for (int i = 0; i < count; i++)
-    {
-        if (arrObj[i])
-        {
-            Py_DECREF(arrObj[i]);
-        }
-    }
-    Py_Finalize();//调用Py_Finalize，这个根Py_Initialize相对应的。
+    clear_pyobj();
     return ret;
 }
 #ifdef FL_MODULE_MAIN
