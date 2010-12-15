@@ -88,7 +88,7 @@ string log_python_exception()
 /**
  * @brief   清理python环境
  */
-void clear_pyobj()
+void clear_pyenv()
 {
     Py_CLEAR(g_pModule);
     Py_CLEAR(g_pInitFunc);
@@ -125,7 +125,7 @@ extern "C" int fuload_handle_init()
     if (!g_pModule) {
         printf("Cant open python file!\n");
         printf("%s\n",log_python_exception().c_str());
-        clear_pyobj();
+        clear_pyenv();
         return -1002;
     }
     g_pInitFunc = PyObject_GetAttrString(g_pModule, PYFUNC_INIT);//这里是要调用的函数名
@@ -134,13 +134,13 @@ extern "C" int fuload_handle_init()
     if (!g_pInitFunc || !g_pProcessFunc || !g_pFiniFunc)
     {
         printf("func name not find\n");
-        clear_pyobj();
+        clear_pyenv();
         return -1003;
     }
     PyObject *objResult =  PyObject_CallFunction(g_pInitFunc, NULL);//调用函数
     if (!objResult)
     {
-        clear_pyobj();
+        clear_pyenv();
         return -1004;
     }
     int ret = PyInt_AsLong(objResult);
@@ -189,12 +189,12 @@ extern "C" int fuload_handle_fini()
     PyObject *objResult =  PyObject_CallFunction(g_pFiniFunc, NULL);//调用函数
     if (!objResult)
     {
-        clear_pyobj();
+        clear_pyenv();
         return -1004;
     }
     int ret = PyInt_AsLong(objResult);
 
-    clear_pyobj();
+    clear_pyenv();
     return ret;
 }
 #ifdef FL_MODULE_MAIN
