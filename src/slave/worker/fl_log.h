@@ -19,7 +19,7 @@
 // 直接调用的宏
 #define log_init(lvl, path, args...)    APILogInit(lvl, path, ##args) //log类初始化
 
-#define LOG_DETAIL(lvl, fmt, args...)   APILogWrite(lvl, "[%s:%u][%s]: " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args)
+#define LOG_DETAIL(lvl, fmt, args...)   APILogWrite(lvl, "[%s:%u][%s] " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args)
 
 #define trace_log(fmt, args...)     LOG_DETAIL(LM_TRACE, fmt, ##args)
 #define debug_log(fmt, args...)     LOG_DETAIL(LM_DEBUG, fmt, ##args)
