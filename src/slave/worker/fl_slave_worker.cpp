@@ -92,7 +92,7 @@ int CFLSlaveWorker::Run()
         ret = m_SlaveInput.Alloc(swi);
         if (ret)
         {
-            printf("error alloc:%d\n",ret);
+            error_log("error alloc:%d\n",ret);
             break;
         }
         gettimeofday(&stBegin, NULL);
@@ -102,7 +102,7 @@ int CFLSlaveWorker::Run()
         m_reporter.AddCount(ret, time_ms);
         if (ret)
         {
-            printf("process error:%d\n",ret);
+            debug_log("process error:%d\n",ret);
         }
         m_SpeedLimit.DetectAndLimit();
     }

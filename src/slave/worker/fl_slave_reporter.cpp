@@ -44,7 +44,11 @@ int CSlaveReporter::ReportToCtrl()
 {
     CSWReport report(&m_NetStat);
     string output = report.Output();
-    m_MsgWrapper.send(output);
+    int ret = m_MsgWrapper.send(output);
+    if (ret)
+    {
+        error_log("msg send error,ret:%d,msg:%s",ret,output.c_str());
+    }
     m_NetStat.ResetStat();
     return 0;
 }

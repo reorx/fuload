@@ -15,6 +15,7 @@
 #include <set>
 #include <map>
 
+#include "fl_log.h"
 #include "fl_slave_def.h"
 
 using namespace std;
