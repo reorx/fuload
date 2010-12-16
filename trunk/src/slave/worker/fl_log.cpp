@@ -136,6 +136,9 @@ int CFLLog::VWriteLog(LogLevel logLevel, const char* logFormat, va_list ap)
     struct tm tm;
     localtime_r(&now, &tm);
 
+    char temp_time[64];
+    strftime(temp_time,sizeof(temp_time)-1,"%Y-%m-%d %H:%M:%S",&tm);
+
     int fp;
 
     ShiftLogFiles(logLevel, m_LogSize, LOG_DEFAULT_MAXNUM);
@@ -148,7 +151,7 @@ int CFLLog::VWriteLog(LogLevel logLevel, const char* logFormat, va_list ap)
     }
 
     int preLen, infoLen;
-    preLen = snprintf(m_LogBuf,LOG_MSG_SIZE, "[%s][%02d:%02d:%02d][%05d]", gLogLevelName[logLevel],tm.tm_hour, tm.tm_min, tm.tm_sec, getpid());
+    preLen = snprintf(m_LogBuf,LOG_MSG_SIZE, "[%s][%s][%05d]", gLogLevelName[logLevel], temp_time, getpid());
 
     infoLen = vsnprintf(m_LogBuf + preLen,LOG_MSG_SIZE-preLen, logFormat, ap);
     write(fp, m_LogBuf, preLen + infoLen);  
