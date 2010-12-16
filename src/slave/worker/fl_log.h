@@ -36,7 +36,10 @@ inline void screen_output(const char* fmt, ...)
     time_t now = time(NULL);
     struct tm tm;
     localtime_r(&now, &tm);
-    fprintf(stdout, "[%02d:%02d:%02d][%05d]", tm.tm_hour, tm.tm_min, tm.tm_sec, getpid());
+    char temp_time[64];
+    strftime(temp_time,sizeof(temp_time)-1,"%Y-%m-%d %H:%M:%S",&tm);
+
+    fprintf(stdout, "[%s][%05d]", temp_time, getpid());
 
     va_list ap;
     va_start(ap, fmt);
