@@ -35,8 +35,23 @@ elif len(sys.argv)==3 and sys.argv[2][0]=='c':
         sys.exit(1)
     if 0 > ipc.msgctl(msg_id,ipc.IPC_RMID,id_dsp):
         sys.exit(2)
+elif len(sys.argv)==3 and sys.argv[2][0]=='i':
+    ipc_key=int(sys.argv[1])
+    id_dsp = ipc.msqid_ds()
+    msg_id = ipc.msgget(ipc_key,0666)
+    if 0 > msg_id:
+        sys.exit(1)
+    if 0 > ipc.msgctl(msg_id,ipc.IPC_STAT,id_dsp):
+    #if 0 > ipc.msgctl(msg_id,ipc.IPC_INFO,id_dsp):
+        sys.exit(2)
+    print dir(id_dsp)
+    print id_dsp.__msg_cbytes
+    print id_dsp.msg_qnum
+    print id_dsp.msg_qbytes
+    print id_dsp.msg_lspid
 else:
     print "usage: \n%s key type s message --to send message\n\
 %s key type r --to receive\n\
+%s key i --info of queue\n\
 %s key c --to clear queue"\
-        %(sys.argv[0],sys.argv[0],sys.argv[0])
+        %(sys.argv[0],sys.argv[0],sys.argv[0],sys.argv[0])
