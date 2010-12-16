@@ -13,7 +13,21 @@ char gLogLevelName[LOG_LEVEL_MAXNUM][16] = {
     "ERROR",
     "FATAL"
 };
+////////////////////////////////////////////////////////////////////////////////
 
+int APILogInit(LogLevel logLevel, const char* logDir, const char* logName, unsigned long logSize=LOG_DEFAULT_SIZE)
+{
+    return CFLLog::instance()->Init(logLevel,logDir,logName,logSize);
+}
+int APILogWrite(LogLevel logLevel, const char* logFormat, ...)
+{
+    va_list ap;
+    va_start(ap, logFormat);
+    int ret = CFLLog::instance()->VWriteLog(logLevel,logFormat,ap);
+    va_end(ap);
+
+    return ret;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // constructor & destructor
@@ -106,6 +120,15 @@ int CFLLog::Init(LogLevel logLevel, const char* logDir, const char* logName, uns
 
 int CFLLog::WriteLog(LogLevel logLevel, const char* logFormat, ...)
 {   
+    va_list ap;
+    va_start(ap, logFormat);
+    int ret = VWriteLog(logLevel,logFormat,ap);
+    va_end(ap);
+
+    return ret;
+}
+int CFLLog::VWriteLog(LogLevel logLevel, const char* logFormat, va_list ap)
+{   
     if (logLevel < m_LogLevel)
         return 0;
 
@@ -113,7 +136,6 @@ int CFLLog::WriteLog(LogLevel logLevel, const char* logFormat, ...)
     struct tm tm;
     localtime_r(&now, &tm);
 
-    va_list ap;
     int fp;
 
     ShiftLogFiles(logLevel, m_LogSize, LOG_DEFAULT_MAXNUM);
@@ -121,18 +143,14 @@ int CFLLog::WriteLog(LogLevel logLevel, const char* logFormat, ...)
     if (fp == -1)
     {
         // 如果打开log文件失败, 从stderr输出
-        va_start(ap, logFormat);
         vfprintf(stderr, logFormat, ap);
-        va_end(ap);
         return 0;
     }
 
     int preLen, infoLen;
     preLen = snprintf(m_LogBuf,LOG_MSG_SIZE, "[%s][%02d:%02d:%02d][%05d]", gLogLevelName[logLevel],tm.tm_hour, tm.tm_min, tm.tm_sec, getpid());
 
-    va_start(ap, logFormat);
     infoLen = vsnprintf(m_LogBuf + preLen,LOG_MSG_SIZE-preLen, logFormat, ap);
-    va_end(ap);
     write(fp, m_LogBuf, preLen + infoLen);  
 
     return 0;

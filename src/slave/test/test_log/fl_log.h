@@ -17,18 +17,19 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // 直接调用的宏
-#define log_init(lvl, path, args...)    CFLLog::instance()->Init(lvl, path, ##args) //log类初始化
+#define log_init(lvl, path, args...)    APILogInit(lvl, path, ##args) //log类初始化
 
-#define LOG_DETAIL(lvl, fmt, args...)   WriteLog(lvl, "[%s:%u][%s]: " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args)
+#define LOG_DETAIL(lvl, fmt, args...)   APILogWrite(lvl, "[%s:%u][%s]: " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##args)
 
-#define trace_log(fmt, args...)     CFLLog::instance()->LOG_DETAIL(LM_TRACE, fmt, ##args)
-#define debug_log(fmt, args...)     CFLLog::instance()->LOG_DETAIL(LM_DEBUG, fmt, ##args)
-#define warn_log(fmt, args...)      CFLLog::instance()->LOG_DETAIL(LM_WARNING, fmt, ##args)
-#define info_log(fmt, args...)      CFLLog::instance()->LOG_DETAIL(LM_INFO, fmt, ##args)
-#define error_log(fmt, args...)     CFLLog::instance()->LOG_DETAIL(LM_ERROR, fmt, ##args)
-#define fatal_log(fmt, args...)     CFLLog::instance()->LOG_DETAIL(LM_FATAL, fmt, ##args)
+#define trace_log(fmt, args...)     LOG_DETAIL(LM_TRACE, fmt, ##args)
+#define debug_log(fmt, args...)     LOG_DETAIL(LM_DEBUG, fmt, ##args)
+#define warn_log(fmt, args...)      LOG_DETAIL(LM_WARNING, fmt, ##args)
+#define info_log(fmt, args...)      LOG_DETAIL(LM_INFO, fmt, ##args)
+#define error_log(fmt, args...)     LOG_DETAIL(LM_ERROR, fmt, ##args)
+#define fatal_log(fmt, args...)     LOG_DETAIL(LM_FATAL, fmt, ##args)
 
 #define screen_info(fmt, args...)   fprintf(stdout, fmt, ##args); fprintf(stdout, "\n")
+
 
 inline void screen_output(const char* fmt, ...)
 {
@@ -86,6 +87,7 @@ class CFLLog
     public:
         int Init(LogLevel logLevel, const char* logDir, const char* logName, unsigned long logSize=LOG_DEFAULT_SIZE);
         int WriteLog(LogLevel logLevel, const char* logFormat, ...);
+        int VWriteLog(LogLevel logLevel, const char* logFormat,va_list ap);
 
     private:
         int OpenLogFile();
@@ -105,5 +107,8 @@ class CFLLog
         static CFLLog* m_instance;
         static CFLLog* instance();
 };
+
+extern int APILogInit(LogLevel logLevel, const char* logDir, const char* logName, unsigned long logSize);
+extern int APILogWrite(LogLevel logLevel, const char* logFormat, ...);
 
 #endif
