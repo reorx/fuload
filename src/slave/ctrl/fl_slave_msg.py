@@ -11,6 +11,7 @@
 #  History:         
 #=============================================================================
 '''
+import logging
 
 from ipc import ipc
 
@@ -33,9 +34,10 @@ class SlaveMsg(object):
     def _clear(self):
         if self._msg_id < 0:
             return
+        logging.debug("clear msgid:%d" % self._msg_id)
         id_dsp = ipc.msqid_ds()
         if 0 > ipc.msgctl(self._msg_id,ipc.IPC_RMID,id_dsp):
-            return
+            logging.error("fail to clear msgid:%d" % self._msg_id)
 
     def recv(self):
         mbuf = ipc.msgbuf()
