@@ -26,7 +26,7 @@ from fl_slave_msg import SlaveMsg
 from fl_slave_reporter import SlaveReporter
 
 logging.basicConfig(level=CTRL_LOG_LEVEL,
-        format='%(asctime)s %(levelname)s %(message)s',
+        format='[%(levelname)s][%(asctime)s][%(process)d][%(filename)s:%(lineno)d][%(funcName)s] %(message)s',
         filename=CTRL_LOG_FILE,
         filemode='a+')
 
@@ -65,16 +65,16 @@ class SlaveCtrl(object):
                 return ipc_key
 
     def start(self):
-        logging.debug("detect msgqkey")
+        logging.error("detect msgqkey")
         msgQKey = self.createMsgQKey()
         if msgQKey < 0:
             logging.error("detect msgqkey failed")
             return -1;
-        logging.debug("msgqkey:%d" % msgQKey)
+        logging.error("msgqkey:%d" % msgQKey)
 
-        logging.debug("create msgq")
+        logging.error("create msgq")
         self._slaveMsg = SlaveMsg(msgQKey)
-        logging.debug("fork workers")
+        logging.error("fork workers")
         WorkerManager.fork(
                 [ 
                     WORKER_FILE,
@@ -90,7 +90,7 @@ class SlaveCtrl(object):
                     ],
                 WORKER_NUM
                 )
-        logging.debug("server forever...")
+        logging.error("server forever...")
         while SlaveCtrl.bRun:
             msg = self._slaveMsg.recv()
             while msg is not None and len(msg)>0:
