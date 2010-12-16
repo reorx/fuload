@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
     ret = sworker.Init(param);
     if (ret)
     {
-        printf("slave worker init error:%d\n",ret);
-        return 0;
+        error_log("slave worker init error:%d\n",ret);
+        return 2;
     }
     error_log("worker start run...");
     sworker.Run();

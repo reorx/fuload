@@ -49,6 +49,7 @@ int CFLSlaveWorker::setModuleFile(const string& moduleFile)
         SoObj=dlopen((char*)moduleFile.c_str(),RTLD_LAZY|RTLD_GLOBAL);
         if(SoObj==NULL)
         {
+            error_log("module load error,%s",moduleFile.c_str());
             return -1;
         }
     }
@@ -82,6 +83,7 @@ int CFLSlaveWorker::Run()
         ret = (*m_funPtrInit)();
         if (ret)
         {
+            error_log("module init error,%d",ret);
             return -1;
         }
     }
@@ -111,6 +113,7 @@ int CFLSlaveWorker::Run()
         ret = (*m_funPtrFini)();
         if (ret)
         {
+            error_log("module fini error,%d",ret);
             return -2;
         }
     }
