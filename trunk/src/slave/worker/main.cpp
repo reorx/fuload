@@ -6,6 +6,7 @@
 #include <fstream>
 #include <getopt.h>
 
+#include "fl_log.h"
 #include "fl_slave_worker.h"
 
 using namespace std;
@@ -19,6 +20,9 @@ void useage()
     printf("\t -m     msgQueueKey\n");
     printf("\t -l     limitSpeed\n");
     printf("\t -t     statFile\n");
+    printf("\t -e     loglevel\n");
+    printf("\t -g     logfile\n");
+    printf("\t -z     logmaxsize\n");
     printf("\n");
 }
 int main(int argc, char *argv[])
@@ -32,7 +36,11 @@ int main(int argc, char *argv[])
 
     StSWParam param;
 
-    while ((input = getopt (argc, argv, "i:r:s:m:l:t:")) != -1) 
+    LogLevel iLogLevel = LM_ERROR;
+    string strLogFile = "../log/worker";
+    int iLogMaxSize = 104857600;//100M
+
+    while ((input = getopt (argc, argv, "i:r:s:m:l:t:e:g:z:")) != -1) 
     {
         if ( input == 'i' )
         {
@@ -64,6 +72,30 @@ int main(int argc, char *argv[])
             param.statFile= optarg;
             continue;
         }
+        if ( input == 'e' )
+        {
+            iLogLevel = (LogLevel)atoi(optarg);
+            continue;
+        }
+        if ( input == 'g' )
+        {
+            strLogFile = optarg;
+            continue;
+        }
+        if ( input == 'z' )
+        {
+            iLogMaxSize = atoi(optarg);
+            continue;
+        }
+    }
+    string::size_type pos = strLogFile.rfind("/");
+    if (pos == string::npos)
+    {
+        log_init(iLogLevel,"./",strLogFile.c_str(),iLogMaxSize);
+    }
+    else
+    {
+        log_init(iLogLevel,strLogFile.substr(0,pos).c_str(),strLogFile.substr(pos+1).c_str(),iLogMaxSize);
     }
 
     int ret;
@@ -74,6 +106,7 @@ int main(int argc, char *argv[])
         printf("slave worker init error:%d\n",ret);
         return 0;
     }
+    error_log("worker start run...");
     sworker.Run();
 
     return 0;

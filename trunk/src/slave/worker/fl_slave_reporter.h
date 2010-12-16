@@ -14,6 +14,7 @@
 #include <map>
 
 #include "timecheck.h"
+#include "fl_log.h"
 #include "fl_slave_report.h"
 #include "fl_slave_msg.h"
 

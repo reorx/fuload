@@ -19,14 +19,15 @@ import signal
 
 from ipc import ipc
 
-from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,REPORT_URL,LIMIT_SPEED,LOG_FILE,WORKER_FILE,WORKER_STATFILE
+from fl_slave_conf import REPORT_URL,CTRL_LOG_FILE,CTRL_LOG_LEVEL
+from fl_slave_conf import WORKER_NUM,INPUT_FILE,SO_FILE,REPORT_TIMESEC,LIMIT_SPEED,WORKER_FILE,WORKER_STATFILE,WORKER_LOG_LEVEL,WORKER_LOG_FILE,WORKER_LOG_MAXSIZE
 from fl_slave_wkmng import WorkerManager
 from fl_slave_msg import SlaveMsg
 from fl_slave_reporter import SlaveReporter
 
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=CTRL_LOG_LEVEL,
         format='%(asctime)s %(levelname)s %(message)s',
-        filename=LOG_FILE,
+        filename=CTRL_LOG_FILE,
         filemode='a+')
 
 def handler_signal(signo, frame):
@@ -77,6 +78,9 @@ class SlaveCtrl(object):
                     "-m"+str(msgQKey),
                     '-l'+str(LIMIT_SPEED),
                     "-t"+WORKER_STATFILE,
+                    "-e"+str(WORKER_LOG_LEVEL),
+                    "-g"+WORKER_LOG_FILE,
+                    "-z"+str(WORKER_LOG_MAXSIZE),
                     ],
                 WORKER_NUM
                 )
