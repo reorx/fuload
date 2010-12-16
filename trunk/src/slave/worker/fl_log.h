@@ -56,6 +56,9 @@ inline void screen_output(const char* fmt, ...)
 // log level的数量
 #define LOG_LEVEL_MAXNUM        10
 
+// 单条log的最长大小
+#define LOG_MSG_SIZE            4096
+
 typedef enum _Log_Level_
 {
     LM_ALL          = 0,
@@ -85,8 +88,8 @@ class CFLLog
         int WriteLog(LogLevel logLevel, const char* logFormat, ...);
 
     private:
-        int OpenLogFile(LogLevel logLevel);
-        int GetLogFileName(char* logFile, int iLen,LogLevel logLevel);
+        int OpenLogFile();
+        int GetLogFileName(char* logFile, int iLen);
         int ShiftLogFiles(LogLevel logLevel, unsigned long maxsize, unsigned short maxnum);
 
     private:
@@ -96,7 +99,7 @@ class CFLLog
         char m_LogName[64];
         unsigned long m_LogSize;
 
-        LogFileInfo m_LogFileInfos[LOG_LEVEL_MAXNUM];
+        LogFileInfo m_LogFileInfo;
 
     public:
         static CFLLog* m_instance;

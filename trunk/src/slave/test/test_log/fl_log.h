@@ -56,7 +56,8 @@ inline void screen_output(const char* fmt, ...)
 // log level的数量
 #define LOG_LEVEL_MAXNUM        10
 
-#define LOG_MSG_SIZE            1024
+// 单条log的最长大小
+#define LOG_MSG_SIZE            4096
 
 typedef enum _Log_Level_
 {
