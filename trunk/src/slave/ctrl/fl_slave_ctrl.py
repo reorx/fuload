@@ -65,10 +65,16 @@ class SlaveCtrl(object):
                 return ipc_key
 
     def start(self):
+        logging.debug("detect msgqkey")
         msgQKey = self.createMsgQKey()
         if msgQKey < 0:
+            logging.error("detect msgqkey failed")
             return -1;
+        logging.debug("msgqkey:%d" % msgQKey)
+
+        logging.debug("create msgq")
         self._slaveMsg = SlaveMsg(msgQKey)
+        logging.debug("fork workers")
         WorkerManager.fork(
                 [ 
                     WORKER_FILE,
@@ -84,9 +90,11 @@ class SlaveCtrl(object):
                     ],
                 WORKER_NUM
                 )
+        logging.debug("server forever...")
         while SlaveCtrl.bRun:
             msg = self._slaveMsg.recv()
             while msg is not None and len(msg)>0:
+                logging.debug("recv report:%s" % msg)
                 self._slaveReporter.report(msg)
                 msg = self._slaveMsg.recv()
             time.sleep(1)
