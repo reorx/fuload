@@ -20,7 +20,7 @@ import logging
 CTRL_LOG_LEVEL = logging.ERROR
 
 #ctrl log文件的路径
-CTRL_LOG_FILE = '../log/ctrl_log.log'
+CTRL_LOG_FILE = '../log/ctrl.log'
 
 #上报的URL
 REPORT_URL = 'http://fuload.qq.com/report/upload/3/'
