@@ -108,8 +108,8 @@ def HttpReportData(request):
     html = t.render(Context(
         {
             'data':data,
-            'begintime':begintime,
-            'endtime':endtime,
+            'begintime':begintime.strftime('%Y-%m-%d %H:%M'),
+            'endtime':endtime.strftime('%Y-%m-%d %H:%M'),
             'clientip':clientip,
             'grid_width':grid_width,
             'persent_yx':persent_yx

@@ -145,6 +145,10 @@ def get_report_data_line(cd):
                     tmpdata.append(tmp_d)
             data = tmpdata
 
+    for tmp_d in data:
+        if tmp_d['x'] is not None:
+            tmp_d['x'] = tmp_d['x'].strftime('%Y-%m-%d %H:%M')
+
     return data
 
 def get_report_data_pie(cd):
