@@ -20,7 +20,7 @@ def fuload_handle_init():
 def fuload_handle_process(mapParams):
     #print repr(mapParams)
     try:
-        from kuorong import basetest,paytest
+        from opentest import basetest,paytest
     except Exception,e:
         pass
     else:
