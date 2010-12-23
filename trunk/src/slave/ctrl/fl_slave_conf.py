@@ -37,11 +37,11 @@ WORKER_NUM = 2
 #worker进程需要加载的so
 #SO_FILE = "../module/libmodule.so"
 SO_FILE = "../py_module/libmodule.so"
-#SO_FILE = "/home/dantezhu/baseplatform/application/ThirdPartApp/server/spp_openlogin/src/tools/fl_so/login.so"
+#SO_FILE = "/home/dantezhu/appbase/application/platform/third_party_api/server/spp_openlogin/src/tools/fl_so/login.so"
 
 #worker进程的输入文件
 INPUT_FILE = "../module/fl_input.txt"
-#INPUT_FILE = "/home/dantezhu/baseplatform/application/ThirdPartApp/server/spp_openlogin/src/tools/fl_so/login_input.txt"
+#INPUT_FILE = "/home/dantezhu/appbase/application/platform/third_party_api/server/spp_openlogin/src/tools/fl_so/login_input.txt"
 
 #每个worker每秒速度限制(-1为不限制)
 LIMIT_SPEED = 50
