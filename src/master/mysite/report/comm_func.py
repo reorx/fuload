@@ -95,7 +95,36 @@ def get_report_objs(cd):
 
     return objs
 
+def compress_data_line(data,max_x_len):
+    '''
+    压缩线性的数据
+    '''
+    while len(data) > max_x_len:
+        t_data = []
+        for i,item in enumerate(data):
+            if i%2 == 0:
+                if i+1 < len(data):
+                    first_y = item['y']
+                    second_y = data[i+1]['y']
+                    if first_y is not None and second_y is not None:
+                        t_y = (float(first_y)+float(second_y)) / 2
+                    else:
+                        t_y = first_y if first_y is not None else second_y
+
+                    t_item = {
+                            'x':item['x'],
+                            'y':t_y
+                            }
+                else:
+                    t_item = item
+                t_data.append(t_item)
+        data = t_data
+    return data
+
 def get_report_data_line(cd):
+    '''
+    获取线性的数据
+    '''
     from models import StatDetail
 
     objs = get_report_objs(cd)
@@ -112,46 +141,32 @@ def get_report_data_line(cd):
     t = datetime.timedelta(minutes=split_minutes)
     d = begintime
     while d <= endtime:
-        dict_d = {}
-        dict_d['x']=d
+        t_item= {}
+        t_item['x']=d
         try:
              obj = objs.get(firstTime=d)
         except StatDetail.DoesNotExist:
-            dict_d['y'] = ''
+            t_item['y'] = None
         else:
-            dict_d['y'] = getattr(obj,rtype2attr[rtype]['attr'])
-            dict_d['y'] = rtype2attr[rtype]['accuracy'] % (dict_d['y'])
-        data.append(dict_d)
+            t_item['y'] = getattr(obj,rtype2attr[rtype]['attr'])
+        data.append(t_item)
         d = d+t
 
     if cd['adjust'] == 0:
-        while len(data) > max_x_len:
-            tmpdata = []
-            for i,d in enumerate(data):
-                if i%2 == 0:
-                    if i+1 < len(data):
-                        if len(d['y']) > 0 and len(data[i+1]['y'])>0:
-                            tmp_y = (float(d['y'])+float(data[i+1]['y'])) / 2
-                            tmp_y = rtype2attr[rtype]['accuracy'] % tmp_y
-                        else:
-                            tmp_y = d['y'] if len(d['y']) > 0 else data[i+1]['y']
+        data = compress_data_line(data,max_x_len)
 
-                        tmp_d = {
-                                'x':d['x'],
-                                'y':tmp_y
-                                }
-                    else:
-                        tmp_d = d
-                    tmpdata.append(tmp_d)
-            data = tmpdata
-
-    for tmp_d in data:
-        if tmp_d['x'] is not None:
-            tmp_d['x'] = tmp_d['x'].strftime('%Y-%m-%d %H:%M')
+    for item in data:
+        if item['x'] is not None:
+            item['x'] = item['x'].strftime('%Y-%m-%d %H:%M')
+        if item['y'] is not None:
+            item['y'] = rtype2attr[rtype]['accuracy'] % item['y']
 
     return data
 
 def get_report_data_pie(cd):
+    '''
+    获取饼状的数据
+    '''
     objs = get_report_objs(cd)
 
     if objs is None or len(objs) == 0:
@@ -161,45 +176,49 @@ def get_report_data_pie(cd):
     data_map = {}
     for obj in objs:
         report_info = eval(obj.reportInfo)
-        single_map = report_info[rtype]
-        for k,v in single_map.items():
+        t_map = report_info[rtype]
+        for k,v in t_map.items():
             if k in data_map:
                 data_map[k] += v
             else:
                 data_map[k] = v
 
-    tmp_data = []
+    orig_data = []
     for k,v in data_map.items():
-        dict_d = {
+        t_item = {
                 'name':k,
                 'value':v
                 }
-        tmp_data.append(dict_d)
+        orig_data.append(t_item)
 
-    tmp_data.sort(lambda x,y: cmp(y['value'], x['value']))   
+    orig_data.sort(lambda x,y: cmp(y['value'], x['value']))   
 
     max_pie_typecount = len(pie_colors) - 1
 
-    res_data = tmp_data[:max_pie_typecount]
+    #截断出最大类别
+    cut_data = orig_data[:max_pie_typecount]
 
-    if len(tmp_data) > max_pie_typecount:
+    if len(orig_data) > max_pie_typecount:
         sum_d = 0
-        for i in range(max_pie_typecount,len(tmp_data)):
-            sum_d += tmp_data[i]['value']
-        res_data.append({'name':'else','value':sum_d})
+        for i in range(max_pie_typecount,len(orig_data)):
+            sum_d += orig_data[i]['value']
+        cut_data.append({'name':'else','value':sum_d})
 
     sum_value = 0
-    for v in res_data:
+
+    for v in cut_data:
         sum_value+=v['value']
 
-    for i in range(0,len(res_data)):
-        res_data[i]['color'] = pie_colors[i]
+    #加上颜色
+    accuracy = rtype2attr[rtype]['accuracy']
+    for i,item in enumerate(cut_data):
+        item['color'] = pie_colors[i]
         if float(sum_value) != 0:
-            res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % (float(res_data[i]['value']) * float(100) / float(sum_value))
+            item['value'] = accuracy % (float(item['value']) * float(100) / float(sum_value))
         else:
-            res_data[i]['value'] = rtype2attr[rtype]['accuracy'] % 0
+            item['value'] = 0
 
-    return res_data
+    return cut_data
 
 def cal_grid_width(len_data=0):
     if len_data <= max_x_len:
