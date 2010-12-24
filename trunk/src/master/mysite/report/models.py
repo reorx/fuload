@@ -38,7 +38,7 @@ class StatDetail(models.Model):
     reportInfo = models.TextField(verbose_name="报告详细信息")
 
     class Meta:
-        unique_together = (("reportId","firstTime","secondTime"))
+        unique_together = (("reportId","clientIp","firstTime","secondTime"))
 
     def __unicode__(self):
         return "[%s][%s][%u]" % (self.firstTime, self.secondTime, self.reportId)
