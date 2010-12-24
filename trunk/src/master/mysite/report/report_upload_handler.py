@@ -58,6 +58,18 @@ class ReportUploadHandler(object):
 
         return True
 
+    def sum_report_item(self, report1, report2, key):
+        data = {}
+        for item in (report1, report2):
+            if item is None or item[key] is None:
+                continue
+            for subkey,subvalue in item[key].items():
+                if subkey in data:
+                    data[subkey] += subvalue
+                else:
+                    data[subkey] = subvalue
+        return data
+
     def save_report(self, report_id, clientIp, first_time, second_time, report_info):
         new_report_info = {}
         try:
@@ -70,15 +82,7 @@ class ReportUploadHandler(object):
                 if key not in loop_keys:
                     new_report_info[key] = old_report_info[key] + report_info[key]
                 else:
-                    new_report_info[key] = {}
-                    for tinfo in (old_report_info, report_info):
-                        if tinfo[key] is None:
-                            continue
-                        for subkey in tinfo[key]:
-                            if subkey in new_report_info[key]:
-                                new_report_info[key][subkey] += tinfo[key][subkey]
-                            else:
-                                new_report_info[key][subkey] = tinfo[key][subkey]
+                    new_report_info[key] = self.sum_report_item(old_report_info, report_info, key)
 
         except StatDetail.DoesNotExist:
             stat_detail = StatDetail(reportId=report_id, clientIp = clientIp, firstTime=first_time, secondTime=second_time)

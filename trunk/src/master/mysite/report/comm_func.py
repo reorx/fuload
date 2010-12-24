@@ -177,6 +177,8 @@ def get_report_data_pie(cd):
     for obj in objs:
         report_info = eval(obj.reportInfo)
         t_map = report_info[rtype]
+        if t_map is None:
+            continue
         for k,v in t_map.items():
             if k in data_map:
                 data_map[k] += v
