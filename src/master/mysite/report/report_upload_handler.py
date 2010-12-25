@@ -7,7 +7,7 @@
 #  FileName:        report_upload_handler.py
 #  Description:     处理slave上报数据的类
 #  Version:         1.0
-#  LastChange:      2010-12-13 11:39:37
+#  LastChange:      2010-12-25 23:22:10
 #  History:         
 #=============================================================================
 '''
@@ -19,8 +19,7 @@ except ImportError:
     import simplejson as json
 
 from models import StatDetail
-from comm_def import report_keys
-from comm_func import get_border_time, get_pre_time,calc_values
+from comm_func import get_border_time,calc_values
 
 class ReportUploadHandler(object):
     '''

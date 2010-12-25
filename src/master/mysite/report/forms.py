@@ -7,7 +7,7 @@
 #  FileName:        forms.py
 #  Description:     表单
 #  Version:         1.0
-#  LastChange:      2010-12-13 11:39:25
+#  LastChange:      2010-12-25 23:19:37
 #  History:         
 #=============================================================================
 '''
@@ -15,9 +15,16 @@
 import datetime
 
 from django import forms
-from comm_def import rtype_original_keys,rtype2attr
+from comm_def import rtype2attr
 from django.contrib.admin import widgets
 from django.core import validators
+
+#这段代码会在模块载入的时候执行，目的就是为了生成按顺序展示的类型下拉列表
+rtype_order_list= []
+for k,v in rtype2attr.items():
+    rtype_order_list.append((k,v['name'],v['order']))
+rtype_order_list.sort(lambda x,y: cmp(x[2], y[2]))
+rtype_order_list = [(v[0],v[1]) for v in rtype_order_list]
 
 class TimeStampField(forms.IntegerField):
 
@@ -44,7 +51,7 @@ class SearchReportShowForm(forms.Form):
     rtype = forms.CharField(required=True,
             label='报表类型',
             widget=forms.Select(
-                choices = [(v,rtype2attr[v]['name']) for v in rtype_original_keys]
+                choices = rtype_order_list
                 )
             )
     adjust = forms.IntegerField(required=True,
@@ -60,7 +67,7 @@ class SearchReportDataForm(forms.Form):
     rtype = forms.CharField(required=True,
             label='报表类型',
             widget=forms.Select(
-                choices = [(v,rtype2attr[v]['name']) for v in rtype_original_keys]
+                choices = rtype_order_list
                 )
             )
     adjust = forms.IntegerField(required=True,

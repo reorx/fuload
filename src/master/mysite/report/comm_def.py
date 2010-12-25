@@ -7,7 +7,7 @@
 #  FileName:        comm_def.py
 #  Description:     定义的一些全局参数
 #  Version:         1.0
-#  LastChange:      2010-12-13 11:38:57
+#  LastChange:      2010-12-25 23:19:50
 #  History:         
 #=============================================================================
 '''
@@ -27,39 +27,6 @@ default_grid_width = 900
 #flash y,x默认比例
 default_persent_yx = 175
 
-#上报数据时json的字段
-report_keys = (
-'allTimeMsStat',
-'sucTimeMsStat',
-'errTimeMsStat',
-'allReqNum',
-'sucReqNum',
-'errReqNum',
-'alltimemap',
-'suctimemap',
-'errtimemap',
-'retmap'
-)
-
-#form中原始展现的rtype顺序
-rtype_original_keys = (
-        'allavgnum',
-        'sucavgnum',
-        'erravgnum',
-
-        'allavgtime',
-        'sucavgtime',
-        'erravgtime',
-
-        'sucrate',
-        'errrate',
-
-        'alltimemap',
-        'suctimemap',
-        'errtimemap',
-        'retmap',
-        )
-
 #展示数据时，前台传来的rtype与attr，name等的对应
 rtype2attr = {
         'allavgnum':{
@@ -67,18 +34,21 @@ rtype2attr = {
             'swftype':'line',
             'name':'总每秒调用量',
             'accuracy':'%.2f',
+            'order':0,
             },
         'sucavgnum':{
             'attr':'sucAvgNum',
             'swftype':'line',
             'name':'成功每秒调用量',
             'accuracy':'%.2f',
+            'order':1,
             },
         'erravgnum':{
             'attr':'errAvgNum',
             'swftype':'line',
             'name':'失败每秒调用量',
             'accuracy':'%.2f',
+            'order':2,
             },
 
         'allavgtime':{
@@ -86,18 +56,21 @@ rtype2attr = {
             'swftype':'line',
             'name':'总平均响应时间(ms)',
             'accuracy':'%.2f',
+            'order':3,
             },
         'sucavgtime':{
             'attr':'sucAvgTime',
             'swftype':'line',
             'name':'成功平均响应时间(ms)',
             'accuracy':'%.2f',
+            'order':4,
             },
         'erravgtime':{
             'attr':'errAvgTime',
             'swftype':'line',
             'name':'失败平均响应时间(ms)',
             'accuracy':'%.2f',
+            'order':5,
             },
         
         'sucrate':{
@@ -105,12 +78,14 @@ rtype2attr = {
             'swftype':'line',
             'name':'成功率(%)',
             'accuracy':'%.2f',
+            'order':6,
             },
         'errrate':{
             'attr':'errRate',
             'swftype':'line',
             'name':'失败率(%)',
             'accuracy':'%.2f',
+            'order':7,
             },
 
         'alltimemap':{
@@ -118,18 +93,21 @@ rtype2attr = {
             'swftype':'pie',
             'name':'总响应时间饼图(ms)',
             'accuracy':'%.2f',
+            'order':8,
             },
         'suctimemap':{
             'attr':'suctimemap',
             'swftype':'pie',
             'name':'成功响应时间饼图(ms)',
             'accuracy':'%.2f',
+            'order':9,
             },
         'errtimemap':{
             'attr':'errtimemap',
             'swftype':'pie',
             'name':'失败响应时间饼图(ms)',
             'accuracy':'%.2f',
+            'order':10,
             },
 
         'retmap':{
@@ -137,5 +115,6 @@ rtype2attr = {
             'swftype':'pie',
             'name':'返回码饼图',
             'accuracy':'%.2f',
+            'order':11,
             },
         }
