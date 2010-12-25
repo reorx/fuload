@@ -19,7 +19,7 @@ except ImportError:
     import simplejson as json
 
 from models import StatDetail
-from comm_def import report_keys,loop_keys
+from comm_def import report_keys
 from comm_func import get_border_time, get_pre_time,calc_values
 
 class ReportUploadHandler(object):
@@ -58,17 +58,38 @@ class ReportUploadHandler(object):
 
         return True
 
-    def sum_report_item(self, report1, report2, key):
-        data = {}
-        for item in (report1, report2):
-            if item is None or item[key] is None:
-                continue
-            for subkey,subvalue in item[key].items():
-                if subkey in data:
-                    data[subkey] += subvalue
-                else:
-                    data[subkey] = subvalue
-        return data
+    def merge_report(self, report1, report2):
+        '''
+        递归合并report
+        '''
+
+        #当其中有至少一个为None的时候，直接返回那个不为None的
+        if report1 is None or report2 is None:
+            return report1 if report1 is not None else report2
+
+        #在都不为None的情况下，如果两个类型不相等，要抛出异常
+        if type(report1) != type(report2):
+            raise TypeError
+
+        if not isinstance(report1,dict):
+            return report1 + report2
+
+        keys = list(set(report1.keys()) | set(report2.keys()))
+
+        new_report = {}
+        for key in keys:
+            try:
+                value1 = report1[key]
+            except:
+                value1 = None
+
+            try:
+                value2 = report2[key]
+            except:
+                value2 = None
+
+            new_report[key] = self.merge_report(value1,value2)
+        return new_report
 
     def save_report(self, report_id, clientIp, first_time, second_time, report_info):
         new_report_info = {}
@@ -78,11 +99,8 @@ class ReportUploadHandler(object):
                 old_report_info = eval(stat_detail.reportInfo)
             except:
                 old_report_info = {}
-            for key in report_info:
-                if key not in loop_keys:
-                    new_report_info[key] = old_report_info[key] + report_info[key]
-                else:
-                    new_report_info[key] = self.sum_report_item(old_report_info, report_info, key)
+            #合并出最新的report
+            new_report_info = self.merge_report(old_report_info,report_info)
 
         except StatDetail.DoesNotExist:
             stat_detail = StatDetail(reportId=report_id, clientIp = clientIp, firstTime=first_time, secondTime=second_time)

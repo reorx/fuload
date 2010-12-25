@@ -41,14 +41,6 @@ report_keys = (
 'retmap'
 )
 
-#上报数据时，对这些字段要进行遍历累加
-loop_keys = (
-'alltimemap',
-'suctimemap',
-'errtimemap',
-'retmap'
-)
-
 #form中原始展现的rtype顺序
 rtype_original_keys = (
         'allavgnum',
