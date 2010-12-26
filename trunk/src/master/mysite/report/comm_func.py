@@ -64,16 +64,45 @@ def calc_values(report_info):
     result = {}
 
     #平均到每秒
-    result['allAvgNum'] = float(report_info['allReqNum'])/float(split_minutes * 60)
-    result['sucAvgNum'] = float(report_info['sucReqNum'])/float(split_minutes * 60)
-    result['errAvgNum'] = float(report_info['errReqNum'])/float(split_minutes * 60)
+    try:
+        result['allAvgNum'] = float(report_info['allReqNum'])/float(split_minutes * 60)
+    except:
+        result['allAvgNum'] = 0
 
-    result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum']) if float(report_info['allReqNum']) != 0 else 0
-    result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum']) if float(report_info['sucReqNum']) != 0 else 0
-    result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum']) if float(report_info['errReqNum']) != 0 else 0
+    try:
+        result['sucAvgNum'] = float(report_info['sucReqNum'])/float(split_minutes * 60)
+    except:
+        result['sucAvgNum'] = 0
 
-    result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum']) if float(report_info['allReqNum']) != 0 else 100
-    result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum']) if float(report_info['allReqNum']) != 0 else 0
+    try:
+        result['errAvgNum'] = float(report_info['errReqNum'])/float(split_minutes * 60)
+    except:
+        result['errAvgNum'] = 0
+
+    try:
+        result['allAvgTime'] = float(report_info['allTimeMsStat']) / float(report_info['allReqNum'])
+    except:
+        result['allAvgTime'] = 0
+
+    try:
+        result['sucAvgTime'] = float(report_info['sucTimeMsStat']) / float(report_info['sucReqNum'])
+    except:
+        result['sucAvgTime'] = 0
+
+    try:
+        result['errAvgTime'] = float(report_info['errTimeMsStat']) / float(report_info['errReqNum'])
+    except:
+        result['errAvgTime'] = 0
+
+    try:
+        result['sucRate'] = 100 * float(report_info['sucReqNum']) / float(report_info['allReqNum'])
+    except:
+        result['sucRate'] = 100
+
+    try:
+        result['errRate'] = 100 * float(report_info['errReqNum']) / float(report_info['allReqNum'])
+    except:
+        result['errRate'] = 0
 
     return result
 
