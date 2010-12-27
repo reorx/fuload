@@ -30,7 +30,7 @@ from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
 from comm_def import rtype2attr
-from comm_func import get_report_data_line,get_report_data_pie,get_report_objs,cal_grid_width,cal_persent_yx
+from comm_func import get_report_data_line,get_report_data_pie,cal_grid_width,cal_persent_yx
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
