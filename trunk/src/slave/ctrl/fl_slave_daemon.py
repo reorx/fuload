@@ -17,6 +17,7 @@ from os.path import abspath, dirname, join
 from daemon import Daemon
 
 from fl_slave_ctrl import SlaveCtrl
+from fl_slave_conf import DAEMON_PIDFILE,DAEMON_STDIN,DAEMON_STDOUT,DAEMON_STDERR
 
 mpath = abspath(dirname(__file__))
 
@@ -28,8 +29,7 @@ class SlaveDaemon(Daemon):
         srv.start()
 
 if __name__ == "__main__":
-    daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid')
-    #daemon = SlaveDaemon('/tmp/daemon-slave-ctrl.pid',stdin='/tmp/fl_in',stdout='/tmp/fl_out',stderr='/tmp/fl_err')
+    daemon = SlaveDaemon(DAEMON_PIDFILE,DAEMON_STDIN,DAEMON_STDOUT,DAEMON_STDERR)
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
