@@ -62,3 +62,17 @@ WORKER_LOG_FILE = '../log/worker'
 WORKER_LOG_MAXSIZE = 104857600
 
 #=============================================================================
+#daemon相关
+
+#存储daemon的pid文件
+DAEMON_PIDFILE = '/tmp/daemon-slave-ctrl.pid'
+
+#标准输入重定向
+DAEMON_STDIN = '/dev/null'
+
+#标准输出重定向
+DAEMON_STDOUT = '/dev/null'
+
+#错误输出重定向
+DAEMON_STDERR = '/dev/null'
+#=============================================================================

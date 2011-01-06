@@ -24,7 +24,7 @@ def fuload_handle_process(mapParams):
     except Exception,e:
         pass
     else:
-        return paytest()
+        return basetest()
 
     print urllib.urlopen("http://www.vimer.cn").read()
     return 0
