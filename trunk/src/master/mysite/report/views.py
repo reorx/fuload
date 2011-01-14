@@ -30,7 +30,8 @@ from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
 from comm_def import rtype2attr
-from comm_func import get_report_data_line,get_report_data_pie,cal_grid_width,cal_persent_yx
+from comm_func import cal_grid_width,cal_persent_yx
+from report_show_handler import get_show_handler
 
 def HandleReportUpload(request,reportId):
     #if request.method != 'POST':
@@ -96,12 +97,10 @@ def HttpReportData(request):
     else:
         endtime = cd['endtime']
 
-    if rtype2attr[rtype]['swftype'] == 'pie':
-        data = get_report_data_pie(cd)
-        t = get_template('show/pie_data.xml')
-    else:
-        data = get_report_data_line(cd)
-        t = get_template('show/line_data.xml')
+    handler_obj = get_show_handler(rtype2attr[rtype]['swftype'])
+    data = handler_obj.get_data(cd)
+    t = get_template(handler_obj.get_data_file())
+
     grid_width = cal_grid_width(len(data))
     persent_yx = cal_persent_yx(len(data))
 
@@ -151,28 +150,32 @@ def HttpReportShow(request):
     else:
         endtime = cd['endtime']
 
-    swffile = ''
-    rtype = request.GET['rtype']
-    if rtype2attr[rtype]['swftype'] == 'pie':
-        swffile = 'fcp-pie-2d-charts.swf'
-        base_data_url = '/report/data/?r='+str(random.random())
-    else:
-        swffile = 'fcp-line-chart.swf'
-        base_data_url = '/report/data/?r='+str(random.random())
-
-    clientIps = StatDetail.objects.values("clientIp").distinct()
-
+    #生成获取数据的url
+    base_data_url = '/report/data/?r='+str(random.random())
     for k,v in request.GET.items():
         if k in ('begintime','endtime'):
             continue
         if v is not None:
             base_data_url += ('&'+k+'='+v)
-
     #这里用timestamp来获取data，主要是因为前段swf要求xml_file的url里面不能有空格而2020-1-1 2:2精确到分就会出现空格
     base_data_url += ('&begintime='+str(int(time.mktime(begintime.timetuple()))))
     base_data_url += ('&endtime='+str(int(time.mktime(endtime.timetuple()))))
 
+
+    rtype = request.GET['rtype']
+    swftype = rtype2attr[rtype]['swftype']
+    handler_obj = get_show_handler(swftype)
+    swffile = handler_obj.get_swf_file()
+
+    clientIps = StatDetail.objects.values("clientIp").distinct()
+
     listData = []
+
+    #swf类型映射最短长度(<)
+    swftype_len_dict = {
+            'line':2,
+            'pie':1,
+    }
     for ip_dict in clientIps:
         ip = ip_dict['clientIp']
         if ip is None or len(ip) == 0:
@@ -180,15 +183,11 @@ def HttpReportShow(request):
         tmpcd = copy.deepcopy(cd)
         tmpcd['clientip'] = ip
 
-        if rtype2attr[rtype]['swftype'] == 'pie':
-            tmpdata = get_report_data_pie(tmpcd)
-            if len(tmpdata) == 0:
+        tmpdata = handler_obj.get_data(tmpcd)
+        if swftype in swftype_len_dict:
+            if len(tmpdata) < swftype_len_dict[swftype]:
                 continue
-        else:
-            tmpdata = get_report_data_line(tmpcd)
-            #line swf的问题，必须起码有两个点
-            if len(tmpdata) < 2:
-                continue
+
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
 
