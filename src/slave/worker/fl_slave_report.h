@@ -46,6 +46,9 @@ typedef struct _StSWNetStat
         //统计返回码的调用数量
         map<int,unsigned> mapRetcodeStat;
 
+        //统计返回码的调用时间
+        map<int,unsigned> mapRetTimeMsStat;
+
         _StSWNetStat()
         {
             ResetStat();
@@ -67,6 +70,7 @@ typedef struct _StSWNetStat
                 errTimeMsStat += time_ms;
             }
             mapRetcodeStat[retcode] += 1;
+            mapRetTimeMsStat[retcode] += time_ms;
             string mTime = get_maptime(time_ms);
             mapAllTimeMsStat[mTime] += 1;
             if (retcode == 0)
@@ -84,6 +88,7 @@ typedef struct _StSWNetStat
             mapSucTimeMsStat.clear();
             mapErrTimeMsStat.clear();
             mapRetcodeStat.clear();
+            mapRetTimeMsStat.clear();
             allTimeMsStat = 0;
             sucTimeMsStat = 0;
             errTimeMsStat = 0;
@@ -235,6 +240,14 @@ class CSWReport
                 valueRetMap[tmp] = it_ret->second;
             }
             root["retmap"] = valueRetMap;
+
+            Json::Value valueRetTimeMap;
+            foreach(m_PtrNetStat->mapRetTimeMsStat,it_ret)
+            {
+                snprintf(tmp,sizeof(tmp),"%d",it_ret->first);
+                valueRetTimeMap[tmp] = it_ret->second;
+            }
+            root["rettimemap"] = valueRetTimeMap;
 
             string output = writer.write(root);
 
