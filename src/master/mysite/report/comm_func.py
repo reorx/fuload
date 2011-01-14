@@ -11,6 +11,8 @@
 #  History:         
 #=============================================================================
 '''
+import time
+import datetime
 from comm_def import split_minutes,max_x_len,default_grid_width,default_persent_yx
 
 def get_border_time(now_time):
