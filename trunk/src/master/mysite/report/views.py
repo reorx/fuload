@@ -29,7 +29,6 @@ from django.template import Context
 from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
-from comm_def import rtype2attr
 from report_show_handler import get_show_handler
 
 def HandleReportUpload(request,reportId):
@@ -90,7 +89,6 @@ def HttpReportData(request):
 
     cd = form.cleaned_data
     clientip = cd['clientip']
-    rtype = request.GET['rtype']
 
     begintime = cd['begintime']
 
@@ -101,7 +99,7 @@ def HttpReportData(request):
     else:
         endtime = cd['endtime']
 
-    handler_obj = get_show_handler(rtype2attr[rtype]['swftype'], cd)
+    handler_obj = get_show_handler(cd)
     render_data = handler_obj.get_render_data()
     t = get_template(handler_obj.get_data_file())
 
@@ -161,20 +159,13 @@ def HttpReportShow(request):
     base_data_url += ('&endtime='+str(int(time.mktime(endtime.timetuple()))))
 
 
-    rtype = request.GET['rtype']
-    swftype = rtype2attr[rtype]['swftype']
-    handler_obj = get_show_handler(swftype, cd)
+    handler_obj = get_show_handler(cd)
     swffile = handler_obj.get_swf_file()
 
     clientIps = StatDetail.objects.values("clientIp").distinct()
 
     listData = []
 
-    #swf类型映射最短长度(<)
-    swftype_len_dict = {
-            'line':2,
-            'pie':1,
-    }
     for ip_dict in clientIps:
         ip = ip_dict['clientIp']
         if ip is None or len(ip) == 0:
@@ -182,13 +173,11 @@ def HttpReportShow(request):
         tmpcd = copy.deepcopy(cd)
         tmpcd['clientip'] = ip
 
-        handler_obj = get_show_handler(swftype, tmpcd)
-        tmpdata = handler_obj.get_data()
-        if swftype in swftype_len_dict:
-            if len(tmpdata) < swftype_len_dict[swftype]:
-                continue
-        flash_width = handler_obj.get_swf_width()
+        handler_obj = get_show_handler(tmpcd)
+        if not handler_obj.is_valid():
+            continue
 
+        flash_width = handler_obj.get_swf_width()
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
 
