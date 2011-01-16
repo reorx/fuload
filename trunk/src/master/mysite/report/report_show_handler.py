@@ -14,12 +14,16 @@
 '''
 import datetime
 
-from comm_def import split_minutes,rtype2attr,max_x_len,pie_colors
+from comm_def import split_minutes,rtype2attr,max_x_len,pie_colors,default_grid_width,default_persent_yx
 
 class ReportShowBaseHandler(object):
 
     _data_file = ''
     _swf_file = ''
+    _cd = None
+
+    def __init__(self, cd):
+        self._cd = cd
 
     #仅仅是把数据查找出来没有做进一步的处理
     def get_report_objs(self, cd):
@@ -39,7 +43,7 @@ class ReportShowBaseHandler(object):
 
         return objs
 
-    def get_data(self, cd):
+    def get_data(self):
         pass
 
     def get_data_file(self):
@@ -48,21 +52,29 @@ class ReportShowBaseHandler(object):
     def get_swf_file(self):
         return self._swf_file
 
+    def get_swf_width(self):
+        return default_grid_width
+
+    def get_render_data(self):
+        render_data = {}
+        render_data['data'] = self.get_data()
+        return render_data
+
 class ReportShowLineHandler(ReportShowBaseHandler):
-    def __init__(self):
-        super(ReportShowLineHandler, self).__init__()
+    def __init__(self, cd):
+        super(ReportShowLineHandler, self).__init__(cd)
         self._data_file = 'show/line_data.xml'
         self._swf_file = 'fcp-line-chart.swf'
 
-    def get_data(self, cd):
+    def get_data(self):
         from models import StatDetail
 
-        objs = self.get_report_objs(cd)
+        objs = self.get_report_objs(self._cd)
 
         if objs is None or len(objs) == 0:
             return []
 
-        rtype = cd['rtype']
+        rtype = self._cd['rtype']
 
         begintime = objs[0].firstTime
         endtime = objs[len(objs)-1].firstTime
@@ -82,7 +94,7 @@ class ReportShowLineHandler(ReportShowBaseHandler):
             data.append(t_item)
             d = d+t
 
-        if cd['adjust'] == 0:
+        if self._cd['adjust'] == 0:
             data = self._compress_data_line(data,max_x_len)
 
         for item in data:
@@ -92,6 +104,16 @@ class ReportShowLineHandler(ReportShowBaseHandler):
                 item['y'] = rtype2attr[rtype]['accuracy'] % item['y']
 
         return data
+
+    def get_render_data(self):
+        render_data = {}
+        render_data['data'] = self.get_data()
+        render_data['grid_width'] = self._cal_grid_width(len(render_data['data']))
+        render_data['persent_yx'] = self._cal_persent_yx(len(render_data['data']))
+        return render_data
+
+    def get_swf_width(self):
+        return self._cal_grid_width(len(self.get_data()))+110
 
     def _compress_data_line(self, data, max_len):
         '''
@@ -119,21 +141,31 @@ class ReportShowLineHandler(ReportShowBaseHandler):
             data = t_data
         return data
 
+    def _cal_grid_width(self, len_data=0):
+        if len_data <= max_x_len:
+            return default_grid_width
+        return default_grid_width * len_data / max_x_len
+
+    def _cal_persent_yx(self, len_data=0):
+        if len_data <= max_x_len:
+            return default_persent_yx
+        return default_persent_yx * len_data / max_x_len
+
 class ReportShowPieHandler(ReportShowBaseHandler):
-    def __init__(self):
-        super(ReportShowPieHandler, self).__init__()
+    def __init__(self, cd):
+        super(ReportShowPieHandler, self).__init__(cd)
         self._data_file = 'show/pie_data.xml'
         self._swf_file = 'fcp-pie-2d-charts.swf'
 
-    def get_data(self, cd):
+    def get_data(self):
         '''
         获取饼状的数据
         '''
-        objs = self.get_report_objs(cd)
+        objs = self.get_report_objs(self._cd)
 
         if objs is None or len(objs) == 0:
             return []
-        rtype = cd['rtype']
+        rtype = self._cd['rtype']
 
         data_map = {}
         for obj in objs:
@@ -185,18 +217,21 @@ class ReportShowPieHandler(ReportShowBaseHandler):
         return cut_data
 
 class ReportShowMultiLineHandler(ReportShowBaseHandler):
-    def __init__(self):
-        super(ReportShowMultiLineHandler, self).__init__()
+    def __init__(self, cd):
+        super(ReportShowMultiLineHandler, self).__init__(cd)
 
-    def get_data(self, cd):
+    def get_data(self):
         pass
 
-def get_show_handler(swftype):
+def get_show_handler(swftype, cd = None):
+    '''
+    工厂函数，负责生成对应类型的对象
+    '''
     dict_swftype = {
             'line':ReportShowLineHandler,
             'pie':ReportShowPieHandler,
     }
     if swftype in dict_swftype:
-        return dict_swftype[swftype]()
+        return dict_swftype[swftype](cd)
     else:
         raise TypeError

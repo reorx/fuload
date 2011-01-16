@@ -7,15 +7,15 @@
         <legend_popup font="Verdana" bgcolor="FFFFE3" font_size="10" />
         <Xheaders rotate="90" color="000000" size="9" title="" title_color="000000" />
         <Yheaders color="000000" size="10" title="" title_rotate="0" title_color="000000" />
-        <grid showX="1" showY="1" persent_stepY_from_stepX="{{ persent_yx }}" grid_width="{{ grid_width }}" grid_height="250" grid_color="000000" grid_alpha="40" grid_thickness="1" bg_color="ffffff" bg_alpha="100" alternate_bg_color="FFFCF0" border_color="000000" border_thickness="2" />
+        <grid showX="1" showY="1" persent_stepY_from_stepX="{{ render_data.persent_yx }}" grid_width="{{ render_data.grid_width }}" grid_height="250" grid_color="000000" grid_alpha="40" grid_thickness="1" bg_color="ffffff" bg_alpha="100" alternate_bg_color="FFFCF0" border_color="000000" border_thickness="2" />
     </general_settings>
     <abscissa_data>
-        {% for d in data %}
+        {% for d in render_data.data %}
         <x value="{{ d.x }}" />
         {% endfor %}
     </abscissa_data>
     <ordinate_data seriesName="{{ clientip }}" color="0080C0" size="3.5">
-        {% for d in data %}
+        {% for d in render_data.data %}
         <y value="{{ d.y }}" />
         {% endfor %}
     </ordinate_data>

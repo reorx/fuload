@@ -30,7 +30,6 @@ from models import StatDetail
 from report_upload_handler import ReportUploadHandler
 from forms import SearchReportShowForm,SearchReportDataForm
 from comm_def import rtype2attr
-from comm_func import cal_grid_width,cal_persent_yx
 from report_show_handler import get_show_handler
 
 def HandleReportUpload(request,reportId):
@@ -67,6 +66,11 @@ def HandleReportUpload(request,reportId):
                 #0:1000,
                 #1:10,
                 #1000:22
+                #},
+            #'rettimemap':{
+                #0:10000,
+                #1:200,
+                #1000:2200
                 #}
             #}
     #slaveReport = json.dumps(slaveReport)
@@ -97,21 +101,16 @@ def HttpReportData(request):
     else:
         endtime = cd['endtime']
 
-    handler_obj = get_show_handler(rtype2attr[rtype]['swftype'])
-    data = handler_obj.get_data(cd)
+    handler_obj = get_show_handler(rtype2attr[rtype]['swftype'], cd)
+    render_data = handler_obj.get_render_data()
     t = get_template(handler_obj.get_data_file())
-
-    grid_width = cal_grid_width(len(data))
-    persent_yx = cal_persent_yx(len(data))
 
     html = t.render(Context(
         {
-            'data':data,
+            'render_data':render_data,
             'begintime':begintime.strftime('%Y-%m-%d %H:%M'),
             'endtime':endtime.strftime('%Y-%m-%d %H:%M'),
             'clientip':clientip,
-            'grid_width':grid_width,
-            'persent_yx':persent_yx
             }
         ))
     return HttpResponse(html,mimetype='application/xml')
@@ -164,7 +163,7 @@ def HttpReportShow(request):
 
     rtype = request.GET['rtype']
     swftype = rtype2attr[rtype]['swftype']
-    handler_obj = get_show_handler(swftype)
+    handler_obj = get_show_handler(swftype, cd)
     swffile = handler_obj.get_swf_file()
 
     clientIps = StatDetail.objects.values("clientIp").distinct()
@@ -183,15 +182,16 @@ def HttpReportShow(request):
         tmpcd = copy.deepcopy(cd)
         tmpcd['clientip'] = ip
 
-        tmpdata = handler_obj.get_data(tmpcd)
+        handler_obj = get_show_handler(swftype, tmpcd)
+        tmpdata = handler_obj.get_data()
         if swftype in swftype_len_dict:
             if len(tmpdata) < swftype_len_dict[swftype]:
                 continue
+        flash_width = handler_obj.get_swf_width()
 
         data_url = base_data_url + '&clientip=' + ip
         quote_data_url = urllib.quote(data_url)
 
-        flash_width = cal_grid_width(len(tmpdata)) + 110
         listData.append(
                 {'ip':ip, 'data_url':data_url,'quote_data_url':quote_data_url,'flash_width':flash_width}
                 )
