@@ -14,19 +14,23 @@
 '''
 import datetime
 
-from comm_def import split_minutes,rtype2attr,max_x_len,pie_colors,default_grid_width,default_persent_yx
+from comm_def import rtype2attr,split_minutes,rtype2attr,max_x_len,pie_colors,default_grid_width,default_persent_yx
 
 class ReportShowBaseHandler(object):
-
+    #数据xml文件
     _data_file = ''
+    #swf文件路径
     _swf_file = ''
+    #传入的clean_data
     _cd = None
+    #生成的数据
+    _data = None
 
     def __init__(self, cd):
         self._cd = cd
 
     #仅仅是把数据查找出来没有做进一步的处理
-    def get_report_objs(self, cd):
+    def _get_report_objs(self, cd):
         if cd is None:
             return None
         from models import StatDetail
@@ -46,21 +50,49 @@ class ReportShowBaseHandler(object):
         return objs
 
     def get_data(self):
-        pass
+        '''
+        子类不必实现
+        '''
+        self.make_data()
+        return self._data
 
     def get_data_file(self):
+        '''
+        子类不必实现
+        '''
         return self._data_file
 
     def get_swf_file(self):
+        '''
+        子类不必实现
+        '''
         return self._swf_file
 
-    def get_swf_width(self):
-        return default_grid_width
+
+    # 从这里之后的方法，子类都是可以实现的
+    def make_data():
+        '''
+        模版方法，子类必须实现这个方法来生成data
+        '''
+        return True
 
     def get_render_data(self):
+        '''
+        获取用来render的render_data
+        '''
         render_data = {}
         render_data['data'] = self.get_data()
         return render_data
+
+
+    def get_swf_width(self):
+        '''
+        子类可以自己实现返回的flash长度
+        '''
+        return default_grid_width
+
+    def is_valid(self):
+        return True
 
 class ReportShowLineHandler(ReportShowBaseHandler):
     def __init__(self, cd):
@@ -68,13 +100,16 @@ class ReportShowLineHandler(ReportShowBaseHandler):
         self._data_file = 'show/line_data.xml'
         self._swf_file = 'fcp-line-chart.swf'
 
-    def get_data(self):
+    def make_data(self):
+        if self._data is not None:
+            return True
         from models import StatDetail
 
-        objs = self.get_report_objs(self._cd)
+        objs = self._get_report_objs(self._cd)
 
         if objs is None or len(objs) == 0:
-            return []
+            self._data = []
+            return True
 
         rtype = self._cd['rtype']
 
@@ -105,7 +140,8 @@ class ReportShowLineHandler(ReportShowBaseHandler):
             if item['y'] is not None:
                 item['y'] = rtype2attr[rtype]['accuracy'] % item['y']
 
-        return data
+        self._data = data
+        return True
 
     def get_render_data(self):
         render_data = {}
@@ -153,20 +189,32 @@ class ReportShowLineHandler(ReportShowBaseHandler):
             return default_persent_yx
         return default_persent_yx * len_data / max_x_len
 
+    def is_valid(self):
+        #这样就不用自己去做None判断了
+        t_data = self.get_data()
+        if len(t_data) < 2:
+            return False
+        else:
+            return True
+
 class ReportShowPieHandler(ReportShowBaseHandler):
     def __init__(self, cd):
         super(ReportShowPieHandler, self).__init__(cd)
         self._data_file = 'show/pie_data.xml'
         self._swf_file = 'fcp-pie-2d-charts.swf'
 
-    def get_data(self):
+    def make_data(self):
         '''
         获取饼状的数据
         '''
-        objs = self.get_report_objs(self._cd)
+        if self._data is not None:
+            return True
+
+        objs = self._get_report_objs(self._cd)
 
         if objs is None or len(objs) == 0:
-            return []
+            self._data = []
+            return True
         rtype = self._cd['rtype']
 
         data_map = {}
@@ -216,24 +264,25 @@ class ReportShowPieHandler(ReportShowBaseHandler):
             else:
                 item['value'] = 0
 
-        return cut_data
+        self._data = cut_data
+        return True
+
+    def is_valid(self):
+        t_data = self.get_data()
+        if len(t_data) < 1:
+            return False
+        else:
+            return True
 
 class ReportShowMultiLineHandler(ReportShowBaseHandler):
     def __init__(self, cd):
         super(ReportShowMultiLineHandler, self).__init__(cd)
 
-    def get_data(self):
-        pass
-
-def get_show_handler(swftype, cd = None):
+def get_show_handler(cd = None):
     '''
     工厂函数，负责生成对应类型的对象
     '''
-    dict_swftype = {
-            'line':ReportShowLineHandler,
-            'pie':ReportShowPieHandler,
-    }
-    if swftype in dict_swftype:
-        return dict_swftype[swftype](cd)
-    else:
-        raise TypeError
+    rtype = cd['rtype']
+
+    obj = eval(rtype2attr[rtype]['showhandler'])(cd)
+    return obj
