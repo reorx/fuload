@@ -27,6 +27,8 @@ class ReportShowBaseHandler(object):
 
     #仅仅是把数据查找出来没有做进一步的处理
     def get_report_objs(self, cd):
+        if cd is None:
+            return None
         from models import StatDetail
         objs = StatDetail.objects.filter(reportId=cd['reportid'])
 
