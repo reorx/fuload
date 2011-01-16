@@ -6,9 +6,9 @@
 #  Author:          dantezhu - http://www.vimer.cn
 #  Email:           zny2008@gmail.com
 #  FileName:        report_show_handler.py
-#  Description:     对书
+#  Description:     数据展示的handler
 #  Version:         1.0
-#  LastChange:      2011-01-14 21:50:34
+#  LastChange:      2011-01-16 20:57:57
 #  History:         
 #=============================================================================
 '''
