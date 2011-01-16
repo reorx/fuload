@@ -278,7 +278,7 @@ class ReportShowMultiLineHandler(ReportShowBaseHandler):
     def __init__(self, cd):
         super(ReportShowMultiLineHandler, self).__init__(cd)
 
-def get_show_handler(cd = None):
+def get_show_handler(cd):
     '''
     工厂函数，负责生成对应类型的对象
     '''
