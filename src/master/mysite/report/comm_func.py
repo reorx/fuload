@@ -13,7 +13,7 @@
 '''
 import time
 import datetime
-from comm_def import split_minutes,max_x_len,default_grid_width,default_persent_yx
+from comm_def import split_minutes
 
 def get_border_time(now_time):
     '''
@@ -96,12 +96,3 @@ def calc_values(report_info):
 
     return result
 
-def cal_grid_width(len_data=0):
-    if len_data <= max_x_len:
-        return default_grid_width
-    return default_grid_width * len_data / max_x_len
-
-def cal_persent_yx(len_data=0):
-    if len_data <= max_x_len:
-        return default_persent_yx
-    return default_persent_yx * len_data / max_x_len
