@@ -234,32 +234,25 @@ class ReportShowPieHandler(ReportShowBaseHandler):
 
         orig_data.sort(lambda x,y: cmp(y['value'], x['value']))   
 
-        max_pie_typecount = len(pie_colors) - 1
-
-        #截断出最大类别
-        cut_data = orig_data[:max_pie_typecount]
-
-        if len(orig_data) > max_pie_typecount:
-            sum_d = 0
-            for i in range(max_pie_typecount,len(orig_data)):
-                sum_d += orig_data[i]['value']
-            cut_data.append({'name':'else','value':sum_d})
-
         sum_value = 0
 
-        for v in cut_data:
+        for v in orig_data:
             sum_value+=v['value']
 
         #加上颜色
         accuracy = rtype2attr[rtype]['accuracy']
-        for i,item in enumerate(cut_data):
-            item['color'] = pie_colors[i]
-            if float(sum_value) != 0:
-                item['value'] = accuracy % (float(item['value']) * float(100) / float(sum_value))
+        for i,item in enumerate(orig_data):
+            if i < len(pie_colors):
+                item['color'] = pie_colors[i]
             else:
+                item['color'] = pie_colors[len(pie_colors)-1]
+
+            try:
+                item['value'] = accuracy % (float(item['value']) * float(100) / float(sum_value))
+            except Exception:
                 item['value'] = 0
 
-        return cut_data
+        return orig_data
 
     def is_valid(self):
         t_data = self.get_data()
