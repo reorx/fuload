@@ -53,7 +53,9 @@ class ReportShowBaseHandler(object):
         '''
         子类不必实现
         '''
-        self.make_data()
+        if self._data is None:
+            self._data = self._make_data(self._cd)
+
         return self._data
 
     def get_data_file(self):
@@ -70,7 +72,7 @@ class ReportShowBaseHandler(object):
 
 
     # 从这里之后的方法，子类都是可以实现的
-    def make_data():
+    def _make_data(self, cd):
         '''
         模版方法，子类必须实现这个方法来生成data
         '''
@@ -100,18 +102,15 @@ class ReportShowLineHandler(ReportShowBaseHandler):
         self._data_file = 'show/line_data.xml'
         self._swf_file = 'fcp-line-chart.swf'
 
-    def make_data(self):
-        if self._data is not None:
-            return True
+    def _make_data(self, cd):
         from models import StatDetail
 
-        objs = self._get_report_objs(self._cd)
+        objs = self._get_report_objs(cd)
 
         if objs is None or len(objs) == 0:
-            self._data = []
-            return True
+            return []
 
-        rtype = self._cd['rtype']
+        rtype = cd['rtype']
 
         begintime = objs[0].firstTime
         endtime = objs[len(objs)-1].firstTime
@@ -131,7 +130,7 @@ class ReportShowLineHandler(ReportShowBaseHandler):
             data.append(t_item)
             d = d+t
 
-        if self._cd['adjust'] == 0:
+        if cd['adjust'] == 0:
             data = self._compress_data_line(data,max_x_len)
 
         for item in data:
@@ -140,8 +139,7 @@ class ReportShowLineHandler(ReportShowBaseHandler):
             if item['y'] is not None:
                 item['y'] = rtype2attr[rtype]['accuracy'] % item['y']
 
-        self._data = data
-        return True
+        return data
 
     def get_render_data(self):
         render_data = {}
@@ -203,19 +201,16 @@ class ReportShowPieHandler(ReportShowBaseHandler):
         self._data_file = 'show/pie_data.xml'
         self._swf_file = 'fcp-pie-2d-charts.swf'
 
-    def make_data(self):
+    def _make_data(self, cd):
         '''
         获取饼状的数据
         '''
-        if self._data is not None:
-            return True
 
-        objs = self._get_report_objs(self._cd)
+        objs = self._get_report_objs(cd)
 
         if objs is None or len(objs) == 0:
-            self._data = []
-            return True
-        rtype = self._cd['rtype']
+            return []
+        rtype = cd['rtype']
 
         data_map = {}
         for obj in objs:
@@ -264,8 +259,7 @@ class ReportShowPieHandler(ReportShowBaseHandler):
             else:
                 item['value'] = 0
 
-        self._data = cut_data
-        return True
+        return cut_data
 
     def is_valid(self):
         t_data = self.get_data()
