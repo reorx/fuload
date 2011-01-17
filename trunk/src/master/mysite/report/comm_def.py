@@ -114,7 +114,7 @@ rtype2attr = {
             'attr':'retmap',
             'showhandler':'ReportShowPieHandler',
             'name':'返回码饼图',
-            'accuracy':'%.2f',
+            'accuracy':'%.4f',
             'order':11,
             },
         }
