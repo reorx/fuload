@@ -150,13 +150,13 @@ typedef struct _StSWLocStat
                 int suc_stat;
                 int err_stat;
             }arr_statinfos[] = {
-                {5,STAT_5_SUC,STAT_5_ERR},
-                {10,STAT_10_SUC,STAT_10_ERR},
-                {50,STAT_50_SUC,STAT_50_ERR},
-                {100,STAT_100_SUC,STAT_100_ERR},
-                {200,STAT_200_SUC,STAT_200_ERR},
-                {500,STAT_500_SUC,STAT_500_ERR},
-                {1000,STAT_1000_SUC,STAT_1000_ERR},
+                {5,STAT_5MS_SUC,STAT_5MS_ERR},
+                {10,STAT_10MS_SUC,STAT_10MS_ERR},
+                {50,STAT_50MS_SUC,STAT_50MS_ERR},
+                {100,STAT_100MS_SUC,STAT_100MS_ERR},
+                {200,STAT_200MS_SUC,STAT_200MS_ERR},
+                {500,STAT_500MS_SUC,STAT_500MS_ERR},
+                {1000,STAT_1000MS_SUC,STAT_1000MS_ERR},
                 {-1,STAT_MORE_SUC,STAT_MORE_ERR},
             };
             int count = sizeof(arr_statinfos) / sizeof(arr_statinfos[0]);
