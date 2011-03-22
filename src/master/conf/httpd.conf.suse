@@ -1,5 +1,5 @@
 WSGIPythonEggs /tmp
-<VirtualHost *:80>
+<VirtualHost *>
     ServerName fuload.qq.com
     WSGIScriptAlias / /home/dantezhu/htdocs/fuload/conf/setting.wsgi
     <Directory />
