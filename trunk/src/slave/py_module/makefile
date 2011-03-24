@@ -1,33 +1,51 @@
 CC = gcc
 CXX = g++
-CFLAGS  = -Wall -pipe -DDEBUG -D_NEW_LIC -g -D_GNU_SOURCE \
-		  -shared -D_REENTRANT -fPIC -pthread
+MYFLAGS = -MMD -Wall -pipe -g -D_GNU_SOURCE -shared -D_REENTRANT -fPIC
 
-LIB     = -L/usr/local/lib/ -lpython2.7 -ldl -lutil -Xlinker -export-dynamic
-INC     = -I. -I/usr/local/include/python2.7/
+INC += -I. -I/usr/local/include/python2.7/
+LIB += -L/usr/local/lib/ -lpython2.7 -lutil -Xlinker -export-dynamic -ldl -lrt
 
-OO  = main.o
+TAR_DIR = ./
+SRC_DIR = ./
+OBJ_DIR = ./obj/
 
-TARGETS = libmodule.so
+RELEASE_DIR = ./
 
-all: $(TARGETS)
+TARGET = $(TAR_DIR)libmodule.so
 
-$(TARGETS): $(OO)
-	$(CXX) $(CFLAGS) $(INC) $(OO) -o $@ $(LIB)
+OBJS = \
+	   $(OBJ_DIR)main.o \
 
 
-.c.o:
-	$(CC)  $(CFLAGS) -c $(INC) $<
-	echo $@
+OBJ_SUB_DIRS = $(sort $(dir $(OBJS)))
 
-.cpp.o:
-	$(CXX) $(CFLAGS) -c $(INC) $<
-	echo $@
+DEPENDS = $(patsubst %.o, %.d, $(OBJS))
 
-%:%.c
-	$(CC) $(CFLAGS) -o $@ $< $(OO)
-	echo $@
+.PHONY: all clean init
+
+all: init $(TARGET)
+	@echo -e "\033[1;32m\nSuccess!\033[0m"
+	ldd -r $(TARGET)
+
+$(TARGET): $(OBJS)
+	@echo -e "\033[1;33m\nLinking $< ==> $@\033[0m"
+	$(CXX) $(MYFLAGS) $(INC) $^ -o $@ $(LIB)
+ifneq ($(TAR_DIR), $(RELEASE_DIR))
+	cp $@ $(RELEASE_DIR)
+endif
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@echo -e "\033[1;33m\nCompiling $< ==> $@\033[0m"
+	$(CC) $(MYFLAGS) -c -o $@ $(INC) $<
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+	@echo -e "\033[1;33m\nCompiling $< ==> $@\033[0m"
+	$(CXX) $(MYFLAGS) -c -o $@ $(INC) $<
 
 clean:
-	rm -f *.o
-	rm -f $(TARGETS)
+	rm -f $(OBJS) $(TARGET) $(DEPENDS)
+
+init:
+	mkdir -p $(sort ./ $(TAR_DIR) $(SRC_DIR) $(OBJ_DIR) $(RELEASE_DIR) $(OBJ_SUB_DIRS))
+
+-include $(DEPENDS)
