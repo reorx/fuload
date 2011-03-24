@@ -26,9 +26,6 @@ fl_toolstat:  stat.o fl_toolstat.o
 
 .cpp.o:
 	$(CXX) -c -o $*.o $(INC) $(C_FLAGS) $*.cpp
-.cc.o:
-	$(CXX) -c -o $*.o $(INC) $(C_FLAGS) $*.cc
-
 
 clean: $(dirs)
 	-rm -f *.o $(TARGET)
