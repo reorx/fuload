@@ -1,39 +1,44 @@
-trunk_path = $(shell pwd | sed "s/\/application.*//")
+MYFLAGS = -MMD -g -Wall -pthread
 
-INC=-I./include/
+INC = -I./include/
 
-SRC_DIR= src/
-OBJ_DIR= obj/
-LIB_DIR= lib/
+TAR_DIR = lib/
+SRC_DIR = src/
+OBJ_DIR = obj/
 
-OBJ_EXT= .o
-CXXSRC_EXT= .cpp
-CSRC_EXT= .c
-LIB_EXT= .a
-H_EXT= .h
+TARGET = $(TAR_DIR)libjsoncpp.a
 
-OBJECTS = $(OBJ_DIR)json_reader$(OBJ_EXT) \
-		  $(OBJ_DIR)json_value$(OBJ_EXT) \
-		  $(OBJ_DIR)json_writer$(OBJ_EXT) \
+OBJS = \
+	   $(OBJ_DIR)json_reader.o \
+	   $(OBJ_DIR)json_value.o \
+	   $(OBJ_DIR)json_writer.o \
 
-LIB_TARGET = $(LIB_DIR)libjsoncpp$(LIB_EXT)
 
-$(OBJ_DIR)%$(OBJ_EXT): $(SRC_DIR)%$(CXXSRC_EXT)
-	@echo
-	@echo "Compiling $< ==> $@..."
-	$(CXX) $(INC) $(C_FLAGS) -c $< -o $@
+OBJ_SUB_DIRS = $(sort $(dir $(OBJS)))
 
-$(OBJ_DIR)%$(OBJ_EXT): $(SRC_DIR)%$(CSRC_EXT)
-	@echo
-	@echo "Compiling $< ==> $@..."
-	$(CC)  $(INC) $(C_FLAGS) -c $< -o $@
+DEPENDS = $(patsubst %.o, %.d, $(OBJS))
 
-all:$(LIB_TARGET)
+.PHONY: all clean init
 
-$(LIB_TARGET): $(OBJECTS)
-	@echo
-	$(AR) rc $(LIB_TARGET) $(OBJECTS)
-	@echo "ok"
+all: init $(TARGET)
+	@echo -e "\033[1;32m\nSuccess!\033[0m"
+
+$(TARGET): $(OBJS)
+	@echo -e "\033[1;33m\nLinking $< ==> $@\033[0m"
+	$(AR) rc $(TARGET) $(OBJS)
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	@echo -e "\033[1;33m\nCompiling $< ==> $@\033[0m"
+	$(CC) $(MYFLAGS) -c -o $@ $(INC) $<
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
+	@echo -e "\033[1;33m\nCompiling $< ==> $@\033[0m"
+	$(CXX) $(MYFLAGS) -c -o $@ $(INC) $<
 
 clean:
-	rm -f $(LIB_TARGET) $(OBJECTS)
+	rm -f $(OBJS) $(TARGET) $(DEPENDS)
+
+init:
+	mkdir -p $(sort ./ $(TAR_DIR) $(SRC_DIR) $(OBJ_DIR) $(OBJ_SUB_DIRS))
+
+-include $(DEPENDS)
