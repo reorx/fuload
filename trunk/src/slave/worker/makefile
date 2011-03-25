@@ -10,6 +10,8 @@ TAR_DIR = ./
 SRC_DIR = ./
 OBJ_DIR = ./
 
+RELEASE_DIR = ../ctrl/
+
 TARGET = $(TAR_DIR)fl_slave_worker
 STAT_TARGET = $(TAR_DIR)fl_toolstat
 
@@ -41,10 +43,16 @@ $(UNION_DIRS):
 $(TARGET): $(OBJS)
 	@echo -e "\033[1;33m\nLinking $< ==> $@\033[0m"
 	$(CXX) -o $@ $^ $(LIB) $(MYFLAGS)
+ifneq ($(TAR_DIR), $(RELEASE_DIR))
+	cp $@ $(RELEASE_DIR)
+endif
 
 $(STAT_TARGET): $(STAT_OBJS)
 	@echo -e "\033[1;33m\nLinking $< ==> $@\033[0m"
 	$(CXX) $(INC) $^ -o $@ $(LIB)
+ifneq ($(TAR_DIR), $(RELEASE_DIR))
+	cp $@ $(RELEASE_DIR)
+endif
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@echo -e "\033[1;33m\nCompiling $< ==> $@\033[0m"
@@ -58,6 +66,6 @@ clean: $(UNION_DIRS)
 	rm -f $(OBJS) $(STAT_OBJS) $(TARGET) $(STAT_TARGET) $(DEPENDS)
 
 init:
-	mkdir -p $(sort ./ $(TAR_DIR) $(SRC_DIR) $(OBJ_DIR) $(OBJ_SUB_DIRS))
+	mkdir -p $(sort ./ $(TAR_DIR) $(RELEASE_DIR) $(SRC_DIR) $(OBJ_DIR) $(OBJ_SUB_DIRS))
 
 -include $(DEPENDS)
