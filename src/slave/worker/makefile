@@ -38,7 +38,9 @@ all: init $(UNION_DIRS) $(TARGET) $(STAT_TARGET)
 	@echo -e "\033[1;32m\nSuccess!\033[0m"
 
 $(UNION_DIRS):
+	@echo -e "\033[1;31m\n------------------------------ Entering \033[1;34m$@\033[1;31m ------------------------------\033[0m"
 	$(MAKE) -C $@ $(MAKECMDGOALS)
+	@echo -e "\033[1;31m\n------------------------------ Leaving  \033[1;34m$@\033[1;31m ------------------------------\033[0m"
 
 $(TARGET): $(OBJS)
 	@echo -e "\033[1;33m\nLinking $< ==> $@\033[0m"
