@@ -23,7 +23,7 @@ CTRL_LOG_LEVEL = logging.ERROR
 CTRL_LOG_FILE = '../log/ctrl.log'
 
 #上报的URL
-REPORT_URL = 'http://fuload.qq.com/report/upload/3/'
+REPORT_URL = 'http://fuload.qq.com/report/upload/111/'
 
 #=============================================================================
 #worker相关
@@ -32,19 +32,19 @@ REPORT_URL = 'http://fuload.qq.com/report/upload/3/'
 WORKER_FILE = './fl_slave_worker'
 
 #启动的worker进程数目
-WORKER_NUM = 2
+WORKER_NUM = 20
 
 #worker进程需要加载的so
 #SO_FILE = "../module/libmodule.so"
-SO_FILE = "../py_module/libmodule.so"
-#SO_FILE = "/home/dantezhu/appbase/application/platform/third_party_api/server/spp_openlogin/src/tools/fl_so/login.so"
+#SO_FILE = "../py_module/libmodule.so"
+SO_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_main/fl_module/fl_appstore_main.so"
 
 #worker进程的输入文件
-INPUT_FILE = "../module/fl_input.txt"
-#INPUT_FILE = "/home/dantezhu/appbase/application/platform/third_party_api/server/spp_openlogin/src/tools/fl_so/login_input.txt"
+#INPUT_FILE = "../module/fl_input.txt"
+INPUT_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_main/fl_module/fl_input.txt"
 
 #每个worker每秒速度限制(-1为不限制)
-LIMIT_SPEED = 50
+LIMIT_SPEED = 500
 
 #worker进程的上报间隔(sec)
 REPORT_TIMESEC = 10
@@ -65,7 +65,7 @@ WORKER_LOG_MAXSIZE = 104857600
 #daemon相关
 
 #存储daemon的pid文件
-DAEMON_PIDFILE = '/tmp/daemon-slave-ctrl.pid'
+DAEMON_PIDFILE = '/tmp/daemon_slave_ctrl.pid'
 
 #标准输入重定向
 DAEMON_STDIN = '/dev/null'
