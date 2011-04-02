@@ -54,15 +54,18 @@ class SlaveCtrl(object):
         '''
         找一个没有用过的msgkey
         '''
-        MaxKey = 0x0000FFFF
+        MaxKey = 0x00FFFFFF
+        ipc_key = 0x00F00000
 
-        getOne = False
-        while not getOne:
-            ipc_key = random.randint(0x01,MaxKey)
-            msg_id = ipc.msgget(ipc_key,0666)
-            if 0 > msg_id:
+        while ipc_key <= MaxKey:
+            print 'not find %d' % ipc_key
+            ipc_key += 1
+            msg_id = ipc.msgget(ipc_key,0666|ipc.IPC_EXCL|ipc.IPC_CREAT)
+            if msg_id > 0:
                 #find it!
+                print 'find it %d' % msg_id
                 return ipc_key
+        return -1
 
     def start(self):
         logging.error("detect msgqkey")

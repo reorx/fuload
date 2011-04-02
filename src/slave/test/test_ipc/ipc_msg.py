@@ -6,7 +6,7 @@ if len(sys.argv)==5 and sys.argv[3][0]=='s':
     msg_id = ipc.msgget(ipc_key,0666|ipc.IPC_CREAT)
     #msg_id = ipc.msgget(ipc_key,0666)
     if 0 > msg_id:
-        print 'error get'
+        print 'error get %d' % msg_id
         sys.exit(1)
     mbuf = ipc.msgbuf()
     mbuf.mtype = int(sys.argv[2])

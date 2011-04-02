@@ -32,16 +32,20 @@ REPORT_URL = 'http://fuload.qq.com/report/upload/111/'
 WORKER_FILE = './fl_slave_worker'
 
 #启动的worker进程数目
-WORKER_NUM = 20
+WORKER_NUM = 50
 
 #worker进程需要加载的so
 #SO_FILE = "../module/libmodule.so"
 #SO_FILE = "../py_module/libmodule.so"
 SO_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_main/fl_module/fl_appstore_main.so"
+#SO_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_score/fl_module/appstore_score.so"
+#SO_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_comment/fl_module/appstore_comment.so"
 
 #worker进程的输入文件
 #INPUT_FILE = "../module/fl_input.txt"
 INPUT_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_main/fl_module/fl_input.txt"
+#INPUT_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_score/fl_module/fl_input.txt"
+#INPUT_FILE = "/home/dantezhu/appbase/application/platform/appstore/share/appstore_comment/fl_module/fl_input.txt"
 
 #每个worker每秒速度限制(-1为不限制)
 LIMIT_SPEED = 500
