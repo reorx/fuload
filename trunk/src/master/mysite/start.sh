@@ -9,4 +9,6 @@ python manage.py runfcgi daemonize=true pidfile=`pwd`/django.pid host=127.0.0.1 
 #python manage.py runfcgi daemonize=true pidfile=`pwd`/django.pid socket=/home/dantezhu/nginx/sbin/django.sock maxrequests=1 &
 
 #如果在windows下，则只能用端口+线程模式
-#python manage.py runfcgi daemonize=false pidfile=./django.pid host=127.0.0.1 port=9001 method=threaded
+#python manage.py runfcgi daemonize=false pidfile=./django.pid host=127.0.0.1 port=9001 method=threaded &
+
+#python manage.py runserver 127.0.0.1:9001 &
