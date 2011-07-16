@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title> Fuload报表查询-http://code.google.com/p/fuload/ </title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="generator" content="vimer.cn" />
+        <meta name="author" content="dantezhu" />
+        <meta name="keywords" content="fuload" />
+        <meta name="description" content="fuload报表服务,项目地址:http://code.google.com/p/fuload/" />
+        <link rel="stylesheet" type="text/css" href="/admin_media/css/base.css" /> 
+        <link rel="stylesheet" type="text/css" href="/admin_media/css/forms.css" /> 
+        <link rel="stylesheet" media="all" type="text/css" href="/site_media/css/ui-lightness/jquery-ui-1.8.6.custom.css" />
+        <style type="text/css">
+            /* css for timepicker */
+            .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+            .ui-timepicker-div dl{ text-align: left; }
+            .ui-timepicker-div dl dt{ height: 25px; }
+            .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+            .ui-timepicker-div td { font-size: 90%; }
+        </style>
+        <script type="text/javascript" src="/site_media/js/jquery-1.4.3.min.js"></script>
+        <script type="text/javascript" src="/site_media/js/jquery-ui-1.8.6.custom.min.js"></script>
+        <script type="text/javascript" src="/site_media/js/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript">
+            function set_randomnum() {
+                var x=document.getElementById("id_randomnum");
+                var num = Math.random();
+                x.value = num;
+                return true;
+            }
+            //分别初始化id_begintime和id_endtime是不行的，弹不出框，所以要这样初始化
+            $(function() {
+                    $('#id_begintime,#id_endtime').datetimepicker({
+                        //onSelect: function( selectedDate ) {
+                        //    $(this).datetimepicker("option","dateFormat","yy-mm-dd");
+                        //},
+                        dateFormat:"yy-mm-dd"
+                    });
+            //$('#id_endtime').datetimepicker("option","dateFormat","yy-mm-dd");
+            //$('#id_begintime').datetimepicker("option","dateFormat","yy-mm-dd");
+            });
+        </script>
+    </head>
+
+    <body>
+    <div id="header"> 
+        <div id="branding"> 
+        
+            <h1 id="site-name">Fuload - 开源压力测试框架</h1> 
+ 
+        </div> 
+    </div> 
+
+        <div id="toolbar">
+            <form id="changelist-search" action="" method="get" onsubmit="set_randomnum()"> 
+                <div><!-- DIV needed for valid HTML --> 
+                    <label for="searchbar"><img src="/admin_media/img/admin/icon_searchbox.png" alt="Search" /></label> 
+                    上报ID:{{ form.reportid }} 报表类型:{{ form.rtype }} 起始时间:{{ form.begintime }} 终止时间:{{ form.endtime }} 展示调整:{{ form.adjust }}
+                    <input type="hidden" name="randomnum" id="id_randomnum" value=""/>
+                    <input type="submit" value="搜索" /> 
+                </div> 
+            </form>
+        </div>
+        {% for d in listData %}
+        <div>
+            <object id="flashchart" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="{{ d.flash_width }}" height="500">
+                <param name="movie" value="/site_media/swf/{{ swffile }}?xml_file={{ d.quote_data_url }}" />
+                <param name="quality" value="high" />
+                <param name="wmode" value="transparent" />
+                <embed name="flashchart" wmode="transparent" src="/site_media/swf/{{ swffile }}?xml_file={{ d.quote_data_url }}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="{{ d.flash_width }}" height="500"></embed>
+            </object>
+            <a href="{{ d.data_url|safe }}" target="_blank" >查看数据</a>
+        </div>
+        {% endfor %}
+    </body>
+</html>
