@@ -47,7 +47,8 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+from os.path import abspath, dirname, join
+MEDIA_ROOT = abspath(join(dirname(__file__), 'media/'))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -81,7 +82,7 @@ ROOT_URLCONF = 'mysite.urls'
 
 from os.path import abspath, dirname, join
 TEMPLATE_DIRS = (
-    abspath(join(dirname(__file__), "../template/")),
+    abspath(join(dirname(__file__), "template/")),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
