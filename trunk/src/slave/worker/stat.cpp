@@ -99,7 +99,7 @@ void CStatInfo::ShowStatInfo(int num)
     for (int i = 0; i < num; i ++)
     {
         buf[0] = '\0';
-        snprintf(buf,sizeof(buf), "%-40s:  %-20d\n", 
+        snprintf(buf,sizeof(buf), "%-40s:  %-20u\n", 
                 _stat_desc[i], 
                 atomic_read(&_stat_buf[i]));
         tmp_buf += buf;
