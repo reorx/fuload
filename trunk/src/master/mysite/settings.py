@@ -82,7 +82,7 @@ ROOT_URLCONF = 'mysite.urls'
 
 from os.path import abspath, dirname, join
 TEMPLATE_DIRS = (
-    abspath(join(dirname(__file__), "template/")),
+    abspath(join(dirname(__file__), "templates/")),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
